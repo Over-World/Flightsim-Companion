@@ -21,6 +21,7 @@ class DrawingController extends ChangeNotifier {
   Stroke? _current;
   bool _erasing = false;
   bool _erasedInGesture = false;
+  double _sizeFactor = 1;
 
   DrawTool tool = DrawTool.pen;
   int penColor = 0;
@@ -69,14 +70,17 @@ class DrawingController extends ChangeNotifier {
   }
 
   /// Starts a gesture at ([x], [y]) in page units. [eraser] forces erasing
-  /// (inverted stylus or stylus button).
+  /// (inverted stylus or stylus button). [sizeFactor] scales pen and eraser
+  /// size, e.g. to keep lines thin while zoomed into a chart.
   void begin(
     double x,
     double y,
     double pressure, {
     bool eraser = false,
     bool simulatePressure = false,
+    double sizeFactor = 1,
   }) {
+    _sizeFactor = sizeFactor;
     _erasing = eraser || tool == DrawTool.eraser;
     _erasedInGesture = false;
     if (_erasing) {
@@ -87,7 +91,7 @@ class DrawingController extends ChangeNotifier {
     _current = Stroke(
       tool: highlighter ? StrokeTool.highlighter : StrokeTool.pen,
       color: highlighter ? highlighterColor : penColor,
-      size: highlighter ? highlighterSize : penSize,
+      size: (highlighter ? highlighterSize : penSize) * sizeFactor,
       simulatePressure: simulatePressure,
       points: [x, y, pressure],
     );
@@ -129,7 +133,7 @@ class DrawingController extends ChangeNotifier {
   void _eraseAt(double x, double y) {
     final remaining = [
       for (final s in _strokes)
-        if (!s.hits(x, y, eraserRadius)) s,
+        if (!s.hits(x, y, eraserRadius * _sizeFactor)) s,
     ];
     if (remaining.length == _strokes.length) return;
     if (!_erasedInGesture) _snapshot();

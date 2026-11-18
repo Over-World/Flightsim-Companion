@@ -176,7 +176,7 @@ class _DrawingCanvasState extends State<DrawingCanvas> {
                     _scale,
                     Theme.of(context).textTheme.labelLarge!,
                   ),
-                  foregroundPainter: _StrokesPainter(
+                  foregroundPainter: StrokesPainter(
                     widget.controller,
                     palette,
                     _scale,
@@ -192,8 +192,9 @@ class _DrawingCanvasState extends State<DrawingCanvas> {
   }
 }
 
-class _StrokesPainter extends CustomPainter {
-  _StrokesPainter(this.controller, this.palette, this.scale)
+/// Paints the strokes of a [DrawingController], highlighters under ink.
+class StrokesPainter extends CustomPainter {
+  StrokesPainter(this.controller, this.palette, this.scale)
     : super(repaint: controller);
 
   final DrawingController controller;
@@ -221,7 +222,7 @@ class _StrokesPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(_StrokesPainter old) =>
+  bool shouldRepaint(StrokesPainter old) =>
       old.scale != scale || old.palette != palette;
 }
 

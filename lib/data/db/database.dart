@@ -20,6 +20,8 @@ part 'database.g.dart';
     FlightWaypoints,
     ScratchPages,
     WeatherCache,
+    Charts,
+    ChartAnnotations,
   ],
 )
 class AppDatabase extends _$AppDatabase {
@@ -27,7 +29,7 @@ class AppDatabase extends _$AppDatabase {
     : super(executor ?? driftDatabase(name: 'flightsim_companion'));
 
   @override
-  int get schemaVersion => 5;
+  int get schemaVersion => 6;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -87,6 +89,10 @@ class AppDatabase extends _$AppDatabase {
                 ..where((a) => a.icaoType.equals(e.key)))
               .write(AircraftProfilesCompanion(taxiFuelL: Value(e.value)));
         }
+      }
+      if (from < 6) {
+        await m.createTable(charts);
+        await m.createTable(chartAnnotations);
       }
     },
     beforeOpen: (details) async {

@@ -6,6 +6,7 @@ import '../features/aircraft/aircraft_edit_screen.dart';
 import '../features/aircraft/aircraft_list_screen.dart';
 import '../features/airports/airport_detail_screen.dart';
 import '../features/airports/airport_search_screen.dart';
+import '../features/charts/chart_viewer_screen.dart';
 import '../features/e6b/e6b_screen.dart';
 import '../features/fly/fly_screen.dart';
 import '../features/logbook/logbook_screen.dart';
@@ -41,6 +42,13 @@ GoRouter createRouter(SettingsController settings) => GoRouter(
       builder: (context, state) => const OnboardingScreen(),
     ),
     GoRoute(path: '/notes', builder: (context, state) => const NotepadScreen()),
+    GoRoute(
+      path: '/charts/:id',
+      builder: (context, state) => ChartViewerScreen(
+        chartId: int.parse(state.pathParameters['id']!),
+        flightId: int.tryParse(state.uri.queryParameters['flight'] ?? ''),
+      ),
+    ),
     StatefulShellRoute.indexedStack(
       builder: (context, state, shell) => AdaptiveShell(navigationShell: shell),
       branches: [

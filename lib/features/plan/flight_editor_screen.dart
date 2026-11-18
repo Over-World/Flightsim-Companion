@@ -10,6 +10,7 @@ import '../../core/units.dart';
 import '../../data/db/database.dart';
 import '../../data/repositories/flight_repository.dart';
 import '../../l10n/app_localizations.dart';
+import '../charts/charts_list.dart';
 import '../kneeboard/kneeboard_controller.dart';
 import 'add_waypoint_dialog.dart';
 import 'edit_dialogs.dart';
@@ -113,6 +114,7 @@ class _FlightEditorScreenState extends State<FlightEditorScreen> {
               final weather = _WeatherPanel(data);
               final fuel = FuelPanel(data);
               final wb = WbPanel(data);
+              final charts = _ChartsPanel(data);
               if (constraints.maxWidth >= 1000) {
                 return Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -126,8 +128,9 @@ class _FlightEditorScreenState extends State<FlightEditorScreen> {
                           l10n.flightTabFuel,
                           l10n.flightTabWb,
                           l10n.flightTabWeather,
+                          l10n.chartsTitle,
                         ],
-                        children: [navlog, fuel, wb, weather],
+                        children: [navlog, fuel, wb, weather, charts],
                       ),
                     ),
                   ],
@@ -140,8 +143,9 @@ class _FlightEditorScreenState extends State<FlightEditorScreen> {
                   l10n.flightTabFuel,
                   l10n.flightTabWb,
                   l10n.flightTabWeather,
+                  l10n.chartsTitle,
                 ],
-                children: [route, navlog, fuel, wb, weather],
+                children: [route, navlog, fuel, wb, weather, charts],
               );
             },
           ),
@@ -177,6 +181,34 @@ class _Tabs extends StatelessWidget {
       ],
     ),
   );
+}
+
+/// Charts of departure, destination and alternate; ink drawn here stays
+/// with the flight.
+class _ChartsPanel extends StatelessWidget {
+  const _ChartsPanel(this.data);
+
+  final FlightWithRoute data;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final f = data.flight;
+    return ListView(
+      padding: const EdgeInsets.all(16),
+      children: [
+        ChartsList(
+          flightId: f.id,
+          airports: [
+            ChartAirport(f.departureIdent, l10n.flightDeparture),
+            ChartAirport(f.destinationIdent, l10n.flightDestination),
+            if (f.alternateIdent case final alt?)
+              ChartAirport(alt, l10n.flightAlternate),
+          ],
+        ),
+      ],
+    );
+  }
 }
 
 /// Departure, destination and alternate weather; departure METAR wind can

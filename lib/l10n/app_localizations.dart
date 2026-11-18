@@ -2550,6 +2550,180 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No envelope in the aircraft profile.'**
   String get wbNoEnvelope;
+
+  /// No description provided for @chartsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Charts'**
+  String get chartsTitle;
+
+  /// No description provided for @chartsImport.
+  ///
+  /// In en, this message translates to:
+  /// **'Import'**
+  String get chartsImport;
+
+  /// No description provided for @chartsNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No charts'**
+  String get chartsNone;
+
+  /// No description provided for @chartsNoneHint.
+  ///
+  /// In en, this message translates to:
+  /// **'No charts yet. Import PDFs or images, e.g. from the AIP.'**
+  String get chartsNoneHint;
+
+  /// No description provided for @chartsImported.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} of {total} charts imported'**
+  String chartsImported(int count, int total);
+
+  /// No description provided for @chartsImportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Import charts ({count})'**
+  String chartsImportTitle(int count);
+
+  /// No description provided for @chartAirport.
+  ///
+  /// In en, this message translates to:
+  /// **'Airport'**
+  String get chartAirport;
+
+  /// No description provided for @chartCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get chartCategory;
+
+  /// No description provided for @chartCategoryAirport.
+  ///
+  /// In en, this message translates to:
+  /// **'Aerodrome chart'**
+  String get chartCategoryAirport;
+
+  /// No description provided for @chartCategoryGround.
+  ///
+  /// In en, this message translates to:
+  /// **'Ground & parking'**
+  String get chartCategoryGround;
+
+  /// No description provided for @chartCategoryDeparture.
+  ///
+  /// In en, this message translates to:
+  /// **'Departure (SID)'**
+  String get chartCategoryDeparture;
+
+  /// No description provided for @chartCategoryArrival.
+  ///
+  /// In en, this message translates to:
+  /// **'Arrival (STAR)'**
+  String get chartCategoryArrival;
+
+  /// No description provided for @chartCategoryApproach.
+  ///
+  /// In en, this message translates to:
+  /// **'Approach'**
+  String get chartCategoryApproach;
+
+  /// No description provided for @chartCategoryVfr.
+  ///
+  /// In en, this message translates to:
+  /// **'VFR chart'**
+  String get chartCategoryVfr;
+
+  /// No description provided for @chartCategoryOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get chartCategoryOther;
+
+  /// No description provided for @chartName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get chartName;
+
+  /// No description provided for @chartImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Image'**
+  String get chartImage;
+
+  /// No description provided for @chartEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit chart'**
+  String get chartEdit;
+
+  /// No description provided for @chartDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete chart?'**
+  String get chartDeleteTitle;
+
+  /// No description provided for @chartDeleteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'\"{name}\" and the ink drawn on it will be deleted.'**
+  String chartDeleteMessage(String name);
+
+  /// No description provided for @chartFit.
+  ///
+  /// In en, this message translates to:
+  /// **'Fit to screen'**
+  String get chartFit;
+
+  /// No description provided for @chartClearInk.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear ink on this page'**
+  String get chartClearInk;
+
+  /// No description provided for @chartInkTools.
+  ///
+  /// In en, this message translates to:
+  /// **'Pen tools'**
+  String get chartInkTools;
+
+  /// No description provided for @chartNightMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Night mode'**
+  String get chartNightMode;
+
+  /// No description provided for @chartNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'This chart no longer exists.'**
+  String get chartNotFound;
+
+  /// No description provided for @chartUnreadable.
+  ///
+  /// In en, this message translates to:
+  /// **'The chart file can\'t be opened.'**
+  String get chartUnreadable;
+
+  /// No description provided for @chartPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Page {page} of {count}'**
+  String chartPage(int page, int count);
+
+  /// No description provided for @chartPreviousPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous page'**
+  String get chartPreviousPage;
+
+  /// No description provided for @chartNextPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Next page'**
+  String get chartNextPage;
 }
 
 class _AppLocalizationsDelegate

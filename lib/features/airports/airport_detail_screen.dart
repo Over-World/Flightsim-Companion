@@ -9,6 +9,7 @@ import '../../core/units.dart';
 import '../../data/db/database.dart';
 import '../../data/repositories/navdata_repository.dart';
 import '../../l10n/app_localizations.dart';
+import '../charts/charts_list.dart';
 import '../weather/weather_card.dart';
 import 'airport_type.dart';
 
@@ -60,13 +61,22 @@ class _DetailsBody extends StatelessWidget {
     final runways = _RunwaysCard(details.runways);
     final frequencies = _FrequenciesCard(details.frequencies);
     final navaids = _NavaidsCard(details);
+    final charts = _SectionCard(
+      title: AppLocalizations.of(context).chartsTitle,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: ChartsList(airports: [ChartAirport(details.airport.ident)]),
+        ),
+      ],
+    );
 
     return LayoutBuilder(
       builder: (context, constraints) {
         if (constraints.maxWidth < 840) {
           return ListView(
             padding: const EdgeInsets.all(16),
-            children: [header, weather, frequencies, runways, navaids],
+            children: [header, weather, charts, frequencies, runways, navaids],
           );
         }
         return SingleChildScrollView(
@@ -80,7 +90,7 @@ class _DetailsBody extends StatelessWidget {
                 children: [
                   Expanded(child: Column(children: [frequencies, runways])),
                   const SizedBox(width: 8),
-                  Expanded(child: navaids),
+                  Expanded(child: Column(children: [charts, navaids])),
                 ],
               ),
             ],

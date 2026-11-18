@@ -10,6 +10,7 @@ import '../../core/theme.dart';
 import '../../l10n/app_localizations.dart';
 import '../../widgets/empty_state.dart';
 import '../../widgets/ticking.dart';
+import '../charts/charts_list.dart';
 import '../kneeboard/kneeboard_controller.dart';
 import '../plan/navlog_table.dart';
 import '../plan/runway_selector.dart';
@@ -68,6 +69,19 @@ class FlyScreen extends StatelessWidget {
           const times = _TimesCard();
           const navlog = _NavlogCard();
           const frequencies = _FrequenciesCard();
+          final charts = _Section(
+            title: l10n.chartsTitle,
+            child: ChartsList(
+              style: ChartsListStyle.chips,
+              flightId: flight.id,
+              airports: [
+                ChartAirport(flight.departureIdent, l10n.flightDeparture),
+                ChartAirport(flight.destinationIdent, l10n.flightDestination),
+                if (flight.alternateIdent case final alt?)
+                  ChartAirport(alt, l10n.flightAlternate),
+              ],
+            ),
+          );
           final runways = RunwaysCard(
             kb.data!,
             margin: const EdgeInsets.only(bottom: 12),
@@ -101,7 +115,7 @@ class FlyScreen extends StatelessWidget {
                   flex: 4,
                   child: ListView(
                     padding: const EdgeInsets.fromLTRB(8, 8, 16, 16),
-                    children: const [leg, times],
+                    children: [leg, times, charts],
                   ),
                 ),
               ],
@@ -109,7 +123,15 @@ class FlyScreen extends StatelessWidget {
           }
           return ListView(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 88),
-            children: [leg, navlog, runways, ...weather, frequencies, times],
+            children: [
+              leg,
+              navlog,
+              runways,
+              charts,
+              ...weather,
+              frequencies,
+              times,
+            ],
           );
         },
       ),

@@ -31,8 +31,9 @@ The full roadmap (milestones M1–M7) lives in OpenChamber's project knowledge (
 - `lib/core/navlog.dart` – navlog computation; `core/e6b.dart` – flight computer formulas; `core/runways.dart` – runway ends, wind components, suggestion; `core/quantities.dart` – unit conversions; `core/fuel_plan.dart` – fuel plan (VFR/IFR reserves); `core/weight_balance.dart` – loading, CG and envelope check; `core/wmm/` – magnetic variation (all pure and tested)
 - `lib/data/repositories/` – queries used by the UI
 - `lib/data/sim/` – X-Plane web API client
+- `lib/data/charts/` – `ChartFileAccess` (file picker + PDF/image rendering via pdfrx), category/name guessing from file names; files live in `<app support>/charts`, rows in `Charts`, ink in `ChartAnnotations` (per page, per flight or general)
 - `lib/data/weather/` – METAR/TAF models and `WeatherRepository` (aviationweather.gov, offline cache table)
-- `lib/features/<feature>/` – screens and controllers: `plan` (flights, route editor, navlog table, runway selector, fuel and W&B panels), `e6b` (calculators), `kneeboard` (`KneeboardController`: active flight, times, stopwatch), `fly` (kneeboard UI), `notes` (stylus notepad), `weather` (`WeatherController` shares reports app-wide, `WeatherCard`), `onboarding`, `settings`, `airports`, `aircraft`, `navdata`
+- `lib/features/<feature>/` – screens and controllers: `plan` (flights, route editor, navlog table, runway selector, fuel and W&B panels), `e6b` (calculators), `kneeboard` (`KneeboardController`: active flight, times, stopwatch), `fly` (kneeboard UI), `notes` (stylus notepad), `weather` (`WeatherController` shares reports app-wide, `WeatherCard`), `charts` (`ChartsList`, import dialog, `ChartViewerScreen` at `/charts/:id?flight=`), `onboarding`, `settings`, `airports`, `aircraft`, `navdata`
 - `lib/widgets/` – shared widgets
 - `lib/app_scope.dart` – all providers; used by `main.dart` and widget tests
 
@@ -42,8 +43,8 @@ The full roadmap (milestones M1–M7) lives in OpenChamber's project knowledge (
 - Directions: true internally; convert to magnetic with `magneticVariation()` (WMM2025, `core/wmm/`, valid until 2030 – replace coefficients with WMM2030 then). Never use OurAirports' `magnetic_variation_deg`, it is decades old.
 - Navigation destinations: Plan, Fly, E6B, Logbook, Settings (max. 5 for the phone NavigationBar). Aircraft profiles live under Plan (`/plan/aircraft`).
 - Layout breakpoint: `width >= 600` → NavigationRail, else NavigationBar. Every screen must work at 360 px wide and in both tablet orientations.
-- Stylus input: a stylus always draws (inverted end / button erases); a finger draws only with the "draw with finger" setting, otherwise it scrolls/zooms. Only one pointer is tracked so a palm can't scribble. Notepad pages use 1000-unit-wide page coordinates and palette indices (not ARGB) so ink adapts to dark mode.
-- Widget tests never hit the network: pass `httpClient: fakeWeatherClient()` (test/fixtures.dart) to `AppScope`.
+- Stylus input: a stylus always draws (inverted end / button erases); a finger draws only with the "draw with finger" setting, otherwise it scrolls/zooms. Only one pointer is tracked so a palm can't scribble. On charts a finger always pans/zooms; the stylus claims its pointer via an `EagerGestureRecognizer`. Notepad pages and chart ink use 1000-unit-wide page coordinates and palette indices (not ARGB) so ink adapts to dark mode.
+- Widget tests never hit the network: pass `httpClient: fakeWeatherClient()` (test/fixtures.dart) to `AppScope`. Charts: pass `chartFiles: FakeChartFiles()` (no platform picker, no PDFium) and a temp `chartsDirectory`.
 - Widget tests with drift: call `unmount` (pump an empty widget + short pumps) at the end, and run DB work inside `tester.runAsync`; see `test/screens_test.dart`.
 
 ## Commands

@@ -1,13 +1,21 @@
+import 'dart:io';
+
 import 'package:drift/native.dart';
 import 'package:flightsim_companion/app.dart';
 import 'package:flightsim_companion/app_scope.dart';
 import 'package:flightsim_companion/core/router.dart';
 import 'package:flightsim_companion/core/settings.dart';
+import 'package:flightsim_companion/data/charts/chart_document.dart';
 import 'package:flightsim_companion/data/db/database.dart';
 import 'package:flightsim_companion/data/repositories/aircraft_repository.dart';
+import 'package:flightsim_companion/data/repositories/charts_repository.dart';
 import 'package:flightsim_companion/data/repositories/flight_repository.dart';
+import 'package:flightsim_companion/features/charts/chart_ink_layer.dart';
+import 'package:flightsim_companion/features/charts/charts_list.dart';
+import 'package:flightsim_companion/features/notes/stroke.dart';
 import 'package:flightsim_companion/features/kneeboard/kneeboard_controller.dart';
 import 'package:drift/drift.dart' show Value;
+import 'package:flutter/gestures.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
@@ -25,6 +33,8 @@ const sizes = {
 void main() {
   late AppDatabase db;
   late int flightId;
+  late Directory chartsDir;
+  late FakeChartFiles chartFiles;
 
   setUp(() async {
     SharedPreferences.setMockInitialValues({
@@ -32,9 +42,14 @@ void main() {
       'onboardingCompleted': true,
     });
     db = AppDatabase(NativeDatabase.memory());
+    chartsDir = Directory.systemTemp.createTempSync('fsc_charts');
+    chartFiles = FakeChartFiles();
   });
 
-  tearDown(() => db.close());
+  tearDown(() async {
+    await db.close();
+    chartsDir.deleteSync(recursive: true);
+  });
 
   Future<GoRouter> pumpApp(WidgetTester tester, Size size) async {
     tester.view.physicalSize = size;
@@ -54,6 +69,8 @@ void main() {
         prefs: prefs,
         settings: settings,
         httpClient: fakeWeatherClient(),
+        chartsDirectory: () async => chartsDir,
+        chartFiles: chartFiles,
         child: FlightsimCompanionApp(router: router),
       ),
     );
@@ -311,6 +328,113 @@ void main() {
       );
       expect(f!.loadsKg[0], 160);
       expect(f.weightBalance!.ok, isTrue);
+      expect(tester.takeException(), isNull);
+      await unmount(tester);
+    });
+
+    testWidgets('chart import, viewer and ink on $name', (tester) async {
+      final router = await pumpApp(tester, size);
+      chartFiles.image = await tester.runAsync(
+        () => createTestImage(width: 60, height: 80),
+      );
+      chartFiles.next = [
+        PickedChartFile('EDFE_VFR.png', () => Stream.value([1, 2, 3])),
+        PickedChartFile('EDFZ ILS 26.pdf', () => Stream.value([4, 5])),
+      ];
+      router.go('/plan/flights/$flightId');
+      await settle(tester);
+      await tester.ensureVisible(find.text('Charts').first);
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Charts').first);
+      await settle(tester);
+      await tester.pumpAndSettle();
+      expect(
+        find.descendant(
+          of: find.byType(ChartsList),
+          matching: find.text('Departure · EDFE'),
+        ),
+        findsOneWidget,
+      );
+
+      await tester.tap(find.widgetWithText(TextButton, 'Import').first);
+      await tester.pumpAndSettle();
+      expect(find.text('Import charts (2)'), findsOneWidget);
+      // Category and airport guessed from the file names.
+      expect(find.text('VFR chart'), findsOneWidget);
+      expect(find.text('Approach'), findsOneWidget);
+      expect(find.text('EDFZ'), findsWidgets);
+      await tester.tap(find.widgetWithText(FilledButton, 'Import'));
+      await tester.pumpAndSettle();
+      for (var i = 0; i < 4; i++) {
+        await settle(tester);
+      }
+      expect(find.text('2 of 2 charts imported'), findsOneWidget);
+      ScaffoldMessenger.of(
+        tester.element(find.byType(Scaffold).first),
+      ).removeCurrentSnackBar();
+      final charts = await tester.runAsync(
+        () => db.select(db.charts).get(),
+      );
+      expect(
+        {for (final c in charts!) c.name: (c.airportIdent, c.category)},
+        {
+          'EDFE VFR': ('EDFE', ChartCategory.vfr),
+          'EDFZ ILS 26': ('EDFZ', ChartCategory.approach),
+        },
+      );
+      expect(find.text('EDFE VFR'), findsOneWidget);
+
+      await tester.tap(find.text('EDFE VFR'));
+      for (var i = 0; i < 4; i++) {
+        await settle(tester);
+      }
+      expect(find.byType(RawImage), findsOneWidget);
+      expect(find.text('Page 1 of 2'), findsOneWidget);
+
+      // A stylus draws, a finger only pans.
+      final page = tester.getCenter(find.byType(ChartInkLayer));
+      final pen = await tester.startGesture(
+        page,
+        kind: PointerDeviceKind.stylus,
+      );
+      for (var i = 0; i < 5; i++) {
+        await pen.moveBy(const Offset(10, 6));
+        await tester.pump();
+      }
+      await pen.up();
+      await tester.drag(find.byType(ChartInkLayer), const Offset(-40, 30));
+      await settle(tester);
+      final chartId = charts.firstWhere((c) => c.name == 'EDFE VFR').id;
+      final ink = await tester.runAsync(
+        () => ChartsRepository(db).annotations(chartId, flightId),
+      );
+      expect(Stroke.decodeAll(ink![0]!), hasLength(1));
+
+      await tester.tap(find.byTooltip('Night mode'));
+      await tester.tap(find.byTooltip('Next page'));
+      await settle(tester);
+      expect(find.text('Page 2 of 2'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+
+      // The kneeboard links the flight's charts.
+      final context = tester.element(find.byType(Scaffold).first);
+      await tester.runAsync(
+        () => context.read<KneeboardController>().open(flightId),
+      );
+      router.go('/fly');
+      await settle(tester);
+      await tester.scrollUntilVisible(
+        find.widgetWithText(ActionChip, 'EDFZ ILS 26'),
+        200,
+        scrollable: find
+            .descendant(
+              of: find.byType(ListView).last,
+              matching: find.byType(Scrollable),
+            )
+            .first,
+      );
+      expect(find.widgetWithText(ActionChip, 'EDFE VFR'), findsOneWidget);
+      await settle(tester);
       expect(tester.takeException(), isNull);
       await unmount(tester);
     });

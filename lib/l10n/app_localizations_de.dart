@@ -1346,4 +1346,100 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get wbNoEnvelope => 'Kein Schwerpunktbereich im Flugzeugprofil.';
+
+  @override
+  String get chartsTitle => 'Karten';
+
+  @override
+  String get chartsImport => 'Importieren';
+
+  @override
+  String get chartsNone => 'Keine Karten';
+
+  @override
+  String get chartsNoneHint =>
+      'Noch keine Karten. Importiere PDFs oder Bilder, z. B. aus dem AIP.';
+
+  @override
+  String chartsImported(int count, int total) {
+    return '$count von $total Karten importiert';
+  }
+
+  @override
+  String chartsImportTitle(int count) {
+    return 'Karten importieren ($count)';
+  }
+
+  @override
+  String get chartAirport => 'Flugplatz';
+
+  @override
+  String get chartCategory => 'Kategorie';
+
+  @override
+  String get chartCategoryAirport => 'Flugplatzkarte';
+
+  @override
+  String get chartCategoryGround => 'Rollen & Parken';
+
+  @override
+  String get chartCategoryDeparture => 'Abflug (SID)';
+
+  @override
+  String get chartCategoryArrival => 'Anflugstrecke (STAR)';
+
+  @override
+  String get chartCategoryApproach => 'Anflug';
+
+  @override
+  String get chartCategoryVfr => 'Sichtanflugkarte';
+
+  @override
+  String get chartCategoryOther => 'Sonstige';
+
+  @override
+  String get chartName => 'Name';
+
+  @override
+  String get chartImage => 'Bild';
+
+  @override
+  String get chartEdit => 'Karte bearbeiten';
+
+  @override
+  String get chartDeleteTitle => 'Karte löschen?';
+
+  @override
+  String chartDeleteMessage(String name) {
+    return '„$name“ und die Notizen darauf werden gelöscht.';
+  }
+
+  @override
+  String get chartFit => 'An Bildschirm anpassen';
+
+  @override
+  String get chartClearInk => 'Notizen auf dieser Seite löschen';
+
+  @override
+  String get chartInkTools => 'Stiftwerkzeuge';
+
+  @override
+  String get chartNightMode => 'Nachtmodus';
+
+  @override
+  String get chartNotFound => 'Diese Karte gibt es nicht mehr.';
+
+  @override
+  String get chartUnreadable => 'Die Kartendatei lässt sich nicht öffnen.';
+
+  @override
+  String chartPage(int page, int count) {
+    return 'Seite $page von $count';
+  }
+
+  @override
+  String get chartPreviousPage => 'Vorherige Seite';
+
+  @override
+  String get chartNextPage => 'Nächste Seite';
 }

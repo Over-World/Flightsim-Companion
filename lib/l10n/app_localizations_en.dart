@@ -1348,4 +1348,100 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get wbNoEnvelope => 'No envelope in the aircraft profile.';
+
+  @override
+  String get chartsTitle => 'Charts';
+
+  @override
+  String get chartsImport => 'Import';
+
+  @override
+  String get chartsNone => 'No charts';
+
+  @override
+  String get chartsNoneHint =>
+      'No charts yet. Import PDFs or images, e.g. from the AIP.';
+
+  @override
+  String chartsImported(int count, int total) {
+    return '$count of $total charts imported';
+  }
+
+  @override
+  String chartsImportTitle(int count) {
+    return 'Import charts ($count)';
+  }
+
+  @override
+  String get chartAirport => 'Airport';
+
+  @override
+  String get chartCategory => 'Category';
+
+  @override
+  String get chartCategoryAirport => 'Aerodrome chart';
+
+  @override
+  String get chartCategoryGround => 'Ground & parking';
+
+  @override
+  String get chartCategoryDeparture => 'Departure (SID)';
+
+  @override
+  String get chartCategoryArrival => 'Arrival (STAR)';
+
+  @override
+  String get chartCategoryApproach => 'Approach';
+
+  @override
+  String get chartCategoryVfr => 'VFR chart';
+
+  @override
+  String get chartCategoryOther => 'Other';
+
+  @override
+  String get chartName => 'Name';
+
+  @override
+  String get chartImage => 'Image';
+
+  @override
+  String get chartEdit => 'Edit chart';
+
+  @override
+  String get chartDeleteTitle => 'Delete chart?';
+
+  @override
+  String chartDeleteMessage(String name) {
+    return '\"$name\" and the ink drawn on it will be deleted.';
+  }
+
+  @override
+  String get chartFit => 'Fit to screen';
+
+  @override
+  String get chartClearInk => 'Clear ink on this page';
+
+  @override
+  String get chartInkTools => 'Pen tools';
+
+  @override
+  String get chartNightMode => 'Night mode';
+
+  @override
+  String get chartNotFound => 'This chart no longer exists.';
+
+  @override
+  String get chartUnreadable => 'The chart file can\'t be opened.';
+
+  @override
+  String chartPage(int page, int count) {
+    return 'Page $page of $count';
+  }
+
+  @override
+  String get chartPreviousPage => 'Previous page';
+
+  @override
+  String get chartNextPage => 'Next page';
 }

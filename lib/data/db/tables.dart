@@ -228,3 +228,39 @@ class WeatherCache extends Table {
   @override
   Set<Column> get primaryKey => {airportIdent};
 }
+
+enum ChartCategory { airport, ground, departure, arrival, approach, vfr, other }
+
+enum ChartFileType { pdf, image }
+
+/// An airport chart. Local charts are imported files in the app's charts
+/// directory; `source` leaves room for ChartFox charts later.
+@TableIndex(name: 'charts_airport', columns: {#airportIdent})
+class Charts extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get airportIdent => text()();
+  TextColumn get name => text()();
+  TextColumn get category => textEnum<ChartCategory>()();
+  TextColumn get source => text().withDefault(const Constant('local'))();
+  TextColumn get fileType => textEnum<ChartFileType>()();
+
+  /// File name inside the charts directory.
+  TextColumn get fileName => text()();
+  DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
+}
+
+/// Ink on one chart page, per flight or general (`flightId == null`).
+/// Coordinates are page units, 1000 wide (see `Stroke`).
+@TableIndex(name: 'chart_annotations_chart', columns: {#chartId, #flightId})
+class ChartAnnotations extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get chartId =>
+      integer().references(Charts, #id, onDelete: KeyAction.cascade)();
+  IntColumn get flightId => integer().nullable().references(
+    Flights,
+    #id,
+    onDelete: KeyAction.cascade,
+  )();
+  IntColumn get page => integer()();
+  TextColumn get strokes => text().withDefault(const Constant('[]'))();
+}

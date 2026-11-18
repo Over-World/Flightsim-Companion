@@ -6939,6 +6939,864 @@ class WeatherCacheCompanion extends UpdateCompanion<WeatherCacheData> {
   }
 }
 
+class $ChartsTable extends Charts with TableInfo<$ChartsTable, Chart> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ChartsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _airportIdentMeta = const VerificationMeta(
+    'airportIdent',
+  );
+  @override
+  late final GeneratedColumn<String> airportIdent = GeneratedColumn<String>(
+    'airport_ident',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<ChartCategory, String> category =
+      GeneratedColumn<String>(
+        'category',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<ChartCategory>($ChartsTable.$convertercategory);
+  static const VerificationMeta _sourceMeta = const VerificationMeta('source');
+  @override
+  late final GeneratedColumn<String> source = GeneratedColumn<String>(
+    'source',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('local'),
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<ChartFileType, String> fileType =
+      GeneratedColumn<String>(
+        'file_type',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<ChartFileType>($ChartsTable.$converterfileType);
+  static const VerificationMeta _fileNameMeta = const VerificationMeta(
+    'fileName',
+  );
+  @override
+  late final GeneratedColumn<String> fileName = GeneratedColumn<String>(
+    'file_name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    airportIdent,
+    name,
+    category,
+    source,
+    fileType,
+    fileName,
+    createdAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'charts';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<Chart> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('airport_ident')) {
+      context.handle(
+        _airportIdentMeta,
+        airportIdent.isAcceptableOrUnknown(
+          data['airport_ident']!,
+          _airportIdentMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_airportIdentMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('source')) {
+      context.handle(
+        _sourceMeta,
+        source.isAcceptableOrUnknown(data['source']!, _sourceMeta),
+      );
+    }
+    if (data.containsKey('file_name')) {
+      context.handle(
+        _fileNameMeta,
+        fileName.isAcceptableOrUnknown(data['file_name']!, _fileNameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_fileNameMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Chart map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Chart(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      airportIdent: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}airport_ident'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      category: $ChartsTable.$convertercategory.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}category'],
+        )!,
+      ),
+      source: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}source'],
+      )!,
+      fileType: $ChartsTable.$converterfileType.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}file_type'],
+        )!,
+      ),
+      fileName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}file_name'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+    );
+  }
+
+  @override
+  $ChartsTable createAlias(String alias) {
+    return $ChartsTable(attachedDatabase, alias);
+  }
+
+  static JsonTypeConverter2<ChartCategory, String, String> $convertercategory =
+      const EnumNameConverter<ChartCategory>(ChartCategory.values);
+  static JsonTypeConverter2<ChartFileType, String, String> $converterfileType =
+      const EnumNameConverter<ChartFileType>(ChartFileType.values);
+}
+
+class Chart extends DataClass implements Insertable<Chart> {
+  final int id;
+  final String airportIdent;
+  final String name;
+  final ChartCategory category;
+  final String source;
+  final ChartFileType fileType;
+
+  /// File name inside the charts directory.
+  final String fileName;
+  final DateTime createdAt;
+  const Chart({
+    required this.id,
+    required this.airportIdent,
+    required this.name,
+    required this.category,
+    required this.source,
+    required this.fileType,
+    required this.fileName,
+    required this.createdAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['airport_ident'] = Variable<String>(airportIdent);
+    map['name'] = Variable<String>(name);
+    {
+      map['category'] = Variable<String>(
+        $ChartsTable.$convertercategory.toSql(category),
+      );
+    }
+    map['source'] = Variable<String>(source);
+    {
+      map['file_type'] = Variable<String>(
+        $ChartsTable.$converterfileType.toSql(fileType),
+      );
+    }
+    map['file_name'] = Variable<String>(fileName);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    return map;
+  }
+
+  ChartsCompanion toCompanion(bool nullToAbsent) {
+    return ChartsCompanion(
+      id: Value(id),
+      airportIdent: Value(airportIdent),
+      name: Value(name),
+      category: Value(category),
+      source: Value(source),
+      fileType: Value(fileType),
+      fileName: Value(fileName),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory Chart.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Chart(
+      id: serializer.fromJson<int>(json['id']),
+      airportIdent: serializer.fromJson<String>(json['airportIdent']),
+      name: serializer.fromJson<String>(json['name']),
+      category: $ChartsTable.$convertercategory.fromJson(
+        serializer.fromJson<String>(json['category']),
+      ),
+      source: serializer.fromJson<String>(json['source']),
+      fileType: $ChartsTable.$converterfileType.fromJson(
+        serializer.fromJson<String>(json['fileType']),
+      ),
+      fileName: serializer.fromJson<String>(json['fileName']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'airportIdent': serializer.toJson<String>(airportIdent),
+      'name': serializer.toJson<String>(name),
+      'category': serializer.toJson<String>(
+        $ChartsTable.$convertercategory.toJson(category),
+      ),
+      'source': serializer.toJson<String>(source),
+      'fileType': serializer.toJson<String>(
+        $ChartsTable.$converterfileType.toJson(fileType),
+      ),
+      'fileName': serializer.toJson<String>(fileName),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+    };
+  }
+
+  Chart copyWith({
+    int? id,
+    String? airportIdent,
+    String? name,
+    ChartCategory? category,
+    String? source,
+    ChartFileType? fileType,
+    String? fileName,
+    DateTime? createdAt,
+  }) => Chart(
+    id: id ?? this.id,
+    airportIdent: airportIdent ?? this.airportIdent,
+    name: name ?? this.name,
+    category: category ?? this.category,
+    source: source ?? this.source,
+    fileType: fileType ?? this.fileType,
+    fileName: fileName ?? this.fileName,
+    createdAt: createdAt ?? this.createdAt,
+  );
+  Chart copyWithCompanion(ChartsCompanion data) {
+    return Chart(
+      id: data.id.present ? data.id.value : this.id,
+      airportIdent: data.airportIdent.present
+          ? data.airportIdent.value
+          : this.airportIdent,
+      name: data.name.present ? data.name.value : this.name,
+      category: data.category.present ? data.category.value : this.category,
+      source: data.source.present ? data.source.value : this.source,
+      fileType: data.fileType.present ? data.fileType.value : this.fileType,
+      fileName: data.fileName.present ? data.fileName.value : this.fileName,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('Chart(')
+          ..write('id: $id, ')
+          ..write('airportIdent: $airportIdent, ')
+          ..write('name: $name, ')
+          ..write('category: $category, ')
+          ..write('source: $source, ')
+          ..write('fileType: $fileType, ')
+          ..write('fileName: $fileName, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    airportIdent,
+    name,
+    category,
+    source,
+    fileType,
+    fileName,
+    createdAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Chart &&
+          other.id == this.id &&
+          other.airportIdent == this.airportIdent &&
+          other.name == this.name &&
+          other.category == this.category &&
+          other.source == this.source &&
+          other.fileType == this.fileType &&
+          other.fileName == this.fileName &&
+          other.createdAt == this.createdAt);
+}
+
+class ChartsCompanion extends UpdateCompanion<Chart> {
+  final Value<int> id;
+  final Value<String> airportIdent;
+  final Value<String> name;
+  final Value<ChartCategory> category;
+  final Value<String> source;
+  final Value<ChartFileType> fileType;
+  final Value<String> fileName;
+  final Value<DateTime> createdAt;
+  const ChartsCompanion({
+    this.id = const Value.absent(),
+    this.airportIdent = const Value.absent(),
+    this.name = const Value.absent(),
+    this.category = const Value.absent(),
+    this.source = const Value.absent(),
+    this.fileType = const Value.absent(),
+    this.fileName = const Value.absent(),
+    this.createdAt = const Value.absent(),
+  });
+  ChartsCompanion.insert({
+    this.id = const Value.absent(),
+    required String airportIdent,
+    required String name,
+    required ChartCategory category,
+    this.source = const Value.absent(),
+    required ChartFileType fileType,
+    required String fileName,
+    this.createdAt = const Value.absent(),
+  }) : airportIdent = Value(airportIdent),
+       name = Value(name),
+       category = Value(category),
+       fileType = Value(fileType),
+       fileName = Value(fileName);
+  static Insertable<Chart> custom({
+    Expression<int>? id,
+    Expression<String>? airportIdent,
+    Expression<String>? name,
+    Expression<String>? category,
+    Expression<String>? source,
+    Expression<String>? fileType,
+    Expression<String>? fileName,
+    Expression<DateTime>? createdAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (airportIdent != null) 'airport_ident': airportIdent,
+      if (name != null) 'name': name,
+      if (category != null) 'category': category,
+      if (source != null) 'source': source,
+      if (fileType != null) 'file_type': fileType,
+      if (fileName != null) 'file_name': fileName,
+      if (createdAt != null) 'created_at': createdAt,
+    });
+  }
+
+  ChartsCompanion copyWith({
+    Value<int>? id,
+    Value<String>? airportIdent,
+    Value<String>? name,
+    Value<ChartCategory>? category,
+    Value<String>? source,
+    Value<ChartFileType>? fileType,
+    Value<String>? fileName,
+    Value<DateTime>? createdAt,
+  }) {
+    return ChartsCompanion(
+      id: id ?? this.id,
+      airportIdent: airportIdent ?? this.airportIdent,
+      name: name ?? this.name,
+      category: category ?? this.category,
+      source: source ?? this.source,
+      fileType: fileType ?? this.fileType,
+      fileName: fileName ?? this.fileName,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (airportIdent.present) {
+      map['airport_ident'] = Variable<String>(airportIdent.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (category.present) {
+      map['category'] = Variable<String>(
+        $ChartsTable.$convertercategory.toSql(category.value),
+      );
+    }
+    if (source.present) {
+      map['source'] = Variable<String>(source.value);
+    }
+    if (fileType.present) {
+      map['file_type'] = Variable<String>(
+        $ChartsTable.$converterfileType.toSql(fileType.value),
+      );
+    }
+    if (fileName.present) {
+      map['file_name'] = Variable<String>(fileName.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ChartsCompanion(')
+          ..write('id: $id, ')
+          ..write('airportIdent: $airportIdent, ')
+          ..write('name: $name, ')
+          ..write('category: $category, ')
+          ..write('source: $source, ')
+          ..write('fileType: $fileType, ')
+          ..write('fileName: $fileName, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $ChartAnnotationsTable extends ChartAnnotations
+    with TableInfo<$ChartAnnotationsTable, ChartAnnotation> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ChartAnnotationsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _chartIdMeta = const VerificationMeta(
+    'chartId',
+  );
+  @override
+  late final GeneratedColumn<int> chartId = GeneratedColumn<int>(
+    'chart_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES charts (id) ON DELETE CASCADE',
+    ),
+  );
+  static const VerificationMeta _flightIdMeta = const VerificationMeta(
+    'flightId',
+  );
+  @override
+  late final GeneratedColumn<int> flightId = GeneratedColumn<int>(
+    'flight_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES flights (id) ON DELETE CASCADE',
+    ),
+  );
+  static const VerificationMeta _pageMeta = const VerificationMeta('page');
+  @override
+  late final GeneratedColumn<int> page = GeneratedColumn<int>(
+    'page',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _strokesMeta = const VerificationMeta(
+    'strokes',
+  );
+  @override
+  late final GeneratedColumn<String> strokes = GeneratedColumn<String>(
+    'strokes',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('[]'),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, chartId, flightId, page, strokes];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'chart_annotations';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ChartAnnotation> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('chart_id')) {
+      context.handle(
+        _chartIdMeta,
+        chartId.isAcceptableOrUnknown(data['chart_id']!, _chartIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_chartIdMeta);
+    }
+    if (data.containsKey('flight_id')) {
+      context.handle(
+        _flightIdMeta,
+        flightId.isAcceptableOrUnknown(data['flight_id']!, _flightIdMeta),
+      );
+    }
+    if (data.containsKey('page')) {
+      context.handle(
+        _pageMeta,
+        page.isAcceptableOrUnknown(data['page']!, _pageMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_pageMeta);
+    }
+    if (data.containsKey('strokes')) {
+      context.handle(
+        _strokesMeta,
+        strokes.isAcceptableOrUnknown(data['strokes']!, _strokesMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  ChartAnnotation map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ChartAnnotation(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      chartId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}chart_id'],
+      )!,
+      flightId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}flight_id'],
+      ),
+      page: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}page'],
+      )!,
+      strokes: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}strokes'],
+      )!,
+    );
+  }
+
+  @override
+  $ChartAnnotationsTable createAlias(String alias) {
+    return $ChartAnnotationsTable(attachedDatabase, alias);
+  }
+}
+
+class ChartAnnotation extends DataClass implements Insertable<ChartAnnotation> {
+  final int id;
+  final int chartId;
+  final int? flightId;
+  final int page;
+  final String strokes;
+  const ChartAnnotation({
+    required this.id,
+    required this.chartId,
+    this.flightId,
+    required this.page,
+    required this.strokes,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['chart_id'] = Variable<int>(chartId);
+    if (!nullToAbsent || flightId != null) {
+      map['flight_id'] = Variable<int>(flightId);
+    }
+    map['page'] = Variable<int>(page);
+    map['strokes'] = Variable<String>(strokes);
+    return map;
+  }
+
+  ChartAnnotationsCompanion toCompanion(bool nullToAbsent) {
+    return ChartAnnotationsCompanion(
+      id: Value(id),
+      chartId: Value(chartId),
+      flightId: flightId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(flightId),
+      page: Value(page),
+      strokes: Value(strokes),
+    );
+  }
+
+  factory ChartAnnotation.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ChartAnnotation(
+      id: serializer.fromJson<int>(json['id']),
+      chartId: serializer.fromJson<int>(json['chartId']),
+      flightId: serializer.fromJson<int?>(json['flightId']),
+      page: serializer.fromJson<int>(json['page']),
+      strokes: serializer.fromJson<String>(json['strokes']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'chartId': serializer.toJson<int>(chartId),
+      'flightId': serializer.toJson<int?>(flightId),
+      'page': serializer.toJson<int>(page),
+      'strokes': serializer.toJson<String>(strokes),
+    };
+  }
+
+  ChartAnnotation copyWith({
+    int? id,
+    int? chartId,
+    Value<int?> flightId = const Value.absent(),
+    int? page,
+    String? strokes,
+  }) => ChartAnnotation(
+    id: id ?? this.id,
+    chartId: chartId ?? this.chartId,
+    flightId: flightId.present ? flightId.value : this.flightId,
+    page: page ?? this.page,
+    strokes: strokes ?? this.strokes,
+  );
+  ChartAnnotation copyWithCompanion(ChartAnnotationsCompanion data) {
+    return ChartAnnotation(
+      id: data.id.present ? data.id.value : this.id,
+      chartId: data.chartId.present ? data.chartId.value : this.chartId,
+      flightId: data.flightId.present ? data.flightId.value : this.flightId,
+      page: data.page.present ? data.page.value : this.page,
+      strokes: data.strokes.present ? data.strokes.value : this.strokes,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ChartAnnotation(')
+          ..write('id: $id, ')
+          ..write('chartId: $chartId, ')
+          ..write('flightId: $flightId, ')
+          ..write('page: $page, ')
+          ..write('strokes: $strokes')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, chartId, flightId, page, strokes);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ChartAnnotation &&
+          other.id == this.id &&
+          other.chartId == this.chartId &&
+          other.flightId == this.flightId &&
+          other.page == this.page &&
+          other.strokes == this.strokes);
+}
+
+class ChartAnnotationsCompanion extends UpdateCompanion<ChartAnnotation> {
+  final Value<int> id;
+  final Value<int> chartId;
+  final Value<int?> flightId;
+  final Value<int> page;
+  final Value<String> strokes;
+  const ChartAnnotationsCompanion({
+    this.id = const Value.absent(),
+    this.chartId = const Value.absent(),
+    this.flightId = const Value.absent(),
+    this.page = const Value.absent(),
+    this.strokes = const Value.absent(),
+  });
+  ChartAnnotationsCompanion.insert({
+    this.id = const Value.absent(),
+    required int chartId,
+    this.flightId = const Value.absent(),
+    required int page,
+    this.strokes = const Value.absent(),
+  }) : chartId = Value(chartId),
+       page = Value(page);
+  static Insertable<ChartAnnotation> custom({
+    Expression<int>? id,
+    Expression<int>? chartId,
+    Expression<int>? flightId,
+    Expression<int>? page,
+    Expression<String>? strokes,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (chartId != null) 'chart_id': chartId,
+      if (flightId != null) 'flight_id': flightId,
+      if (page != null) 'page': page,
+      if (strokes != null) 'strokes': strokes,
+    });
+  }
+
+  ChartAnnotationsCompanion copyWith({
+    Value<int>? id,
+    Value<int>? chartId,
+    Value<int?>? flightId,
+    Value<int>? page,
+    Value<String>? strokes,
+  }) {
+    return ChartAnnotationsCompanion(
+      id: id ?? this.id,
+      chartId: chartId ?? this.chartId,
+      flightId: flightId ?? this.flightId,
+      page: page ?? this.page,
+      strokes: strokes ?? this.strokes,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (chartId.present) {
+      map['chart_id'] = Variable<int>(chartId.value);
+    }
+    if (flightId.present) {
+      map['flight_id'] = Variable<int>(flightId.value);
+    }
+    if (page.present) {
+      map['page'] = Variable<int>(page.value);
+    }
+    if (strokes.present) {
+      map['strokes'] = Variable<String>(strokes.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ChartAnnotationsCompanion(')
+          ..write('id: $id, ')
+          ..write('chartId: $chartId, ')
+          ..write('flightId: $flightId, ')
+          ..write('page: $page, ')
+          ..write('strokes: $strokes')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -6956,6 +7814,10 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   );
   late final $ScratchPagesTable scratchPages = $ScratchPagesTable(this);
   late final $WeatherCacheTable weatherCache = $WeatherCacheTable(this);
+  late final $ChartsTable charts = $ChartsTable(this);
+  late final $ChartAnnotationsTable chartAnnotations = $ChartAnnotationsTable(
+    this,
+  );
   late final Index airportsIdent = Index(
     'airports_ident',
     'CREATE INDEX airports_ident ON airports (ident)',
@@ -6988,6 +7850,14 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     'scratch_pages_flight',
     'CREATE INDEX scratch_pages_flight ON scratch_pages (flight_id, sequence)',
   );
+  late final Index chartsAirport = Index(
+    'charts_airport',
+    'CREATE INDEX charts_airport ON charts (airport_ident)',
+  );
+  late final Index chartAnnotationsChart = Index(
+    'chart_annotations_chart',
+    'CREATE INDEX chart_annotations_chart ON chart_annotations (chart_id, flight_id)',
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -7002,6 +7872,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     flightWaypoints,
     scratchPages,
     weatherCache,
+    charts,
+    chartAnnotations,
     airportsIdent,
     airportsPosition,
     runwaysAirport,
@@ -7010,6 +7882,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     navaidsPosition,
     waypointsFlight,
     scratchPagesFlight,
+    chartsAirport,
+    chartAnnotationsChart,
   ];
   @override
   StreamQueryUpdateRules get streamUpdateRules => const StreamQueryUpdateRules([
@@ -7026,6 +7900,20 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         limitUpdateKind: UpdateKind.delete,
       ),
       result: [TableUpdate('scratch_pages', kind: UpdateKind.delete)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'charts',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [TableUpdate('chart_annotations', kind: UpdateKind.delete)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'flights',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [TableUpdate('chart_annotations', kind: UpdateKind.delete)],
     ),
   ]);
 }
@@ -9069,6 +9957,26 @@ final class $$FlightsTableReferences
       manager.$state.copyWith(prefetchedData: cache),
     );
   }
+
+  static MultiTypedResultKey<$ChartAnnotationsTable, List<ChartAnnotation>>
+  _chartAnnotationsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.chartAnnotations,
+    aliasName: 'flights__id__chart_annotations__flight_id',
+  );
+
+  $$ChartAnnotationsTableProcessedTableManager get chartAnnotationsRefs {
+    final manager = $$ChartAnnotationsTableTableManager(
+      $_db,
+      $_db.chartAnnotations,
+    ).filter((f) => f.flightId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _chartAnnotationsRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
 }
 
 class $$FlightsTableFilterComposer
@@ -9281,6 +10189,31 @@ class $$FlightsTableFilterComposer
           }) => $$ScratchPagesTableFilterComposer(
             $db: $db,
             $table: $db.scratchPages,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> chartAnnotationsRefs(
+    Expression<bool> Function($$ChartAnnotationsTableFilterComposer f) f,
+  ) {
+    final $$ChartAnnotationsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.chartAnnotations,
+      getReferencedColumn: (t) => t.flightId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ChartAnnotationsTableFilterComposer(
+            $db: $db,
+            $table: $db.chartAnnotations,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -9649,6 +10582,31 @@ class $$FlightsTableAnnotationComposer
     );
     return f(composer);
   }
+
+  Expression<T> chartAnnotationsRefs<T extends Object>(
+    Expression<T> Function($$ChartAnnotationsTableAnnotationComposer a) f,
+  ) {
+    final $$ChartAnnotationsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.chartAnnotations,
+      getReferencedColumn: (t) => t.flightId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ChartAnnotationsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.chartAnnotations,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$FlightsTableTableManager
@@ -9668,6 +10626,7 @@ class $$FlightsTableTableManager
             bool aircraftId,
             bool flightWaypointsRefs,
             bool scratchPagesRefs,
+            bool chartAnnotationsRefs,
           })
         > {
   $$FlightsTableTableManager(_$AppDatabase db, $FlightsTable table)
@@ -9814,12 +10773,14 @@ class $$FlightsTableTableManager
                 aircraftId = false,
                 flightWaypointsRefs = false,
                 scratchPagesRefs = false,
+                chartAnnotationsRefs = false,
               }) {
                 return PrefetchHooks(
                   db: db,
                   explicitlyWatchedTables: [
                     if (flightWaypointsRefs) db.flightWaypoints,
                     if (scratchPagesRefs) db.scratchPages,
+                    if (chartAnnotationsRefs) db.chartAnnotations,
                   ],
                   addJoins:
                       <
@@ -9893,6 +10854,26 @@ class $$FlightsTableTableManager
                           referencedColumn: 'flight_id',
                           typedResults: items,
                         ),
+                      if (chartAnnotationsRefs)
+                        await $_getPrefetchedDataByColumns<
+                          Flight,
+                          $FlightsTable,
+                          ChartAnnotation,
+                          $ChartAnnotationsTable
+                        >(
+                          currentTable: table,
+                          referencedTable: $$FlightsTableReferences
+                              ._chartAnnotationsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$FlightsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).chartAnnotationsRefs,
+                          currentColumn: 'id',
+                          referencedColumn: 'flight_id',
+                          typedResults: items,
+                        ),
                     ];
                   },
                 );
@@ -9917,6 +10898,7 @@ typedef $$FlightsTableProcessedTableManager =
         bool aircraftId,
         bool flightWaypointsRefs,
         bool scratchPagesRefs,
+        bool chartAnnotationsRefs,
       })
     >;
 typedef $$FlightWaypointsTableCreateCompanionBuilder =
@@ -10920,6 +11902,764 @@ typedef $$WeatherCacheTableProcessedTableManager =
       WeatherCacheData,
       PrefetchHooks Function()
     >;
+typedef $$ChartsTableCreateCompanionBuilder = ChartsCompanion Function({
+  Value<int> id,
+  required String airportIdent,
+  required String name,
+  required ChartCategory category,
+  Value<String> source,
+  required ChartFileType fileType,
+  required String fileName,
+  Value<DateTime> createdAt,
+});
+typedef $$ChartsTableUpdateCompanionBuilder = ChartsCompanion Function({
+  Value<int> id,
+  Value<String> airportIdent,
+  Value<String> name,
+  Value<ChartCategory> category,
+  Value<String> source,
+  Value<ChartFileType> fileType,
+  Value<String> fileName,
+  Value<DateTime> createdAt,
+});
+
+final class $$ChartsTableReferences
+    extends BaseReferences<_$AppDatabase, $ChartsTable, Chart> {
+  $$ChartsTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static MultiTypedResultKey<$ChartAnnotationsTable, List<ChartAnnotation>>
+  _chartAnnotationsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.chartAnnotations,
+    aliasName: 'charts__id__chart_annotations__chart_id',
+  );
+
+  $$ChartAnnotationsTableProcessedTableManager get chartAnnotationsRefs {
+    final manager = $$ChartAnnotationsTableTableManager(
+      $_db,
+      $_db.chartAnnotations,
+    ).filter((f) => f.chartId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _chartAnnotationsRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
+
+class $$ChartsTableFilterComposer
+    extends Composer<_$AppDatabase, $ChartsTable> {
+  $$ChartsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get airportIdent => $composableBuilder(
+    column: $table.airportIdent,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<ChartCategory, ChartCategory, String>
+  get category => $composableBuilder(
+    column: $table.category,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnFilters<String> get source => $composableBuilder(
+    column: $table.source,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<ChartFileType, ChartFileType, String>
+  get fileType => $composableBuilder(
+    column: $table.fileType,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnFilters<String> get fileName => $composableBuilder(
+    column: $table.fileName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  Expression<bool> chartAnnotationsRefs(
+    Expression<bool> Function($$ChartAnnotationsTableFilterComposer f) f,
+  ) {
+    final $$ChartAnnotationsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.chartAnnotations,
+      getReferencedColumn: (t) => t.chartId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ChartAnnotationsTableFilterComposer(
+            $db: $db,
+            $table: $db.chartAnnotations,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+}
+
+class $$ChartsTableOrderingComposer
+    extends Composer<_$AppDatabase, $ChartsTable> {
+  $$ChartsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get airportIdent => $composableBuilder(
+    column: $table.airportIdent,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get category => $composableBuilder(
+    column: $table.category,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get source => $composableBuilder(
+    column: $table.source,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get fileType => $composableBuilder(
+    column: $table.fileType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get fileName => $composableBuilder(
+    column: $table.fileName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$ChartsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ChartsTable> {
+  $$ChartsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get airportIdent => $composableBuilder(
+    column: $table.airportIdent,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<ChartCategory, String> get category =>
+      $composableBuilder(column: $table.category, builder: (column) => column);
+
+  GeneratedColumn<String> get source =>
+      $composableBuilder(column: $table.source, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<ChartFileType, String> get fileType =>
+      $composableBuilder(column: $table.fileType, builder: (column) => column);
+
+  GeneratedColumn<String> get fileName =>
+      $composableBuilder(column: $table.fileName, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  Expression<T> chartAnnotationsRefs<T extends Object>(
+    Expression<T> Function($$ChartAnnotationsTableAnnotationComposer a) f,
+  ) {
+    final $$ChartAnnotationsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.chartAnnotations,
+      getReferencedColumn: (t) => t.chartId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ChartAnnotationsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.chartAnnotations,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+}
+
+class $$ChartsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $ChartsTable,
+          Chart,
+          $$ChartsTableFilterComposer,
+          $$ChartsTableOrderingComposer,
+          $$ChartsTableAnnotationComposer,
+          $$ChartsTableCreateCompanionBuilder,
+          $$ChartsTableUpdateCompanionBuilder,
+          (Chart, $$ChartsTableReferences),
+          Chart,
+          PrefetchHooks Function({bool chartAnnotationsRefs})
+        > {
+  $$ChartsTableTableManager(_$AppDatabase db, $ChartsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ChartsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ChartsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ChartsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> airportIdent = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<ChartCategory> category = const Value.absent(),
+                Value<String> source = const Value.absent(),
+                Value<ChartFileType> fileType = const Value.absent(),
+                Value<String> fileName = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+              }) => ChartsCompanion(
+                id: id,
+                airportIdent: airportIdent,
+                name: name,
+                category: category,
+                source: source,
+                fileType: fileType,
+                fileName: fileName,
+                createdAt: createdAt,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String airportIdent,
+                required String name,
+                required ChartCategory category,
+                Value<String> source = const Value.absent(),
+                required ChartFileType fileType,
+                required String fileName,
+                Value<DateTime> createdAt = const Value.absent(),
+              }) => ChartsCompanion.insert(
+                id: id,
+                airportIdent: airportIdent,
+                name: name,
+                category: category,
+                source: source,
+                fileType: fileType,
+                fileName: fileName,
+                createdAt: createdAt,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$ChartsTable, Chart>(table),
+                  $$ChartsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({chartAnnotationsRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [
+                if (chartAnnotationsRefs) db.chartAnnotations,
+              ],
+              addJoins: null,
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (chartAnnotationsRefs)
+                    await $_getPrefetchedDataByColumns<
+                      Chart,
+                      $ChartsTable,
+                      ChartAnnotation,
+                      $ChartAnnotationsTable
+                    >(
+                      currentTable: table,
+                      referencedTable: $$ChartsTableReferences
+                          ._chartAnnotationsRefsTable(db),
+                      managerFromTypedResult: (p0) => $$ChartsTableReferences(
+                        db,
+                        table,
+                        p0,
+                      ).chartAnnotationsRefs,
+                      currentColumn: 'id',
+                      referencedColumn: 'chart_id',
+                      typedResults: items,
+                    ),
+                ];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$ChartsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $ChartsTable,
+      Chart,
+      $$ChartsTableFilterComposer,
+      $$ChartsTableOrderingComposer,
+      $$ChartsTableAnnotationComposer,
+      $$ChartsTableCreateCompanionBuilder,
+      $$ChartsTableUpdateCompanionBuilder,
+      (Chart, $$ChartsTableReferences),
+      Chart,
+      PrefetchHooks Function({bool chartAnnotationsRefs})
+    >;
+typedef $$ChartAnnotationsTableCreateCompanionBuilder =
+    ChartAnnotationsCompanion Function({
+      Value<int> id,
+      required int chartId,
+      Value<int?> flightId,
+      required int page,
+      Value<String> strokes,
+    });
+typedef $$ChartAnnotationsTableUpdateCompanionBuilder =
+    ChartAnnotationsCompanion Function({
+      Value<int> id,
+      Value<int> chartId,
+      Value<int?> flightId,
+      Value<int> page,
+      Value<String> strokes,
+    });
+
+final class $$ChartAnnotationsTableReferences
+    extends
+        BaseReferences<_$AppDatabase, $ChartAnnotationsTable, ChartAnnotation> {
+  $$ChartAnnotationsTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $ChartsTable _chartIdTable(_$AppDatabase db) =>
+      db.charts.createAlias('chart_annotations__chart_id__charts__id');
+
+  $$ChartsTableProcessedTableManager get chartId {
+    final $_column = $_itemColumn<int>('chart_id')!;
+
+    final manager = $$ChartsTableTableManager(
+      $_db,
+      $_db.charts,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_chartIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $FlightsTable _flightIdTable(_$AppDatabase db) =>
+      db.flights.createAlias('chart_annotations__flight_id__flights__id');
+
+  $$FlightsTableProcessedTableManager? get flightId {
+    final $_column = $_itemColumn<int>('flight_id');
+    if ($_column == null) return null;
+    final manager = $$FlightsTableTableManager(
+      $_db,
+      $_db.flights,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_flightIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$ChartAnnotationsTableFilterComposer
+    extends Composer<_$AppDatabase, $ChartAnnotationsTable> {
+  $$ChartAnnotationsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get page => $composableBuilder(
+    column: $table.page,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get strokes => $composableBuilder(
+    column: $table.strokes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$ChartsTableFilterComposer get chartId {
+    final $$ChartsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.chartId,
+      referencedTable: $db.charts,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ChartsTableFilterComposer(
+            $db: $db,
+            $table: $db.charts,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$FlightsTableFilterComposer get flightId {
+    final $$FlightsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.flightId,
+      referencedTable: $db.flights,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$FlightsTableFilterComposer(
+            $db: $db,
+            $table: $db.flights,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$ChartAnnotationsTableOrderingComposer
+    extends Composer<_$AppDatabase, $ChartAnnotationsTable> {
+  $$ChartAnnotationsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get page => $composableBuilder(
+    column: $table.page,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get strokes => $composableBuilder(
+    column: $table.strokes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$ChartsTableOrderingComposer get chartId {
+    final $$ChartsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.chartId,
+      referencedTable: $db.charts,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ChartsTableOrderingComposer(
+            $db: $db,
+            $table: $db.charts,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$FlightsTableOrderingComposer get flightId {
+    final $$FlightsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.flightId,
+      referencedTable: $db.flights,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$FlightsTableOrderingComposer(
+            $db: $db,
+            $table: $db.flights,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$ChartAnnotationsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ChartAnnotationsTable> {
+  $$ChartAnnotationsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<int> get page =>
+      $composableBuilder(column: $table.page, builder: (column) => column);
+
+  GeneratedColumn<String> get strokes =>
+      $composableBuilder(column: $table.strokes, builder: (column) => column);
+
+  $$ChartsTableAnnotationComposer get chartId {
+    final $$ChartsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.chartId,
+      referencedTable: $db.charts,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ChartsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.charts,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$FlightsTableAnnotationComposer get flightId {
+    final $$FlightsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.flightId,
+      referencedTable: $db.flights,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$FlightsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.flights,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$ChartAnnotationsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $ChartAnnotationsTable,
+          ChartAnnotation,
+          $$ChartAnnotationsTableFilterComposer,
+          $$ChartAnnotationsTableOrderingComposer,
+          $$ChartAnnotationsTableAnnotationComposer,
+          $$ChartAnnotationsTableCreateCompanionBuilder,
+          $$ChartAnnotationsTableUpdateCompanionBuilder,
+          (ChartAnnotation, $$ChartAnnotationsTableReferences),
+          ChartAnnotation,
+          PrefetchHooks Function({bool chartId, bool flightId})
+        > {
+  $$ChartAnnotationsTableTableManager(
+    _$AppDatabase db,
+    $ChartAnnotationsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ChartAnnotationsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ChartAnnotationsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ChartAnnotationsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<int> chartId = const Value.absent(),
+                Value<int?> flightId = const Value.absent(),
+                Value<int> page = const Value.absent(),
+                Value<String> strokes = const Value.absent(),
+              }) => ChartAnnotationsCompanion(
+                id: id,
+                chartId: chartId,
+                flightId: flightId,
+                page: page,
+                strokes: strokes,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required int chartId,
+                Value<int?> flightId = const Value.absent(),
+                required int page,
+                Value<String> strokes = const Value.absent(),
+              }) => ChartAnnotationsCompanion.insert(
+                id: id,
+                chartId: chartId,
+                flightId: flightId,
+                page: page,
+                strokes: strokes,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$ChartAnnotationsTable, ChartAnnotation>(table),
+                  $$ChartAnnotationsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({chartId = false, flightId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (chartId) {
+                      state = state.withJoin(
+                        currentTable: table,
+                        currentColumn: table.chartId,
+                        referencedTable: $$ChartAnnotationsTableReferences
+                            ._chartIdTable(db),
+                        referencedColumn: $$ChartAnnotationsTableReferences
+                            ._chartIdTable(db)
+                            .id,
+                      ) as T;
+                    }
+                    if (flightId) {
+                      state = state.withJoin(
+                        currentTable: table,
+                        currentColumn: table.flightId,
+                        referencedTable: $$ChartAnnotationsTableReferences
+                            ._flightIdTable(db),
+                        referencedColumn: $$ChartAnnotationsTableReferences
+                            ._flightIdTable(db)
+                            .id,
+                      ) as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$ChartAnnotationsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $ChartAnnotationsTable,
+      ChartAnnotation,
+      $$ChartAnnotationsTableFilterComposer,
+      $$ChartAnnotationsTableOrderingComposer,
+      $$ChartAnnotationsTableAnnotationComposer,
+      $$ChartAnnotationsTableCreateCompanionBuilder,
+      $$ChartAnnotationsTableUpdateCompanionBuilder,
+      (ChartAnnotation, $$ChartAnnotationsTableReferences),
+      ChartAnnotation,
+      PrefetchHooks Function({bool chartId, bool flightId})
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -10942,4 +12682,8 @@ class $AppDatabaseManager {
       $$ScratchPagesTableTableManager(_db, _db.scratchPages);
   $$WeatherCacheTableTableManager get weatherCache =>
       $$WeatherCacheTableTableManager(_db, _db.weatherCache);
+  $$ChartsTableTableManager get charts =>
+      $$ChartsTableTableManager(_db, _db.charts);
+  $$ChartAnnotationsTableTableManager get chartAnnotations =>
+      $$ChartAnnotationsTableTableManager(_db, _db.chartAnnotations);
 }

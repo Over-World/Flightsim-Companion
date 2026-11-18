@@ -701,5 +701,68 @@
       }
     }
   },
-  "wbNoEnvelope": "No envelope in the aircraft profile."
+  "wbNoEnvelope": "No envelope in the aircraft profile.",
+  "chartsTitle": "Charts",
+  "chartsImport": "Import",
+  "chartsNone": "No charts",
+  "chartsNoneHint": "No charts yet. Import PDFs or images, e.g. from the AIP.",
+  "chartsImported": "{count} of {total} charts imported",
+  "@chartsImported": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "chartsImportTitle": "Import charts ({count})",
+  "@chartsImportTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chartAirport": "Airport",
+  "chartCategory": "Category",
+  "chartCategoryAirport": "Aerodrome chart",
+  "chartCategoryGround": "Ground & parking",
+  "chartCategoryDeparture": "Departure (SID)",
+  "chartCategoryArrival": "Arrival (STAR)",
+  "chartCategoryApproach": "Approach",
+  "chartCategoryVfr": "VFR chart",
+  "chartCategoryOther": "Other",
+  "chartName": "Name",
+  "chartImage": "Image",
+  "chartEdit": "Edit chart",
+  "chartDeleteTitle": "Delete chart?",
+  "chartDeleteMessage": "\"{name}\" and the ink drawn on it will be deleted.",
+  "@chartDeleteMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "chartFit": "Fit to screen",
+  "chartClearInk": "Clear ink on this page",
+  "chartInkTools": "Pen tools",
+  "chartNightMode": "Night mode",
+  "chartNotFound": "This chart no longer exists.",
+  "chartUnreadable": "The chart file can't be opened.",
+  "chartPage": "Page {page} of {count}",
+  "@chartPage": {
+    "placeholders": {
+      "page": {
+        "type": "int"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "chartPreviousPage": "Previous page",
+  "chartNextPage": "Next page"
 }

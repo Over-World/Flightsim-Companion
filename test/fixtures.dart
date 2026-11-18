@@ -1,6 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
+import 'dart:ui' as ui;
 
 import 'package:drift/drift.dart';
+import 'package:flightsim_companion/data/charts/chart_document.dart';
 import 'package:flightsim_companion/data/db/database.dart';
 import 'package:flightsim_companion/data/repositories/flight_repository.dart';
 import 'package:http/http.dart' as http;
@@ -162,3 +165,36 @@ http.Client fakeWeatherClient() => MockClient((request) async {
   }
   return http.Response('', 204);
 });
+
+/// Chart files without the platform picker or PDFium: [pick] returns
+/// [next], every document has [pageCount] pages showing [image].
+class FakeChartFiles extends ChartFileAccess {
+  List<PickedChartFile> next = [];
+  ui.Image? image;
+  int pageCount = 2;
+
+  @override
+  Future<List<PickedChartFile>> pick() async => next;
+
+  @override
+  Future<ChartDocument> open(File file, ChartFileType type) async =>
+      _FakeChartDocument(image!, pageCount);
+}
+
+class _FakeChartDocument implements ChartDocument {
+  _FakeChartDocument(this.image, this.pageCount);
+
+  final ui.Image image;
+
+  @override
+  final int pageCount;
+
+  @override
+  ui.Size pageSize(int page) => const ui.Size(600, 800);
+
+  @override
+  Future<ui.Image> render(int page, int maxPixels) async => image.clone();
+
+  @override
+  Future<void> dispose() async {}
+}
