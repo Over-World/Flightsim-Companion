@@ -776,4 +776,240 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get templateCraftTransponder => 'T  Transponder';
+
+  @override
+  String get navE6b => 'E6B';
+
+  @override
+  String get aircraftManage => 'Flugzeuge verwalten';
+
+  @override
+  String get e6bFromFlight => 'Aus Flug';
+
+  @override
+  String get e6bClearAll => 'Alles leeren';
+
+  @override
+  String get e6bWindTriangle => 'Winddreieck';
+
+  @override
+  String get e6bFindHeading => 'Steuerkurs';
+
+  @override
+  String get e6bFindWind => 'Wind ermitteln';
+
+  @override
+  String get e6bVariation => 'Missweisung (E +)';
+
+  @override
+  String get e6bWind => 'Wind';
+
+  @override
+  String get e6bWindTooStrong => 'Wind zu stark für diese TAS';
+
+  @override
+  String get e6bWindComponents => 'Gegen- & Seitenwind';
+
+  @override
+  String get e6bRunwayOrHeading => 'Piste oder Kurs';
+
+  @override
+  String get e6bGust => 'Böen (optional)';
+
+  @override
+  String get e6bLongitudinal => 'Längs zur Piste';
+
+  @override
+  String get e6bHeadwind => 'Gegenwind';
+
+  @override
+  String get e6bTailwind => 'Rückenwind';
+
+  @override
+  String get e6bCrosswind => 'Seitenwind';
+
+  @override
+  String get e6bFromLeft => 'von links';
+
+  @override
+  String get e6bFromRight => 'von rechts';
+
+  @override
+  String get e6bSpeedTimeDistance => 'Geschwindigkeit · Zeit · Strecke';
+
+  @override
+  String get e6bTime => 'Zeit';
+
+  @override
+  String get e6bDistance => 'Strecke';
+
+  @override
+  String get e6bFuel => 'Kraftstoff';
+
+  @override
+  String get e6bFuelAmount => 'Menge';
+
+  @override
+  String get e6bEndurance => 'Flugdauer';
+
+  @override
+  String get e6bBurn => 'Verbrauch';
+
+  @override
+  String get e6bBurnPerHour => 'Verbrauch pro Stunde';
+
+  @override
+  String get e6bFuelMass => 'Masse';
+
+  @override
+  String get e6bAltitude => 'Druck- & Dichtehöhe';
+
+  @override
+  String get e6bIndicatedAltitude => 'Höhe / Platzhöhe';
+
+  @override
+  String get e6bPressureAltitude => 'Druckhöhe';
+
+  @override
+  String get e6bIsaTemp => 'ISA-Temperatur';
+
+  @override
+  String get e6bIsaDeviation => 'ISA-Abweichung';
+
+  @override
+  String get e6bDensityAltitude => 'Dichtehöhe';
+
+  @override
+  String get e6bAirspeed => 'Wahre Fahrt & Mach';
+
+  @override
+  String get e6bOatOptional => 'OAT (leer = ISA)';
+
+  @override
+  String get e6bDescent => 'Sinkflugplanung';
+
+  @override
+  String get e6bCurrentAltitude => 'Aktuelle Höhe';
+
+  @override
+  String get e6bTargetAltitude => 'Zielhöhe';
+
+  @override
+  String get e6bPathAngle => 'Sinkwinkel (leer = 3°)';
+
+  @override
+  String get e6bDistanceAvailable => 'Verfügbare Strecke (optional)';
+
+  @override
+  String get e6bTodDistance => 'Sinkflugbeginn vorher';
+
+  @override
+  String get e6bVerticalSpeed => 'Sinkrate / Steigrate';
+
+  @override
+  String get e6bRequiredVs => 'Nötig für Strecke';
+
+  @override
+  String get e6bClimbGradient => 'Steiggradient';
+
+  @override
+  String get e6bGradient => 'Gradient';
+
+  @override
+  String get e6bTurn => 'Kurven';
+
+  @override
+  String get e6bBankOptional => 'Querneigung (leer = Standardkurve)';
+
+  @override
+  String get e6bStandardRateBank => 'Querneigung Standardkurve';
+
+  @override
+  String get e6bTurnRadius => 'Radius';
+
+  @override
+  String get e6bTurnTime => '360° dauert';
+
+  @override
+  String get e6bColdTemperature => 'Kältekorrektur';
+
+  @override
+  String get e6bPublishedAltitude => 'Veröffentlichte Höhe';
+
+  @override
+  String get e6bAerodromeElevation => 'Platzhöhe';
+
+  @override
+  String get e6bAerodromeTemp => 'Temperatur am Platz';
+
+  @override
+  String get e6bCorrection => 'Korrektur';
+
+  @override
+  String get e6bCorrectedAltitude => 'Fliegen auf';
+
+  @override
+  String get e6bConverter => 'Einheitenumrechner';
+
+  @override
+  String get e6bQuantity => 'Größe';
+
+  @override
+  String get e6bValue => 'Wert';
+
+  @override
+  String get quantitySpeed => 'Geschwindigkeit';
+
+  @override
+  String get quantityDistance => 'Strecke';
+
+  @override
+  String get quantityAltitude => 'Höhe / Länge';
+
+  @override
+  String get quantityTemperature => 'Temperatur';
+
+  @override
+  String get quantityPressure => 'Druck';
+
+  @override
+  String get quantityVolume => 'Volumen';
+
+  @override
+  String get quantityMass => 'Masse';
+
+  @override
+  String get runwaysTitle => 'Erwartete Pisten';
+
+  @override
+  String get runwaysNone => 'Keine Pistendaten';
+
+  @override
+  String get runwaySuggested => 'Meister Gegenwind';
+
+  @override
+  String runwaySuggestion(String ident) {
+    return 'Meister Gegenwind: $ident';
+  }
+
+  @override
+  String runwayThreshold(int ft) {
+    return 'Schwelle $ft ft';
+  }
+
+  @override
+  String runwayPattern(int ft) {
+    return 'Platzrunde $ft ft';
+  }
+
+  @override
+  String get runwayTailwindWarning => 'Rückenwind – Gegenrichtung prüfen';
+
+  @override
+  String runwayCrosswindWarning(int kt) {
+    return 'Seitenwind über den demonstrierten $kt kt';
+  }
+
+  @override
+  String get aircraftMaxCrosswind => 'Max. demonstrierter Seitenwind';
 }

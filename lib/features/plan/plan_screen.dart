@@ -26,6 +26,11 @@ class PlanScreen extends StatelessWidget {
         title: Text(l10n.navPlan),
         actions: [
           IconButton(
+            tooltip: l10n.navAircraft,
+            icon: const Icon(Icons.airplanemode_active),
+            onPressed: () => context.go('/plan/aircraft'),
+          ),
+          IconButton(
             tooltip: l10n.airportSearchTitle,
             icon: const Icon(Icons.search),
             onPressed: () => context.go('/plan/airports'),

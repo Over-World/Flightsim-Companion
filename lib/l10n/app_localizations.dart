@@ -1512,6 +1512,462 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'T  Transponder'**
   String get templateCraftTransponder;
+
+  /// No description provided for @navE6b.
+  ///
+  /// In en, this message translates to:
+  /// **'E6B'**
+  String get navE6b;
+
+  /// No description provided for @aircraftManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage aircraft'**
+  String get aircraftManage;
+
+  /// No description provided for @e6bFromFlight.
+  ///
+  /// In en, this message translates to:
+  /// **'From flight'**
+  String get e6bFromFlight;
+
+  /// No description provided for @e6bClearAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear all'**
+  String get e6bClearAll;
+
+  /// No description provided for @e6bWindTriangle.
+  ///
+  /// In en, this message translates to:
+  /// **'Wind triangle'**
+  String get e6bWindTriangle;
+
+  /// No description provided for @e6bFindHeading.
+  ///
+  /// In en, this message translates to:
+  /// **'Find heading'**
+  String get e6bFindHeading;
+
+  /// No description provided for @e6bFindWind.
+  ///
+  /// In en, this message translates to:
+  /// **'Find wind'**
+  String get e6bFindWind;
+
+  /// No description provided for @e6bVariation.
+  ///
+  /// In en, this message translates to:
+  /// **'Variation (E +)'**
+  String get e6bVariation;
+
+  /// No description provided for @e6bWind.
+  ///
+  /// In en, this message translates to:
+  /// **'Wind'**
+  String get e6bWind;
+
+  /// No description provided for @e6bWindTooStrong.
+  ///
+  /// In en, this message translates to:
+  /// **'Wind too strong for this TAS'**
+  String get e6bWindTooStrong;
+
+  /// No description provided for @e6bWindComponents.
+  ///
+  /// In en, this message translates to:
+  /// **'Headwind & crosswind'**
+  String get e6bWindComponents;
+
+  /// No description provided for @e6bRunwayOrHeading.
+  ///
+  /// In en, this message translates to:
+  /// **'Runway or heading'**
+  String get e6bRunwayOrHeading;
+
+  /// No description provided for @e6bGust.
+  ///
+  /// In en, this message translates to:
+  /// **'Gusts (optional)'**
+  String get e6bGust;
+
+  /// No description provided for @e6bLongitudinal.
+  ///
+  /// In en, this message translates to:
+  /// **'Along the runway'**
+  String get e6bLongitudinal;
+
+  /// No description provided for @e6bHeadwind.
+  ///
+  /// In en, this message translates to:
+  /// **'headwind'**
+  String get e6bHeadwind;
+
+  /// No description provided for @e6bTailwind.
+  ///
+  /// In en, this message translates to:
+  /// **'tailwind'**
+  String get e6bTailwind;
+
+  /// No description provided for @e6bCrosswind.
+  ///
+  /// In en, this message translates to:
+  /// **'Crosswind'**
+  String get e6bCrosswind;
+
+  /// No description provided for @e6bFromLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'from left'**
+  String get e6bFromLeft;
+
+  /// No description provided for @e6bFromRight.
+  ///
+  /// In en, this message translates to:
+  /// **'from right'**
+  String get e6bFromRight;
+
+  /// No description provided for @e6bSpeedTimeDistance.
+  ///
+  /// In en, this message translates to:
+  /// **'Speed · time · distance'**
+  String get e6bSpeedTimeDistance;
+
+  /// No description provided for @e6bTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get e6bTime;
+
+  /// No description provided for @e6bDistance.
+  ///
+  /// In en, this message translates to:
+  /// **'Distance'**
+  String get e6bDistance;
+
+  /// No description provided for @e6bFuel.
+  ///
+  /// In en, this message translates to:
+  /// **'Fuel'**
+  String get e6bFuel;
+
+  /// No description provided for @e6bFuelAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get e6bFuelAmount;
+
+  /// No description provided for @e6bEndurance.
+  ///
+  /// In en, this message translates to:
+  /// **'Endurance'**
+  String get e6bEndurance;
+
+  /// No description provided for @e6bBurn.
+  ///
+  /// In en, this message translates to:
+  /// **'Burn'**
+  String get e6bBurn;
+
+  /// No description provided for @e6bBurnPerHour.
+  ///
+  /// In en, this message translates to:
+  /// **'Burn per hour'**
+  String get e6bBurnPerHour;
+
+  /// No description provided for @e6bFuelMass.
+  ///
+  /// In en, this message translates to:
+  /// **'Mass'**
+  String get e6bFuelMass;
+
+  /// No description provided for @e6bAltitude.
+  ///
+  /// In en, this message translates to:
+  /// **'Pressure & density altitude'**
+  String get e6bAltitude;
+
+  /// No description provided for @e6bIndicatedAltitude.
+  ///
+  /// In en, this message translates to:
+  /// **'Altitude / elevation'**
+  String get e6bIndicatedAltitude;
+
+  /// No description provided for @e6bPressureAltitude.
+  ///
+  /// In en, this message translates to:
+  /// **'Pressure altitude'**
+  String get e6bPressureAltitude;
+
+  /// No description provided for @e6bIsaTemp.
+  ///
+  /// In en, this message translates to:
+  /// **'ISA temperature'**
+  String get e6bIsaTemp;
+
+  /// No description provided for @e6bIsaDeviation.
+  ///
+  /// In en, this message translates to:
+  /// **'ISA deviation'**
+  String get e6bIsaDeviation;
+
+  /// No description provided for @e6bDensityAltitude.
+  ///
+  /// In en, this message translates to:
+  /// **'Density altitude'**
+  String get e6bDensityAltitude;
+
+  /// No description provided for @e6bAirspeed.
+  ///
+  /// In en, this message translates to:
+  /// **'True airspeed & Mach'**
+  String get e6bAirspeed;
+
+  /// No description provided for @e6bOatOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'OAT (empty = ISA)'**
+  String get e6bOatOptional;
+
+  /// No description provided for @e6bDescent.
+  ///
+  /// In en, this message translates to:
+  /// **'Descent planning'**
+  String get e6bDescent;
+
+  /// No description provided for @e6bCurrentAltitude.
+  ///
+  /// In en, this message translates to:
+  /// **'Current altitude'**
+  String get e6bCurrentAltitude;
+
+  /// No description provided for @e6bTargetAltitude.
+  ///
+  /// In en, this message translates to:
+  /// **'Target altitude'**
+  String get e6bTargetAltitude;
+
+  /// No description provided for @e6bPathAngle.
+  ///
+  /// In en, this message translates to:
+  /// **'Descent angle (3° if empty)'**
+  String get e6bPathAngle;
+
+  /// No description provided for @e6bDistanceAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Distance available (optional)'**
+  String get e6bDistanceAvailable;
+
+  /// No description provided for @e6bTodDistance.
+  ///
+  /// In en, this message translates to:
+  /// **'Top of descent before'**
+  String get e6bTodDistance;
+
+  /// No description provided for @e6bVerticalSpeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Vertical speed'**
+  String get e6bVerticalSpeed;
+
+  /// No description provided for @e6bRequiredVs.
+  ///
+  /// In en, this message translates to:
+  /// **'Required for distance'**
+  String get e6bRequiredVs;
+
+  /// No description provided for @e6bClimbGradient.
+  ///
+  /// In en, this message translates to:
+  /// **'Climb gradient'**
+  String get e6bClimbGradient;
+
+  /// No description provided for @e6bGradient.
+  ///
+  /// In en, this message translates to:
+  /// **'Gradient'**
+  String get e6bGradient;
+
+  /// No description provided for @e6bTurn.
+  ///
+  /// In en, this message translates to:
+  /// **'Turns'**
+  String get e6bTurn;
+
+  /// No description provided for @e6bBankOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank (empty = standard rate)'**
+  String get e6bBankOptional;
+
+  /// No description provided for @e6bStandardRateBank.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank for rate one'**
+  String get e6bStandardRateBank;
+
+  /// No description provided for @e6bTurnRadius.
+  ///
+  /// In en, this message translates to:
+  /// **'Radius'**
+  String get e6bTurnRadius;
+
+  /// No description provided for @e6bTurnTime.
+  ///
+  /// In en, this message translates to:
+  /// **'360° takes'**
+  String get e6bTurnTime;
+
+  /// No description provided for @e6bColdTemperature.
+  ///
+  /// In en, this message translates to:
+  /// **'Cold temperature correction'**
+  String get e6bColdTemperature;
+
+  /// No description provided for @e6bPublishedAltitude.
+  ///
+  /// In en, this message translates to:
+  /// **'Published altitude'**
+  String get e6bPublishedAltitude;
+
+  /// No description provided for @e6bAerodromeElevation.
+  ///
+  /// In en, this message translates to:
+  /// **'Aerodrome elevation'**
+  String get e6bAerodromeElevation;
+
+  /// No description provided for @e6bAerodromeTemp.
+  ///
+  /// In en, this message translates to:
+  /// **'Aerodrome temperature'**
+  String get e6bAerodromeTemp;
+
+  /// No description provided for @e6bCorrection.
+  ///
+  /// In en, this message translates to:
+  /// **'Correction'**
+  String get e6bCorrection;
+
+  /// No description provided for @e6bCorrectedAltitude.
+  ///
+  /// In en, this message translates to:
+  /// **'Fly at'**
+  String get e6bCorrectedAltitude;
+
+  /// No description provided for @e6bConverter.
+  ///
+  /// In en, this message translates to:
+  /// **'Unit converter'**
+  String get e6bConverter;
+
+  /// No description provided for @e6bQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity'**
+  String get e6bQuantity;
+
+  /// No description provided for @e6bValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Value'**
+  String get e6bValue;
+
+  /// No description provided for @quantitySpeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Speed'**
+  String get quantitySpeed;
+
+  /// No description provided for @quantityDistance.
+  ///
+  /// In en, this message translates to:
+  /// **'Distance'**
+  String get quantityDistance;
+
+  /// No description provided for @quantityAltitude.
+  ///
+  /// In en, this message translates to:
+  /// **'Altitude / length'**
+  String get quantityAltitude;
+
+  /// No description provided for @quantityTemperature.
+  ///
+  /// In en, this message translates to:
+  /// **'Temperature'**
+  String get quantityTemperature;
+
+  /// No description provided for @quantityPressure.
+  ///
+  /// In en, this message translates to:
+  /// **'Pressure'**
+  String get quantityPressure;
+
+  /// No description provided for @quantityVolume.
+  ///
+  /// In en, this message translates to:
+  /// **'Volume'**
+  String get quantityVolume;
+
+  /// No description provided for @quantityMass.
+  ///
+  /// In en, this message translates to:
+  /// **'Mass'**
+  String get quantityMass;
+
+  /// No description provided for @runwaysTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Expected runways'**
+  String get runwaysTitle;
+
+  /// No description provided for @runwaysNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No runway data'**
+  String get runwaysNone;
+
+  /// No description provided for @runwaySuggested.
+  ///
+  /// In en, this message translates to:
+  /// **'Most headwind'**
+  String get runwaySuggested;
+
+  /// No description provided for @runwaySuggestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Most headwind: {ident}'**
+  String runwaySuggestion(String ident);
+
+  /// No description provided for @runwayThreshold.
+  ///
+  /// In en, this message translates to:
+  /// **'Threshold {ft} ft'**
+  String runwayThreshold(int ft);
+
+  /// No description provided for @runwayPattern.
+  ///
+  /// In en, this message translates to:
+  /// **'Pattern {ft} ft'**
+  String runwayPattern(int ft);
+
+  /// No description provided for @runwayTailwindWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Tailwind – check the other direction'**
+  String get runwayTailwindWarning;
+
+  /// No description provided for @runwayCrosswindWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Crosswind above the demonstrated {kt} kt'**
+  String runwayCrosswindWarning(int kt);
+
+  /// No description provided for @aircraftMaxCrosswind.
+  ///
+  /// In en, this message translates to:
+  /// **'Max. demonstrated crosswind'**
+  String get aircraftMaxCrosswind;
 }
 
 class _AppLocalizationsDelegate

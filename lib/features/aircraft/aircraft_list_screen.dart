@@ -18,7 +18,7 @@ class AircraftListScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text(l10n.navAircraft)),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => context.go('/aircraft/new'),
+        onPressed: () => context.go('/plan/aircraft/new'),
         icon: const Icon(Icons.add),
         label: Text(l10n.aircraftAdd),
       ),
@@ -63,7 +63,7 @@ class AircraftListScreen extends StatelessWidget {
                   ),
                 ),
                 trailing: const Icon(Icons.chevron_right),
-                onTap: () => context.go('/aircraft/${a.id}'),
+                onTap: () => context.go('/plan/aircraft/${a.id}'),
               );
             },
           );

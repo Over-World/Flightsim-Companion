@@ -13,6 +13,7 @@ import '../kneeboard/kneeboard_controller.dart';
 import 'add_waypoint_dialog.dart';
 import 'edit_dialogs.dart';
 import 'navlog_table.dart';
+import 'runway_selector.dart';
 
 class FlightEditorScreen extends StatefulWidget {
   const FlightEditorScreen({super.key, required this.flightId});
@@ -161,7 +162,16 @@ class _RoutePanel extends StatelessWidget {
           child: ReorderableListView.builder(
             buildDefaultDragHandles: false,
             padding: const EdgeInsets.symmetric(vertical: 8),
-            header: _FlightSummary(data),
+            header: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _FlightSummary(data),
+                RunwaysCard(
+                  data,
+                  margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+                ),
+              ],
+            ),
             itemCount: waypoints.length,
             onReorderItem: (from, to) =>
                 repo.moveWaypoint(data.flight.id, from, to),

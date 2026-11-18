@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:drift/drift.dart';
 
 import '../../core/nav_math.dart';
+import '../../core/runways.dart';
 import '../db/database.dart';
 import '../navdata/navdata_importer.dart';
 
@@ -117,6 +118,37 @@ class NavdataRepository {
             ..where((f) => f.airportId.equals(airportId))
             ..orderBy([(f) => OrderingTerm.asc(f.type)]))
           .get();
+
+  /// Usable runway ends of an airport, closed runways excluded.
+  Future<List<RunwayEnd>> runwayEndsFor(String ident) async {
+    final airport = await airportByIdent(ident);
+    if (airport == null) return const [];
+    final runways =
+        await (_db.select(_db.runways)..where(
+              (r) => r.airportId.equals(airport.id) & r.closed.equals(false),
+            ))
+            .get();
+    return runwayEnds(
+      [
+        for (final r in runways)
+          RunwayData(
+            leIdent: r.leIdent,
+            leHeadingTrue: r.leHeadingTrue,
+            leElevationFt: r.leElevationFt,
+            heIdent: r.heIdent,
+            heHeadingTrue: r.heHeadingTrue,
+            heElevationFt: r.heElevationFt,
+            lengthFt: r.lengthFt,
+            widthFt: r.widthFt,
+            surface: r.surface,
+            lighted: r.lighted,
+          ),
+      ],
+      latitude: airport.latitude,
+      longitude: airport.longitude,
+      airportElevationFt: airport.elevationFt,
+    );
+  }
 
   Future<Airport?> airportByIdent(String ident) =>
       (_db.select(_db.airports)

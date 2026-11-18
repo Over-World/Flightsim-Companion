@@ -12,6 +12,7 @@ import '../../widgets/empty_state.dart';
 import '../../widgets/ticking.dart';
 import '../kneeboard/kneeboard_controller.dart';
 import '../plan/navlog_table.dart';
+import '../plan/runway_selector.dart';
 
 class FlyScreen extends StatelessWidget {
   const FlyScreen({super.key});
@@ -66,6 +67,10 @@ class FlyScreen extends StatelessWidget {
           const times = _TimesCard();
           const navlog = _NavlogCard();
           const frequencies = _FrequenciesCard();
+          final runways = RunwaysCard(
+            kb.data!,
+            margin: const EdgeInsets.only(bottom: 12),
+          );
           if (landscape) {
             return Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -74,7 +79,7 @@ class FlyScreen extends StatelessWidget {
                   flex: 5,
                   child: ListView(
                     padding: const EdgeInsets.fromLTRB(16, 8, 8, 16),
-                    children: const [navlog, frequencies],
+                    children: [navlog, runways, frequencies],
                   ),
                 ),
                 Expanded(
@@ -89,7 +94,7 @@ class FlyScreen extends StatelessWidget {
           }
           return ListView(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 88),
-            children: const [leg, navlog, frequencies, times],
+            children: [leg, navlog, runways, frequencies, times],
           );
         },
       ),

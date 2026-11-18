@@ -390,5 +390,109 @@
   "templateCraftRoute": "R  Route (SID)",
   "templateCraftAltitude": "A  Altitude",
   "templateCraftFrequency": "F  Frequency",
-  "templateCraftTransponder": "T  Transponder"
+  "templateCraftTransponder": "T  Transponder",
+  "navE6b": "E6B",
+  "aircraftManage": "Manage aircraft",
+  "e6bFromFlight": "From flight",
+  "e6bClearAll": "Clear all",
+  "e6bWindTriangle": "Wind triangle",
+  "e6bFindHeading": "Find heading",
+  "e6bFindWind": "Find wind",
+  "e6bVariation": "Variation (E +)",
+  "e6bWind": "Wind",
+  "e6bWindTooStrong": "Wind too strong for this TAS",
+  "e6bWindComponents": "Headwind & crosswind",
+  "e6bRunwayOrHeading": "Runway or heading",
+  "e6bGust": "Gusts (optional)",
+  "e6bLongitudinal": "Along the runway",
+  "e6bHeadwind": "headwind",
+  "e6bTailwind": "tailwind",
+  "e6bCrosswind": "Crosswind",
+  "e6bFromLeft": "from left",
+  "e6bFromRight": "from right",
+  "e6bSpeedTimeDistance": "Speed · time · distance",
+  "e6bTime": "Time",
+  "e6bDistance": "Distance",
+  "e6bFuel": "Fuel",
+  "e6bFuelAmount": "Amount",
+  "e6bEndurance": "Endurance",
+  "e6bBurn": "Burn",
+  "e6bBurnPerHour": "Burn per hour",
+  "e6bFuelMass": "Mass",
+  "e6bAltitude": "Pressure & density altitude",
+  "e6bIndicatedAltitude": "Altitude / elevation",
+  "e6bPressureAltitude": "Pressure altitude",
+  "e6bIsaTemp": "ISA temperature",
+  "e6bIsaDeviation": "ISA deviation",
+  "e6bDensityAltitude": "Density altitude",
+  "e6bAirspeed": "True airspeed & Mach",
+  "e6bOatOptional": "OAT (empty = ISA)",
+  "e6bDescent": "Descent planning",
+  "e6bCurrentAltitude": "Current altitude",
+  "e6bTargetAltitude": "Target altitude",
+  "e6bPathAngle": "Descent angle (3° if empty)",
+  "e6bDistanceAvailable": "Distance available (optional)",
+  "e6bTodDistance": "Top of descent before",
+  "e6bVerticalSpeed": "Vertical speed",
+  "e6bRequiredVs": "Required for distance",
+  "e6bClimbGradient": "Climb gradient",
+  "e6bGradient": "Gradient",
+  "e6bTurn": "Turns",
+  "e6bBankOptional": "Bank (empty = standard rate)",
+  "e6bStandardRateBank": "Bank for rate one",
+  "e6bTurnRadius": "Radius",
+  "e6bTurnTime": "360° takes",
+  "e6bColdTemperature": "Cold temperature correction",
+  "e6bPublishedAltitude": "Published altitude",
+  "e6bAerodromeElevation": "Aerodrome elevation",
+  "e6bAerodromeTemp": "Aerodrome temperature",
+  "e6bCorrection": "Correction",
+  "e6bCorrectedAltitude": "Fly at",
+  "e6bConverter": "Unit converter",
+  "e6bQuantity": "Quantity",
+  "e6bValue": "Value",
+  "quantitySpeed": "Speed",
+  "quantityDistance": "Distance",
+  "quantityAltitude": "Altitude / length",
+  "quantityTemperature": "Temperature",
+  "quantityPressure": "Pressure",
+  "quantityVolume": "Volume",
+  "quantityMass": "Mass",
+  "runwaysTitle": "Expected runways",
+  "runwaysNone": "No runway data",
+  "runwaySuggested": "Most headwind",
+  "runwaySuggestion": "Most headwind: {ident}",
+  "@runwaySuggestion": {
+    "placeholders": {
+      "ident": {
+        "type": "String"
+      }
+    }
+  },
+  "runwayThreshold": "Threshold {ft} ft",
+  "@runwayThreshold": {
+    "placeholders": {
+      "ft": {
+        "type": "int"
+      }
+    }
+  },
+  "runwayPattern": "Pattern {ft} ft",
+  "@runwayPattern": {
+    "placeholders": {
+      "ft": {
+        "type": "int"
+      }
+    }
+  },
+  "runwayTailwindWarning": "Tailwind – check the other direction",
+  "runwayCrosswindWarning": "Crosswind above the demonstrated {kt} kt",
+  "@runwayCrosswindWarning": {
+    "placeholders": {
+      "kt": {
+        "type": "int"
+      }
+    }
+  },
+  "aircraftMaxCrosswind": "Max. demonstrated crosswind"
 }

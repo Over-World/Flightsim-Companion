@@ -24,7 +24,7 @@ class AppDatabase extends _$AppDatabase {
     : super(executor ?? driftDatabase(name: 'flightsim_companion'));
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -39,6 +39,18 @@ class AppDatabase extends _$AppDatabase {
         await m.addColumn(flights, flights.blockOnAt);
         await m.addColumn(flightWaypoints, flightWaypoints.refId);
         await m.createTable(scratchPages);
+      }
+      if (from < 3) {
+        await m.addColumn(flights, flights.departureRunway);
+        await m.addColumn(flights, flights.arrivalRunway);
+        await m.addColumn(aircraftProfiles, aircraftProfiles.maxCrosswindKt);
+        // Fill the new field for the seeded default aircraft.
+        const defaults = {'C172': 15, 'SR22': 21, 'PA18': 10, 'BE58': 22};
+        for (final MapEntry(key: type, value: kt) in defaults.entries) {
+          await (update(aircraftProfiles)
+                ..where((a) => a.icaoType.equals(type)))
+              .write(AircraftProfilesCompanion(maxCrosswindKt: Value(kt)));
+        }
       }
     },
     beforeOpen: (details) async {

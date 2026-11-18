@@ -2878,6 +2878,17 @@ class $AircraftProfilesTable extends AircraftProfiles
         type: DriftSqlType.double,
         requiredDuringInsert: false,
       );
+  static const VerificationMeta _maxCrosswindKtMeta = const VerificationMeta(
+    'maxCrosswindKt',
+  );
+  @override
+  late final GeneratedColumn<int> maxCrosswindKt = GeneratedColumn<int>(
+    'max_crosswind_kt',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _notesMeta = const VerificationMeta('notes');
   @override
   late final GeneratedColumn<String> notes = GeneratedColumn<String>(
@@ -2903,6 +2914,7 @@ class $AircraftProfilesTable extends AircraftProfiles
     fuelType,
     emptyWeightKg,
     maxTakeoffWeightKg,
+    maxCrosswindKt,
     notes,
   ];
   @override
@@ -3023,6 +3035,15 @@ class $AircraftProfilesTable extends AircraftProfiles
         ),
       );
     }
+    if (data.containsKey('max_crosswind_kt')) {
+      context.handle(
+        _maxCrosswindKtMeta,
+        maxCrosswindKt.isAcceptableOrUnknown(
+          data['max_crosswind_kt']!,
+          _maxCrosswindKtMeta,
+        ),
+      );
+    }
     if (data.containsKey('notes')) {
       context.handle(
         _notesMeta,
@@ -3090,6 +3111,10 @@ class $AircraftProfilesTable extends AircraftProfiles
         DriftSqlType.double,
         data['${effectivePrefix}max_takeoff_weight_kg'],
       ),
+      maxCrosswindKt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}max_crosswind_kt'],
+      ),
       notes: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}notes'],
@@ -3119,6 +3144,9 @@ class AircraftProfile extends DataClass implements Insertable<AircraftProfile> {
   final String fuelType;
   final double? emptyWeightKg;
   final double? maxTakeoffWeightKg;
+
+  /// Maximum demonstrated crosswind component.
+  final int? maxCrosswindKt;
   final String notes;
   const AircraftProfile({
     required this.id,
@@ -3134,6 +3162,7 @@ class AircraftProfile extends DataClass implements Insertable<AircraftProfile> {
     required this.fuelType,
     this.emptyWeightKg,
     this.maxTakeoffWeightKg,
+    this.maxCrosswindKt,
     required this.notes,
   });
   @override
@@ -3161,6 +3190,9 @@ class AircraftProfile extends DataClass implements Insertable<AircraftProfile> {
     }
     if (!nullToAbsent || maxTakeoffWeightKg != null) {
       map['max_takeoff_weight_kg'] = Variable<double>(maxTakeoffWeightKg);
+    }
+    if (!nullToAbsent || maxCrosswindKt != null) {
+      map['max_crosswind_kt'] = Variable<int>(maxCrosswindKt);
     }
     map['notes'] = Variable<String>(notes);
     return map;
@@ -3191,6 +3223,9 @@ class AircraftProfile extends DataClass implements Insertable<AircraftProfile> {
       maxTakeoffWeightKg: maxTakeoffWeightKg == null && nullToAbsent
           ? const Value.absent()
           : Value(maxTakeoffWeightKg),
+      maxCrosswindKt: maxCrosswindKt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(maxCrosswindKt),
       notes: Value(notes),
     );
   }
@@ -3216,6 +3251,7 @@ class AircraftProfile extends DataClass implements Insertable<AircraftProfile> {
       maxTakeoffWeightKg: serializer.fromJson<double?>(
         json['maxTakeoffWeightKg'],
       ),
+      maxCrosswindKt: serializer.fromJson<int?>(json['maxCrosswindKt']),
       notes: serializer.fromJson<String>(json['notes']),
     );
   }
@@ -3236,6 +3272,7 @@ class AircraftProfile extends DataClass implements Insertable<AircraftProfile> {
       'fuelType': serializer.toJson<String>(fuelType),
       'emptyWeightKg': serializer.toJson<double?>(emptyWeightKg),
       'maxTakeoffWeightKg': serializer.toJson<double?>(maxTakeoffWeightKg),
+      'maxCrosswindKt': serializer.toJson<int?>(maxCrosswindKt),
       'notes': serializer.toJson<String>(notes),
     };
   }
@@ -3254,6 +3291,7 @@ class AircraftProfile extends DataClass implements Insertable<AircraftProfile> {
     String? fuelType,
     Value<double?> emptyWeightKg = const Value.absent(),
     Value<double?> maxTakeoffWeightKg = const Value.absent(),
+    Value<int?> maxCrosswindKt = const Value.absent(),
     String? notes,
   }) => AircraftProfile(
     id: id ?? this.id,
@@ -3275,6 +3313,9 @@ class AircraftProfile extends DataClass implements Insertable<AircraftProfile> {
     maxTakeoffWeightKg: maxTakeoffWeightKg.present
         ? maxTakeoffWeightKg.value
         : this.maxTakeoffWeightKg,
+    maxCrosswindKt: maxCrosswindKt.present
+        ? maxCrosswindKt.value
+        : this.maxCrosswindKt,
     notes: notes ?? this.notes,
   );
   AircraftProfile copyWithCompanion(AircraftProfilesCompanion data) {
@@ -3306,6 +3347,9 @@ class AircraftProfile extends DataClass implements Insertable<AircraftProfile> {
       maxTakeoffWeightKg: data.maxTakeoffWeightKg.present
           ? data.maxTakeoffWeightKg.value
           : this.maxTakeoffWeightKg,
+      maxCrosswindKt: data.maxCrosswindKt.present
+          ? data.maxCrosswindKt.value
+          : this.maxCrosswindKt,
       notes: data.notes.present ? data.notes.value : this.notes,
     );
   }
@@ -3326,6 +3370,7 @@ class AircraftProfile extends DataClass implements Insertable<AircraftProfile> {
           ..write('fuelType: $fuelType, ')
           ..write('emptyWeightKg: $emptyWeightKg, ')
           ..write('maxTakeoffWeightKg: $maxTakeoffWeightKg, ')
+          ..write('maxCrosswindKt: $maxCrosswindKt, ')
           ..write('notes: $notes')
           ..write(')'))
         .toString();
@@ -3346,6 +3391,7 @@ class AircraftProfile extends DataClass implements Insertable<AircraftProfile> {
     fuelType,
     emptyWeightKg,
     maxTakeoffWeightKg,
+    maxCrosswindKt,
     notes,
   );
   @override
@@ -3365,6 +3411,7 @@ class AircraftProfile extends DataClass implements Insertable<AircraftProfile> {
           other.fuelType == this.fuelType &&
           other.emptyWeightKg == this.emptyWeightKg &&
           other.maxTakeoffWeightKg == this.maxTakeoffWeightKg &&
+          other.maxCrosswindKt == this.maxCrosswindKt &&
           other.notes == this.notes);
 }
 
@@ -3382,6 +3429,7 @@ class AircraftProfilesCompanion extends UpdateCompanion<AircraftProfile> {
   final Value<String> fuelType;
   final Value<double?> emptyWeightKg;
   final Value<double?> maxTakeoffWeightKg;
+  final Value<int?> maxCrosswindKt;
   final Value<String> notes;
   const AircraftProfilesCompanion({
     this.id = const Value.absent(),
@@ -3397,6 +3445,7 @@ class AircraftProfilesCompanion extends UpdateCompanion<AircraftProfile> {
     this.fuelType = const Value.absent(),
     this.emptyWeightKg = const Value.absent(),
     this.maxTakeoffWeightKg = const Value.absent(),
+    this.maxCrosswindKt = const Value.absent(),
     this.notes = const Value.absent(),
   });
   AircraftProfilesCompanion.insert({
@@ -3413,6 +3462,7 @@ class AircraftProfilesCompanion extends UpdateCompanion<AircraftProfile> {
     this.fuelType = const Value.absent(),
     this.emptyWeightKg = const Value.absent(),
     this.maxTakeoffWeightKg = const Value.absent(),
+    this.maxCrosswindKt = const Value.absent(),
     this.notes = const Value.absent(),
   }) : name = Value(name),
        icaoType = Value(icaoType),
@@ -3433,6 +3483,7 @@ class AircraftProfilesCompanion extends UpdateCompanion<AircraftProfile> {
     Expression<String>? fuelType,
     Expression<double>? emptyWeightKg,
     Expression<double>? maxTakeoffWeightKg,
+    Expression<int>? maxCrosswindKt,
     Expression<String>? notes,
   }) {
     return RawValuesInsertable({
@@ -3450,6 +3501,7 @@ class AircraftProfilesCompanion extends UpdateCompanion<AircraftProfile> {
       if (emptyWeightKg != null) 'empty_weight_kg': emptyWeightKg,
       if (maxTakeoffWeightKg != null)
         'max_takeoff_weight_kg': maxTakeoffWeightKg,
+      if (maxCrosswindKt != null) 'max_crosswind_kt': maxCrosswindKt,
       if (notes != null) 'notes': notes,
     });
   }
@@ -3468,6 +3520,7 @@ class AircraftProfilesCompanion extends UpdateCompanion<AircraftProfile> {
     Value<String>? fuelType,
     Value<double?>? emptyWeightKg,
     Value<double?>? maxTakeoffWeightKg,
+    Value<int?>? maxCrosswindKt,
     Value<String>? notes,
   }) {
     return AircraftProfilesCompanion(
@@ -3484,6 +3537,7 @@ class AircraftProfilesCompanion extends UpdateCompanion<AircraftProfile> {
       fuelType: fuelType ?? this.fuelType,
       emptyWeightKg: emptyWeightKg ?? this.emptyWeightKg,
       maxTakeoffWeightKg: maxTakeoffWeightKg ?? this.maxTakeoffWeightKg,
+      maxCrosswindKt: maxCrosswindKt ?? this.maxCrosswindKt,
       notes: notes ?? this.notes,
     );
   }
@@ -3530,6 +3584,9 @@ class AircraftProfilesCompanion extends UpdateCompanion<AircraftProfile> {
     if (maxTakeoffWeightKg.present) {
       map['max_takeoff_weight_kg'] = Variable<double>(maxTakeoffWeightKg.value);
     }
+    if (maxCrosswindKt.present) {
+      map['max_crosswind_kt'] = Variable<int>(maxCrosswindKt.value);
+    }
     if (notes.present) {
       map['notes'] = Variable<String>(notes.value);
     }
@@ -3552,6 +3609,7 @@ class AircraftProfilesCompanion extends UpdateCompanion<AircraftProfile> {
           ..write('fuelType: $fuelType, ')
           ..write('emptyWeightKg: $emptyWeightKg, ')
           ..write('maxTakeoffWeightKg: $maxTakeoffWeightKg, ')
+          ..write('maxCrosswindKt: $maxCrosswindKt, ')
           ..write('notes: $notes')
           ..write(')'))
         .toString();
@@ -3646,6 +3704,28 @@ class $FlightsTable extends Flights with TableInfo<$FlightsTable, Flight> {
   @override
   late final GeneratedColumn<String> alternateIdent = GeneratedColumn<String>(
     'alternate_ident',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _departureRunwayMeta = const VerificationMeta(
+    'departureRunway',
+  );
+  @override
+  late final GeneratedColumn<String> departureRunway = GeneratedColumn<String>(
+    'departure_runway',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _arrivalRunwayMeta = const VerificationMeta(
+    'arrivalRunway',
+  );
+  @override
+  late final GeneratedColumn<String> arrivalRunway = GeneratedColumn<String>(
+    'arrival_runway',
     aliasedName,
     true,
     type: DriftSqlType.string,
@@ -3784,6 +3864,8 @@ class $FlightsTable extends Flights with TableInfo<$FlightsTable, Flight> {
     departureIdent,
     destinationIdent,
     alternateIdent,
+    departureRunway,
+    arrivalRunway,
     cruiseAltitudeFt,
     plannedDeparture,
     windDirection,
@@ -3853,6 +3935,24 @@ class $FlightsTable extends Flights with TableInfo<$FlightsTable, Flight> {
         alternateIdent.isAcceptableOrUnknown(
           data['alternate_ident']!,
           _alternateIdentMeta,
+        ),
+      );
+    }
+    if (data.containsKey('departure_runway')) {
+      context.handle(
+        _departureRunwayMeta,
+        departureRunway.isAcceptableOrUnknown(
+          data['departure_runway']!,
+          _departureRunwayMeta,
+        ),
+      );
+    }
+    if (data.containsKey('arrival_runway')) {
+      context.handle(
+        _arrivalRunwayMeta,
+        arrivalRunway.isAcceptableOrUnknown(
+          data['arrival_runway']!,
+          _arrivalRunwayMeta,
         ),
       );
     }
@@ -3982,6 +4082,14 @@ class $FlightsTable extends Flights with TableInfo<$FlightsTable, Flight> {
         DriftSqlType.string,
         data['${effectivePrefix}alternate_ident'],
       ),
+      departureRunway: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}departure_runway'],
+      ),
+      arrivalRunway: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}arrival_runway'],
+      ),
       cruiseAltitudeFt: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}cruise_altitude_ft'],
@@ -4049,6 +4157,10 @@ class Flight extends DataClass implements Insertable<Flight> {
   final String departureIdent;
   final String destinationIdent;
   final String? alternateIdent;
+
+  /// Expected runway ends, e.g. `26` or `08R`.
+  final String? departureRunway;
+  final String? arrivalRunway;
   final int? cruiseAltitudeFt;
   final DateTime? plannedDeparture;
 
@@ -4071,6 +4183,8 @@ class Flight extends DataClass implements Insertable<Flight> {
     required this.departureIdent,
     required this.destinationIdent,
     this.alternateIdent,
+    this.departureRunway,
+    this.arrivalRunway,
     this.cruiseAltitudeFt,
     this.plannedDeparture,
     this.windDirection,
@@ -4105,6 +4219,12 @@ class Flight extends DataClass implements Insertable<Flight> {
     map['destination_ident'] = Variable<String>(destinationIdent);
     if (!nullToAbsent || alternateIdent != null) {
       map['alternate_ident'] = Variable<String>(alternateIdent);
+    }
+    if (!nullToAbsent || departureRunway != null) {
+      map['departure_runway'] = Variable<String>(departureRunway);
+    }
+    if (!nullToAbsent || arrivalRunway != null) {
+      map['arrival_runway'] = Variable<String>(arrivalRunway);
     }
     if (!nullToAbsent || cruiseAltitudeFt != null) {
       map['cruise_altitude_ft'] = Variable<int>(cruiseAltitudeFt);
@@ -4150,6 +4270,12 @@ class Flight extends DataClass implements Insertable<Flight> {
       alternateIdent: alternateIdent == null && nullToAbsent
           ? const Value.absent()
           : Value(alternateIdent),
+      departureRunway: departureRunway == null && nullToAbsent
+          ? const Value.absent()
+          : Value(departureRunway),
+      arrivalRunway: arrivalRunway == null && nullToAbsent
+          ? const Value.absent()
+          : Value(arrivalRunway),
       cruiseAltitudeFt: cruiseAltitudeFt == null && nullToAbsent
           ? const Value.absent()
           : Value(cruiseAltitudeFt),
@@ -4198,6 +4324,8 @@ class Flight extends DataClass implements Insertable<Flight> {
       departureIdent: serializer.fromJson<String>(json['departureIdent']),
       destinationIdent: serializer.fromJson<String>(json['destinationIdent']),
       alternateIdent: serializer.fromJson<String?>(json['alternateIdent']),
+      departureRunway: serializer.fromJson<String?>(json['departureRunway']),
+      arrivalRunway: serializer.fromJson<String?>(json['arrivalRunway']),
       cruiseAltitudeFt: serializer.fromJson<int?>(json['cruiseAltitudeFt']),
       plannedDeparture: serializer.fromJson<DateTime?>(
         json['plannedDeparture'],
@@ -4229,6 +4357,8 @@ class Flight extends DataClass implements Insertable<Flight> {
       'departureIdent': serializer.toJson<String>(departureIdent),
       'destinationIdent': serializer.toJson<String>(destinationIdent),
       'alternateIdent': serializer.toJson<String?>(alternateIdent),
+      'departureRunway': serializer.toJson<String?>(departureRunway),
+      'arrivalRunway': serializer.toJson<String?>(arrivalRunway),
       'cruiseAltitudeFt': serializer.toJson<int?>(cruiseAltitudeFt),
       'plannedDeparture': serializer.toJson<DateTime?>(plannedDeparture),
       'windDirection': serializer.toJson<int?>(windDirection),
@@ -4252,6 +4382,8 @@ class Flight extends DataClass implements Insertable<Flight> {
     String? departureIdent,
     String? destinationIdent,
     Value<String?> alternateIdent = const Value.absent(),
+    Value<String?> departureRunway = const Value.absent(),
+    Value<String?> arrivalRunway = const Value.absent(),
     Value<int?> cruiseAltitudeFt = const Value.absent(),
     Value<DateTime?> plannedDeparture = const Value.absent(),
     Value<int?> windDirection = const Value.absent(),
@@ -4274,6 +4406,12 @@ class Flight extends DataClass implements Insertable<Flight> {
     alternateIdent: alternateIdent.present
         ? alternateIdent.value
         : this.alternateIdent,
+    departureRunway: departureRunway.present
+        ? departureRunway.value
+        : this.departureRunway,
+    arrivalRunway: arrivalRunway.present
+        ? arrivalRunway.value
+        : this.arrivalRunway,
     cruiseAltitudeFt: cruiseAltitudeFt.present
         ? cruiseAltitudeFt.value
         : this.cruiseAltitudeFt,
@@ -4310,6 +4448,12 @@ class Flight extends DataClass implements Insertable<Flight> {
       alternateIdent: data.alternateIdent.present
           ? data.alternateIdent.value
           : this.alternateIdent,
+      departureRunway: data.departureRunway.present
+          ? data.departureRunway.value
+          : this.departureRunway,
+      arrivalRunway: data.arrivalRunway.present
+          ? data.arrivalRunway.value
+          : this.arrivalRunway,
       cruiseAltitudeFt: data.cruiseAltitudeFt.present
           ? data.cruiseAltitudeFt.value
           : this.cruiseAltitudeFt,
@@ -4345,6 +4489,8 @@ class Flight extends DataClass implements Insertable<Flight> {
           ..write('departureIdent: $departureIdent, ')
           ..write('destinationIdent: $destinationIdent, ')
           ..write('alternateIdent: $alternateIdent, ')
+          ..write('departureRunway: $departureRunway, ')
+          ..write('arrivalRunway: $arrivalRunway, ')
           ..write('cruiseAltitudeFt: $cruiseAltitudeFt, ')
           ..write('plannedDeparture: $plannedDeparture, ')
           ..write('windDirection: $windDirection, ')
@@ -4361,7 +4507,7 @@ class Flight extends DataClass implements Insertable<Flight> {
   }
 
   @override
-  int get hashCode => Object.hash(
+  int get hashCode => Object.hashAll([
     id,
     title,
     rules,
@@ -4370,6 +4516,8 @@ class Flight extends DataClass implements Insertable<Flight> {
     departureIdent,
     destinationIdent,
     alternateIdent,
+    departureRunway,
+    arrivalRunway,
     cruiseAltitudeFt,
     plannedDeparture,
     windDirection,
@@ -4381,7 +4529,7 @@ class Flight extends DataClass implements Insertable<Flight> {
     blockOnAt,
     createdAt,
     updatedAt,
-  );
+  ]);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -4394,6 +4542,8 @@ class Flight extends DataClass implements Insertable<Flight> {
           other.departureIdent == this.departureIdent &&
           other.destinationIdent == this.destinationIdent &&
           other.alternateIdent == this.alternateIdent &&
+          other.departureRunway == this.departureRunway &&
+          other.arrivalRunway == this.arrivalRunway &&
           other.cruiseAltitudeFt == this.cruiseAltitudeFt &&
           other.plannedDeparture == this.plannedDeparture &&
           other.windDirection == this.windDirection &&
@@ -4416,6 +4566,8 @@ class FlightsCompanion extends UpdateCompanion<Flight> {
   final Value<String> departureIdent;
   final Value<String> destinationIdent;
   final Value<String?> alternateIdent;
+  final Value<String?> departureRunway;
+  final Value<String?> arrivalRunway;
   final Value<int?> cruiseAltitudeFt;
   final Value<DateTime?> plannedDeparture;
   final Value<int?> windDirection;
@@ -4436,6 +4588,8 @@ class FlightsCompanion extends UpdateCompanion<Flight> {
     this.departureIdent = const Value.absent(),
     this.destinationIdent = const Value.absent(),
     this.alternateIdent = const Value.absent(),
+    this.departureRunway = const Value.absent(),
+    this.arrivalRunway = const Value.absent(),
     this.cruiseAltitudeFt = const Value.absent(),
     this.plannedDeparture = const Value.absent(),
     this.windDirection = const Value.absent(),
@@ -4457,6 +4611,8 @@ class FlightsCompanion extends UpdateCompanion<Flight> {
     required String departureIdent,
     required String destinationIdent,
     this.alternateIdent = const Value.absent(),
+    this.departureRunway = const Value.absent(),
+    this.arrivalRunway = const Value.absent(),
     this.cruiseAltitudeFt = const Value.absent(),
     this.plannedDeparture = const Value.absent(),
     this.windDirection = const Value.absent(),
@@ -4481,6 +4637,8 @@ class FlightsCompanion extends UpdateCompanion<Flight> {
     Expression<String>? departureIdent,
     Expression<String>? destinationIdent,
     Expression<String>? alternateIdent,
+    Expression<String>? departureRunway,
+    Expression<String>? arrivalRunway,
     Expression<int>? cruiseAltitudeFt,
     Expression<DateTime>? plannedDeparture,
     Expression<int>? windDirection,
@@ -4502,6 +4660,8 @@ class FlightsCompanion extends UpdateCompanion<Flight> {
       if (departureIdent != null) 'departure_ident': departureIdent,
       if (destinationIdent != null) 'destination_ident': destinationIdent,
       if (alternateIdent != null) 'alternate_ident': alternateIdent,
+      if (departureRunway != null) 'departure_runway': departureRunway,
+      if (arrivalRunway != null) 'arrival_runway': arrivalRunway,
       if (cruiseAltitudeFt != null) 'cruise_altitude_ft': cruiseAltitudeFt,
       if (plannedDeparture != null) 'planned_departure': plannedDeparture,
       if (windDirection != null) 'wind_direction': windDirection,
@@ -4525,6 +4685,8 @@ class FlightsCompanion extends UpdateCompanion<Flight> {
     Value<String>? departureIdent,
     Value<String>? destinationIdent,
     Value<String?>? alternateIdent,
+    Value<String?>? departureRunway,
+    Value<String?>? arrivalRunway,
     Value<int?>? cruiseAltitudeFt,
     Value<DateTime?>? plannedDeparture,
     Value<int?>? windDirection,
@@ -4546,6 +4708,8 @@ class FlightsCompanion extends UpdateCompanion<Flight> {
       departureIdent: departureIdent ?? this.departureIdent,
       destinationIdent: destinationIdent ?? this.destinationIdent,
       alternateIdent: alternateIdent ?? this.alternateIdent,
+      departureRunway: departureRunway ?? this.departureRunway,
+      arrivalRunway: arrivalRunway ?? this.arrivalRunway,
       cruiseAltitudeFt: cruiseAltitudeFt ?? this.cruiseAltitudeFt,
       plannedDeparture: plannedDeparture ?? this.plannedDeparture,
       windDirection: windDirection ?? this.windDirection,
@@ -4590,6 +4754,12 @@ class FlightsCompanion extends UpdateCompanion<Flight> {
     }
     if (alternateIdent.present) {
       map['alternate_ident'] = Variable<String>(alternateIdent.value);
+    }
+    if (departureRunway.present) {
+      map['departure_runway'] = Variable<String>(departureRunway.value);
+    }
+    if (arrivalRunway.present) {
+      map['arrival_runway'] = Variable<String>(arrivalRunway.value);
     }
     if (cruiseAltitudeFt.present) {
       map['cruise_altitude_ft'] = Variable<int>(cruiseAltitudeFt.value);
@@ -4638,6 +4808,8 @@ class FlightsCompanion extends UpdateCompanion<Flight> {
           ..write('departureIdent: $departureIdent, ')
           ..write('destinationIdent: $destinationIdent, ')
           ..write('alternateIdent: $alternateIdent, ')
+          ..write('departureRunway: $departureRunway, ')
+          ..write('arrivalRunway: $arrivalRunway, ')
           ..write('cruiseAltitudeFt: $cruiseAltitudeFt, ')
           ..write('plannedDeparture: $plannedDeparture, ')
           ..write('windDirection: $windDirection, ')
@@ -7302,6 +7474,7 @@ typedef $$AircraftProfilesTableCreateCompanionBuilder =
       Value<String> fuelType,
       Value<double?> emptyWeightKg,
       Value<double?> maxTakeoffWeightKg,
+      Value<int?> maxCrosswindKt,
       Value<String> notes,
     });
 typedef $$AircraftProfilesTableUpdateCompanionBuilder =
@@ -7319,6 +7492,7 @@ typedef $$AircraftProfilesTableUpdateCompanionBuilder =
       Value<String> fuelType,
       Value<double?> emptyWeightKg,
       Value<double?> maxTakeoffWeightKg,
+      Value<int?> maxCrosswindKt,
       Value<String> notes,
     });
 
@@ -7422,6 +7596,11 @@ class $$AircraftProfilesTableFilterComposer
 
   ColumnFilters<double> get maxTakeoffWeightKg => $composableBuilder(
     column: $table.maxTakeoffWeightKg,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get maxCrosswindKt => $composableBuilder(
+    column: $table.maxCrosswindKt,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -7530,6 +7709,11 @@ class $$AircraftProfilesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<int> get maxCrosswindKt => $composableBuilder(
+    column: $table.maxCrosswindKt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get notes => $composableBuilder(
     column: $table.notes,
     builder: (column) => ColumnOrderings(column),
@@ -7595,6 +7779,11 @@ class $$AircraftProfilesTableAnnotationComposer
 
   GeneratedColumn<double> get maxTakeoffWeightKg => $composableBuilder(
     column: $table.maxTakeoffWeightKg,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get maxCrosswindKt => $composableBuilder(
+    column: $table.maxCrosswindKt,
     builder: (column) => column,
   );
 
@@ -7670,6 +7859,7 @@ class $$AircraftProfilesTableTableManager
                 Value<String> fuelType = const Value.absent(),
                 Value<double?> emptyWeightKg = const Value.absent(),
                 Value<double?> maxTakeoffWeightKg = const Value.absent(),
+                Value<int?> maxCrosswindKt = const Value.absent(),
                 Value<String> notes = const Value.absent(),
               }) => AircraftProfilesCompanion(
                 id: id,
@@ -7685,6 +7875,7 @@ class $$AircraftProfilesTableTableManager
                 fuelType: fuelType,
                 emptyWeightKg: emptyWeightKg,
                 maxTakeoffWeightKg: maxTakeoffWeightKg,
+                maxCrosswindKt: maxCrosswindKt,
                 notes: notes,
               ),
           createCompanionCallback:
@@ -7702,6 +7893,7 @@ class $$AircraftProfilesTableTableManager
                 Value<String> fuelType = const Value.absent(),
                 Value<double?> emptyWeightKg = const Value.absent(),
                 Value<double?> maxTakeoffWeightKg = const Value.absent(),
+                Value<int?> maxCrosswindKt = const Value.absent(),
                 Value<String> notes = const Value.absent(),
               }) => AircraftProfilesCompanion.insert(
                 id: id,
@@ -7717,6 +7909,7 @@ class $$AircraftProfilesTableTableManager
                 fuelType: fuelType,
                 emptyWeightKg: emptyWeightKg,
                 maxTakeoffWeightKg: maxTakeoffWeightKg,
+                maxCrosswindKt: maxCrosswindKt,
                 notes: notes,
               ),
           withReferenceMapper: (p0) => p0
@@ -7785,6 +7978,8 @@ typedef $$FlightsTableCreateCompanionBuilder = FlightsCompanion Function({
   required String departureIdent,
   required String destinationIdent,
   Value<String?> alternateIdent,
+  Value<String?> departureRunway,
+  Value<String?> arrivalRunway,
   Value<int?> cruiseAltitudeFt,
   Value<DateTime?> plannedDeparture,
   Value<int?> windDirection,
@@ -7806,6 +8001,8 @@ typedef $$FlightsTableUpdateCompanionBuilder = FlightsCompanion Function({
   Value<String> departureIdent,
   Value<String> destinationIdent,
   Value<String?> alternateIdent,
+  Value<String?> departureRunway,
+  Value<String?> arrivalRunway,
   Value<int?> cruiseAltitudeFt,
   Value<DateTime?> plannedDeparture,
   Value<int?> windDirection,
@@ -7923,6 +8120,16 @@ class $$FlightsTableFilterComposer
 
   ColumnFilters<String> get alternateIdent => $composableBuilder(
     column: $table.alternateIdent,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get departureRunway => $composableBuilder(
+    column: $table.departureRunway,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get arrivalRunway => $composableBuilder(
+    column: $table.arrivalRunway,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -8099,6 +8306,16 @@ class $$FlightsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get departureRunway => $composableBuilder(
+    column: $table.departureRunway,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get arrivalRunway => $composableBuilder(
+    column: $table.arrivalRunway,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<int> get cruiseAltitudeFt => $composableBuilder(
     column: $table.cruiseAltitudeFt,
     builder: (column) => ColumnOrderings(column),
@@ -8211,6 +8428,16 @@ class $$FlightsTableAnnotationComposer
 
   GeneratedColumn<String> get alternateIdent => $composableBuilder(
     column: $table.alternateIdent,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get departureRunway => $composableBuilder(
+    column: $table.departureRunway,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get arrivalRunway => $composableBuilder(
+    column: $table.arrivalRunway,
     builder: (column) => column,
   );
 
@@ -8371,6 +8598,8 @@ class $$FlightsTableTableManager
                 Value<String> departureIdent = const Value.absent(),
                 Value<String> destinationIdent = const Value.absent(),
                 Value<String?> alternateIdent = const Value.absent(),
+                Value<String?> departureRunway = const Value.absent(),
+                Value<String?> arrivalRunway = const Value.absent(),
                 Value<int?> cruiseAltitudeFt = const Value.absent(),
                 Value<DateTime?> plannedDeparture = const Value.absent(),
                 Value<int?> windDirection = const Value.absent(),
@@ -8391,6 +8620,8 @@ class $$FlightsTableTableManager
                 departureIdent: departureIdent,
                 destinationIdent: destinationIdent,
                 alternateIdent: alternateIdent,
+                departureRunway: departureRunway,
+                arrivalRunway: arrivalRunway,
                 cruiseAltitudeFt: cruiseAltitudeFt,
                 plannedDeparture: plannedDeparture,
                 windDirection: windDirection,
@@ -8413,6 +8644,8 @@ class $$FlightsTableTableManager
                 required String departureIdent,
                 required String destinationIdent,
                 Value<String?> alternateIdent = const Value.absent(),
+                Value<String?> departureRunway = const Value.absent(),
+                Value<String?> arrivalRunway = const Value.absent(),
                 Value<int?> cruiseAltitudeFt = const Value.absent(),
                 Value<DateTime?> plannedDeparture = const Value.absent(),
                 Value<int?> windDirection = const Value.absent(),
@@ -8433,6 +8666,8 @@ class $$FlightsTableTableManager
                 departureIdent: departureIdent,
                 destinationIdent: destinationIdent,
                 alternateIdent: alternateIdent,
+                departureRunway: departureRunway,
+                arrivalRunway: arrivalRunway,
                 cruiseAltitudeFt: cruiseAltitudeFt,
                 plannedDeparture: plannedDeparture,
                 windDirection: windDirection,

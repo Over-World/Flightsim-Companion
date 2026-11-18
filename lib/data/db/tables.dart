@@ -107,6 +107,9 @@ class AircraftProfiles extends Table {
   TextColumn get fuelType => text().withDefault(const Constant('avgas'))();
   RealColumn get emptyWeightKg => real().nullable()();
   RealColumn get maxTakeoffWeightKg => real().nullable()();
+
+  /// Maximum demonstrated crosswind component.
+  IntColumn get maxCrosswindKt => integer().nullable()();
   TextColumn get notes => text().withDefault(const Constant(''))();
 }
 
@@ -125,6 +128,10 @@ class Flights extends Table {
   TextColumn get departureIdent => text()();
   TextColumn get destinationIdent => text()();
   TextColumn get alternateIdent => text().nullable()();
+
+  /// Expected runway ends, e.g. `26` or `08R`.
+  TextColumn get departureRunway => text().nullable()();
+  TextColumn get arrivalRunway => text().nullable()();
   IntColumn get cruiseAltitudeFt => integer().nullable()();
   DateTimeColumn get plannedDeparture => dateTime().nullable()();
 

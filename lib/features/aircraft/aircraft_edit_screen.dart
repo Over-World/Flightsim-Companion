@@ -29,6 +29,7 @@ class _AircraftEditScreenState extends State<AircraftEditScreen> {
   final _climbTas = TextEditingController();
   final _climbRate = TextEditingController();
   final _descentRate = TextEditingController();
+  final _maxCrosswind = TextEditingController();
   final _fuelBurn = TextEditingController();
   final _usableFuel = TextEditingController();
   final _emptyWeight = TextEditingController();
@@ -50,6 +51,7 @@ class _AircraftEditScreenState extends State<AircraftEditScreen> {
     _climbTas,
     _climbRate,
     _descentRate,
+    _maxCrosswind,
     _fuelBurn,
     _usableFuel,
     _emptyWeight,
@@ -78,6 +80,7 @@ class _AircraftEditScreenState extends State<AircraftEditScreen> {
       _climbTas.text = a.climbTas?.toString() ?? '';
       _climbRate.text = a.climbRateFpm?.toString() ?? '';
       _descentRate.text = a.descentRateFpm?.toString() ?? '';
+      _maxCrosswind.text = a.maxCrosswindKt?.toString() ?? '';
       _fuelBurn.text = fmt(_fuelUnit.fromLiters(a.fuelBurnLph));
       _usableFuel.text = fmt(_fuelUnit.fromLiters(a.usableFuelL));
       _emptyWeight.text = fmt(
@@ -124,6 +127,7 @@ class _AircraftEditScreenState extends State<AircraftEditScreen> {
       climbTas: Value(_int(_climbTas)),
       climbRateFpm: Value(_int(_climbRate)),
       descentRateFpm: Value(_int(_descentRate)),
+      maxCrosswindKt: Value(_int(_maxCrosswind)),
       fuelBurnLph: Value(_fuelUnit.toLiters(_double(_fuelBurn)!)),
       usableFuelL: Value(_fuelUnit.toLiters(_double(_usableFuel)!)),
       fuelType: Value(_fuelType),
@@ -235,6 +239,12 @@ class _AircraftEditScreenState extends State<AircraftEditScreen> {
                 _descentRate,
                 l10n.aircraftDescentRate,
                 'ft/min',
+                decimal: false,
+              ),
+              _number(
+                _maxCrosswind,
+                l10n.aircraftMaxCrosswind,
+                'kt',
                 decimal: false,
               ),
             ]),

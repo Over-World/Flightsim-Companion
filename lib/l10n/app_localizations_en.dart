@@ -778,4 +778,240 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get templateCraftTransponder => 'T  Transponder';
+
+  @override
+  String get navE6b => 'E6B';
+
+  @override
+  String get aircraftManage => 'Manage aircraft';
+
+  @override
+  String get e6bFromFlight => 'From flight';
+
+  @override
+  String get e6bClearAll => 'Clear all';
+
+  @override
+  String get e6bWindTriangle => 'Wind triangle';
+
+  @override
+  String get e6bFindHeading => 'Find heading';
+
+  @override
+  String get e6bFindWind => 'Find wind';
+
+  @override
+  String get e6bVariation => 'Variation (E +)';
+
+  @override
+  String get e6bWind => 'Wind';
+
+  @override
+  String get e6bWindTooStrong => 'Wind too strong for this TAS';
+
+  @override
+  String get e6bWindComponents => 'Headwind & crosswind';
+
+  @override
+  String get e6bRunwayOrHeading => 'Runway or heading';
+
+  @override
+  String get e6bGust => 'Gusts (optional)';
+
+  @override
+  String get e6bLongitudinal => 'Along the runway';
+
+  @override
+  String get e6bHeadwind => 'headwind';
+
+  @override
+  String get e6bTailwind => 'tailwind';
+
+  @override
+  String get e6bCrosswind => 'Crosswind';
+
+  @override
+  String get e6bFromLeft => 'from left';
+
+  @override
+  String get e6bFromRight => 'from right';
+
+  @override
+  String get e6bSpeedTimeDistance => 'Speed · time · distance';
+
+  @override
+  String get e6bTime => 'Time';
+
+  @override
+  String get e6bDistance => 'Distance';
+
+  @override
+  String get e6bFuel => 'Fuel';
+
+  @override
+  String get e6bFuelAmount => 'Amount';
+
+  @override
+  String get e6bEndurance => 'Endurance';
+
+  @override
+  String get e6bBurn => 'Burn';
+
+  @override
+  String get e6bBurnPerHour => 'Burn per hour';
+
+  @override
+  String get e6bFuelMass => 'Mass';
+
+  @override
+  String get e6bAltitude => 'Pressure & density altitude';
+
+  @override
+  String get e6bIndicatedAltitude => 'Altitude / elevation';
+
+  @override
+  String get e6bPressureAltitude => 'Pressure altitude';
+
+  @override
+  String get e6bIsaTemp => 'ISA temperature';
+
+  @override
+  String get e6bIsaDeviation => 'ISA deviation';
+
+  @override
+  String get e6bDensityAltitude => 'Density altitude';
+
+  @override
+  String get e6bAirspeed => 'True airspeed & Mach';
+
+  @override
+  String get e6bOatOptional => 'OAT (empty = ISA)';
+
+  @override
+  String get e6bDescent => 'Descent planning';
+
+  @override
+  String get e6bCurrentAltitude => 'Current altitude';
+
+  @override
+  String get e6bTargetAltitude => 'Target altitude';
+
+  @override
+  String get e6bPathAngle => 'Descent angle (3° if empty)';
+
+  @override
+  String get e6bDistanceAvailable => 'Distance available (optional)';
+
+  @override
+  String get e6bTodDistance => 'Top of descent before';
+
+  @override
+  String get e6bVerticalSpeed => 'Vertical speed';
+
+  @override
+  String get e6bRequiredVs => 'Required for distance';
+
+  @override
+  String get e6bClimbGradient => 'Climb gradient';
+
+  @override
+  String get e6bGradient => 'Gradient';
+
+  @override
+  String get e6bTurn => 'Turns';
+
+  @override
+  String get e6bBankOptional => 'Bank (empty = standard rate)';
+
+  @override
+  String get e6bStandardRateBank => 'Bank for rate one';
+
+  @override
+  String get e6bTurnRadius => 'Radius';
+
+  @override
+  String get e6bTurnTime => '360° takes';
+
+  @override
+  String get e6bColdTemperature => 'Cold temperature correction';
+
+  @override
+  String get e6bPublishedAltitude => 'Published altitude';
+
+  @override
+  String get e6bAerodromeElevation => 'Aerodrome elevation';
+
+  @override
+  String get e6bAerodromeTemp => 'Aerodrome temperature';
+
+  @override
+  String get e6bCorrection => 'Correction';
+
+  @override
+  String get e6bCorrectedAltitude => 'Fly at';
+
+  @override
+  String get e6bConverter => 'Unit converter';
+
+  @override
+  String get e6bQuantity => 'Quantity';
+
+  @override
+  String get e6bValue => 'Value';
+
+  @override
+  String get quantitySpeed => 'Speed';
+
+  @override
+  String get quantityDistance => 'Distance';
+
+  @override
+  String get quantityAltitude => 'Altitude / length';
+
+  @override
+  String get quantityTemperature => 'Temperature';
+
+  @override
+  String get quantityPressure => 'Pressure';
+
+  @override
+  String get quantityVolume => 'Volume';
+
+  @override
+  String get quantityMass => 'Mass';
+
+  @override
+  String get runwaysTitle => 'Expected runways';
+
+  @override
+  String get runwaysNone => 'No runway data';
+
+  @override
+  String get runwaySuggested => 'Most headwind';
+
+  @override
+  String runwaySuggestion(String ident) {
+    return 'Most headwind: $ident';
+  }
+
+  @override
+  String runwayThreshold(int ft) {
+    return 'Threshold $ft ft';
+  }
+
+  @override
+  String runwayPattern(int ft) {
+    return 'Pattern $ft ft';
+  }
+
+  @override
+  String get runwayTailwindWarning => 'Tailwind – check the other direction';
+
+  @override
+  String runwayCrosswindWarning(int kt) {
+    return 'Crosswind above the demonstrated $kt kt';
+  }
+
+  @override
+  String get aircraftMaxCrosswind => 'Max. demonstrated crosswind';
 }

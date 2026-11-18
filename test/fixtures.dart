@@ -41,6 +41,32 @@ Future<void> insertNavdataFixtures(AppDatabase db) async {
         frequencyMhz: 122.880,
       ),
     ]);
+    b.insertAll(db.runways, [
+      RunwaysCompanion.insert(
+        id: const Value(1),
+        airportId: 2283,
+        lengthFt: const Value(4600),
+        surface: const Value('ASP'),
+        lighted: true,
+        closed: false,
+        leIdent: const Value('08'),
+        leHeadingTrue: const Value(84),
+        leElevationFt: const Value(384),
+        heIdent: const Value('26'),
+        heHeadingTrue: const Value(264),
+        heElevationFt: const Value(380),
+      ),
+      RunwaysCompanion.insert(
+        id: const Value(2),
+        airportId: 2290,
+        lengthFt: const Value(3500),
+        surface: const Value('ASP'),
+        lighted: false,
+        closed: false,
+        leIdent: const Value('08'),
+        heIdent: const Value('26'),
+      ),
+    ]);
     b.insert(
       db.navaids,
       NavaidsCompanion.insert(

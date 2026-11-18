@@ -7,6 +7,7 @@ import 'package:flightsim_companion/data/db/database.dart';
 import 'package:flightsim_companion/data/repositories/aircraft_repository.dart';
 import 'package:flightsim_companion/data/repositories/flight_repository.dart';
 import 'package:flightsim_companion/features/kneeboard/kneeboard_controller.dart';
+import 'package:drift/drift.dart' show Value;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
@@ -97,7 +98,10 @@ void main() {
       await tester.tap(find.text('Frankfurt · VOR-DME'));
       await tester.pumpAndSettle();
       await settle(tester);
-      expect(inRoute('FFM'), findsNWidgets(2));
+      final route = await tester.runAsync(
+        () => FlightRepository(db).loadFlight(flightId),
+      );
+      expect(route!.waypoints.where((w) => w.ident == 'FFM'), hasLength(2));
       expect(tester.takeException(), isNull);
       if (size.width < 1000) {
         await tester.tap(find.text('Navlog'));
@@ -134,6 +138,82 @@ void main() {
             .first,
       );
       expect(find.text('114.20'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+      await unmount(tester);
+    });
+
+    testWidgets('E6B on $name', (tester) async {
+      final router = await pumpApp(tester, size);
+      router.go('/e6b');
+      await settle(tester);
+      // Wind triangle: TC 090, TAS 100, wind 360/20 → WCA -12, GS 98.
+      final fields = find.descendant(
+        of: find.byType(Card).first,
+        matching: find.byType(TextField),
+      );
+      await tester.enterText(fields.at(0), '90');
+      await tester.enterText(fields.at(1), '100');
+      await tester.enterText(fields.at(2), '360');
+      await tester.enterText(fields.at(3), '20');
+      await tester.pump();
+      expect(find.text('-12°'), findsOneWidget);
+      expect(find.text('078°'), findsWidgets);
+      expect(find.text('98 kt'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+      await unmount(tester);
+    });
+
+    testWidgets('E6B takes values from the active flight on $name', (
+      tester,
+    ) async {
+      final router = await pumpApp(tester, size);
+      final context = tester.element(find.byType(Scaffold).first);
+      await tester.runAsync(
+        () => context.read<KneeboardController>().open(flightId),
+      );
+      router.go('/e6b');
+      await settle(tester);
+      await tester.tap(find.text('From flight'));
+      await settle(tester);
+      // C172 cruise TAS lands in the wind triangle.
+      expect(find.widgetWithText(TextField, '115'), findsWidgets);
+      expect(tester.takeException(), isNull);
+      await unmount(tester);
+    });
+
+    testWidgets('aircraft profiles live under Plan on $name', (tester) async {
+      await pumpApp(tester, size);
+      await tester.tap(find.byTooltip('Aircraft'));
+      await settle(tester);
+      expect(find.text('Cessna 172 SP'), findsOneWidget);
+      await unmount(tester);
+    });
+
+    testWidgets('runway selection on $name', (tester) async {
+      final router = await pumpApp(tester, size);
+      await tester.runAsync(
+        () => FlightRepository(db).updateFlight(
+          flightId,
+          const FlightsCompanion(
+            windDirection: Value(300),
+            windSpeedKt: Value(20),
+          ),
+        ),
+      );
+      router.go('/plan/flights/$flightId');
+      await settle(tester);
+      expect(find.text('Expected runways'), findsOneWidget);
+      expect(find.text('Most headwind: 26'), findsNWidgets(2));
+
+      await tester.tap(find.widgetWithText(ChoiceChip, '26').first);
+      await settle(tester);
+      expect(find.textContaining('Pattern 1380 ft'), findsOneWidget);
+      // C172: 15 kt demonstrated; 20 kt at 36° gives 12 kt – no warning.
+      expect(find.textContaining('Crosswind above'), findsNothing);
+
+      await tester.tap(find.widgetWithText(ChoiceChip, '08').first);
+      await settle(tester);
+      expect(find.textContaining('Tailwind –'), findsOneWidget);
       expect(tester.takeException(), isNull);
       await unmount(tester);
     });

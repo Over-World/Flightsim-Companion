@@ -22,11 +22,7 @@ class AdaptiveShell extends StatelessWidget {
     final destinations = [
       (Icons.map_outlined, Icons.map, l10n.navPlan),
       (Icons.flight_takeoff_outlined, Icons.flight_takeoff, l10n.navFly),
-      (
-        Icons.airplanemode_active_outlined,
-        Icons.airplanemode_active,
-        l10n.navAircraft,
-      ),
+      (Icons.calculate_outlined, Icons.calculate, l10n.navE6b),
       (Icons.menu_book_outlined, Icons.menu_book, l10n.navLogbook),
       (Icons.settings_outlined, Icons.settings, l10n.navSettings),
     ];

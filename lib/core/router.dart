@@ -6,6 +6,7 @@ import '../features/aircraft/aircraft_edit_screen.dart';
 import '../features/aircraft/aircraft_list_screen.dart';
 import '../features/airports/airport_detail_screen.dart';
 import '../features/airports/airport_search_screen.dart';
+import '../features/e6b/e6b_screen.dart';
 import '../features/fly/fly_screen.dart';
 import '../features/logbook/logbook_screen.dart';
 import '../features/notes/notepad_screen.dart';
@@ -51,6 +52,22 @@ GoRouter createRouter(SettingsController settings) => GoRouter(
               routes: [
                 _airportRoutes(),
                 GoRoute(
+                  path: 'aircraft',
+                  builder: (context, state) => const AircraftListScreen(),
+                  routes: [
+                    GoRoute(
+                      path: 'new',
+                      builder: (context, state) => const AircraftEditScreen(),
+                    ),
+                    GoRoute(
+                      path: ':id',
+                      builder: (context, state) => AircraftEditScreen(
+                        aircraftId: int.parse(state.pathParameters['id']!),
+                      ),
+                    ),
+                  ],
+                ),
+                GoRoute(
                   path: 'flights/:id',
                   builder: (context, state) => FlightEditorScreen(
                     flightId: int.parse(state.pathParameters['id']!),
@@ -71,20 +88,8 @@ GoRouter createRouter(SettingsController settings) => GoRouter(
         StatefulShellBranch(
           routes: [
             GoRoute(
-              path: '/aircraft',
-              builder: (context, state) => const AircraftListScreen(),
-              routes: [
-                GoRoute(
-                  path: 'new',
-                  builder: (context, state) => const AircraftEditScreen(),
-                ),
-                GoRoute(
-                  path: ':id',
-                  builder: (context, state) => AircraftEditScreen(
-                    aircraftId: int.parse(state.pathParameters['id']!),
-                  ),
-                ),
-              ],
+              path: '/e6b',
+              builder: (context, state) => const E6bScreen(),
             ),
           ],
         ),

@@ -28,10 +28,10 @@ The full roadmap (milestones M1–M7) lives in OpenChamber's project knowledge (
 - `lib/core/` – nav math (great circle, wind triangle), units, morse, theme, settings, router
 - `lib/data/db/` – drift tables and database (`database.g.dart` is generated)
 - `lib/data/navdata/` – OurAirports CSV parser and importer
-- `lib/core/navlog.dart` – navlog computation (pure, tested); `core/wmm/` – magnetic variation
+- `lib/core/navlog.dart` – navlog computation; `core/e6b.dart` – flight computer formulas; `core/runways.dart` – runway ends, wind components, suggestion; `core/quantities.dart` – unit conversions; `core/wmm/` – magnetic variation (all pure and tested)
 - `lib/data/repositories/` – queries used by the UI
 - `lib/data/sim/` – X-Plane web API client
-- `lib/features/<feature>/` – screens and controllers: `plan` (flights, route editor, navlog table), `kneeboard` (`KneeboardController`: active flight, times, stopwatch), `fly` (kneeboard UI), `notes` (stylus notepad), `onboarding`, `settings`, `airports`, `aircraft`, `navdata`
+- `lib/features/<feature>/` – screens and controllers: `plan` (flights, route editor, navlog table, runway selector), `e6b` (calculators), `kneeboard` (`KneeboardController`: active flight, times, stopwatch), `fly` (kneeboard UI), `notes` (stylus notepad), `onboarding`, `settings`, `airports`, `aircraft`, `navdata`
 - `lib/widgets/` – shared widgets
 - `lib/app_scope.dart` – all providers; used by `main.dart` and widget tests
 
@@ -39,6 +39,7 @@ The full roadmap (milestones M1–M7) lives in OpenChamber's project knowledge (
 
 - Internal units: knots, feet, litres, kilograms. Convert only for display (`core/units.dart`).
 - Directions: true internally; convert to magnetic with `magneticVariation()` (WMM2025, `core/wmm/`, valid until 2030 – replace coefficients with WMM2030 then). Never use OurAirports' `magnetic_variation_deg`, it is decades old.
+- Navigation destinations: Plan, Fly, E6B, Logbook, Settings (max. 5 for the phone NavigationBar). Aircraft profiles live under Plan (`/plan/aircraft`).
 - Layout breakpoint: `width >= 600` → NavigationRail, else NavigationBar. Every screen must work at 360 px wide and in both tablet orientations.
 - Stylus input: a stylus always draws (inverted end / button erases); a finger draws only with the "draw with finger" setting, otherwise it scrolls/zooms. Only one pointer is tracked so a palm can't scribble. Notepad pages use 1000-unit-wide page coordinates and palette indices (not ARGB) so ink adapts to dark mode.
 - Widget tests with drift: call `unmount` (pump an empty widget + short pumps) at the end, and run DB work inside `tester.runAsync`; see `test/screens_test.dart`.
@@ -47,9 +48,15 @@ The full roadmap (milestones M1–M7) lives in OpenChamber's project knowledge (
 
 ```sh
 dart run build_runner build   # after changing drift tables
+python3 tool/arb_add.py x.json # add strings to both .arb files (see script header)
 flutter gen-l10n              # after changing .arb files
 flutter analyze && flutter test
 ```
+
+## Pitfalls
+
+- drift_dev skips `database.g.dart` *silently* when `database.dart` contains something it can't handle (e.g. a top-level record-list constant). If the file is missing after `build_runner`, simplify `database.dart`, `rm -rf .dart_tool/build` and rebuild.
+- `flutter_test` disables shadows and draws them as hard black outlines – not a real styling issue in screenshots.
 
 ## Data sources
 

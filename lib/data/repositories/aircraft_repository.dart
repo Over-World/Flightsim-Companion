@@ -32,6 +32,7 @@ class AircraftRepository {
     AircraftProfilesCompanion.insert(
       name: 'Cessna 172 SP',
       icaoType: 'C172',
+      maxCrosswindKt: const Value(15),
       cruiseTas: 115,
       climbTas: const Value(74),
       climbRateFpm: const Value(700),
@@ -44,6 +45,7 @@ class AircraftRepository {
     AircraftProfilesCompanion.insert(
       name: 'Cirrus SR22',
       icaoType: 'SR22',
+      maxCrosswindKt: const Value(21),
       cruiseTas: 170,
       climbTas: const Value(110),
       climbRateFpm: const Value(1000),
@@ -56,6 +58,7 @@ class AircraftRepository {
     AircraftProfilesCompanion.insert(
       name: 'Piper PA-18 Super Cub',
       icaoType: 'PA18',
+      maxCrosswindKt: const Value(10),
       cruiseTas: 95,
       climbTas: const Value(65),
       climbRateFpm: const Value(900),
@@ -68,6 +71,7 @@ class AircraftRepository {
     AircraftProfilesCompanion.insert(
       name: 'Beechcraft Baron 58',
       icaoType: 'BE58',
+      maxCrosswindKt: const Value(22),
       cruiseTas: 195,
       climbTas: const Value(120),
       climbRateFpm: const Value(1500),

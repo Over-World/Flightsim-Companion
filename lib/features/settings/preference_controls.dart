@@ -1,3 +1,4 @@
+import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
@@ -151,7 +152,18 @@ class AircraftDropdown extends StatelessWidget {
           key: ValueKey('${known ? value : null}-${aircraft.length}'),
           initialValue: known ? value : null,
           isExpanded: true,
-          decoration: InputDecoration(labelText: label),
+          decoration: InputDecoration(
+            labelText: label,
+            suffixIcon: IconButton(
+              tooltip: AppLocalizations.of(context).aircraftManage,
+              icon: const Icon(Icons.tune),
+              onPressed: () {
+                // Leave any dialog this field sits in.
+                Navigator.of(context).popUntil((r) => r is! PopupRoute);
+                context.go('/plan/aircraft');
+              },
+            ),
+          ),
           items: [
             for (final a in aircraft)
               DropdownMenuItem(
