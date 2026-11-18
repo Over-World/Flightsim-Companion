@@ -13,6 +13,7 @@ import '../../widgets/ticking.dart';
 import '../kneeboard/kneeboard_controller.dart';
 import '../plan/navlog_table.dart';
 import '../plan/runway_selector.dart';
+import '../weather/weather_card.dart';
 
 class FlyScreen extends StatelessWidget {
   const FlyScreen({super.key});
@@ -71,6 +72,20 @@ class FlyScreen extends StatelessWidget {
             kb.data!,
             margin: const EdgeInsets.only(bottom: 12),
           );
+          // Departure weather until airborne, destination always.
+          final weather = [
+            if (flight.takeoffAt == null)
+              WeatherCard(
+                airportIdent: flight.departureIdent,
+                title: '${l10n.flightDeparture} · ${flight.departureIdent}',
+                margin: const EdgeInsets.only(bottom: 12),
+              ),
+            WeatherCard(
+              airportIdent: flight.destinationIdent,
+              title: '${l10n.flightDestination} · ${flight.destinationIdent}',
+              margin: const EdgeInsets.only(bottom: 12),
+            ),
+          ];
           if (landscape) {
             return Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -79,7 +94,7 @@ class FlyScreen extends StatelessWidget {
                   flex: 5,
                   child: ListView(
                     padding: const EdgeInsets.fromLTRB(16, 8, 8, 16),
-                    children: [navlog, runways, frequencies],
+                    children: [navlog, runways, ...weather, frequencies],
                   ),
                 ),
                 Expanded(
@@ -94,7 +109,7 @@ class FlyScreen extends StatelessWidget {
           }
           return ListView(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 88),
-            children: [leg, navlog, runways, frequencies, times],
+            children: [leg, navlog, runways, ...weather, frequencies, times],
           );
         },
       ),

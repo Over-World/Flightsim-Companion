@@ -1080,4 +1080,79 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get e6bConverterHint =>
       'Speed, distance, altitude, temperature, pressure, volume, mass';
+
+  @override
+  String get flightTabWeather => 'Weather';
+
+  @override
+  String get weatherTitle => 'Weather';
+
+  @override
+  String get weatherRefresh => 'Refresh';
+
+  @override
+  String get weatherLoading => 'Loading weather…';
+
+  @override
+  String weatherError(String error) {
+    return 'No weather: $error';
+  }
+
+  @override
+  String get weatherNone => 'No METAR or TAF within 40 NM';
+
+  @override
+  String weatherNearby(String station, int nm) {
+    return 'Nearest report $station ($nm NM)';
+  }
+
+  @override
+  String weatherObserved(String time, String age) {
+    return 'Observed $time, $age';
+  }
+
+  @override
+  String weatherAgeMinutes(int minutes) {
+    return '$minutes min ago';
+  }
+
+  @override
+  String weatherAgeHours(int hours) {
+    return '$hours h ago';
+  }
+
+  @override
+  String weatherUseWind(String direction, int speed) {
+    return 'Use wind $direction° / $speed kt';
+  }
+
+  @override
+  String get weatherUseWindHint =>
+      '\"Use wind\" sets the flight\'s planning wind (true direction, as in the METAR).';
+
+  @override
+  String get weatherShowTaf => 'Show TAF';
+
+  @override
+  String get weatherHideTaf => 'Hide TAF';
+
+  @override
+  String get weatherVisibility => 'Visibility';
+
+  @override
+  String get weatherClouds => 'Clouds';
+
+  @override
+  String get weatherTemperature => 'Temp / dew point';
+
+  @override
+  String get weatherPhenomena => 'Weather';
+
+  @override
+  String runwayWindMetar(String station) {
+    return 'Wind METAR $station';
+  }
+
+  @override
+  String get runwayWindPlanned => 'Planning wind';
 }

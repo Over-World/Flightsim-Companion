@@ -31,7 +31,8 @@ The full roadmap (milestones M1–M7) lives in OpenChamber's project knowledge (
 - `lib/core/navlog.dart` – navlog computation; `core/e6b.dart` – flight computer formulas; `core/runways.dart` – runway ends, wind components, suggestion; `core/quantities.dart` – unit conversions; `core/wmm/` – magnetic variation (all pure and tested)
 - `lib/data/repositories/` – queries used by the UI
 - `lib/data/sim/` – X-Plane web API client
-- `lib/features/<feature>/` – screens and controllers: `plan` (flights, route editor, navlog table, runway selector), `e6b` (calculators), `kneeboard` (`KneeboardController`: active flight, times, stopwatch), `fly` (kneeboard UI), `notes` (stylus notepad), `onboarding`, `settings`, `airports`, `aircraft`, `navdata`
+- `lib/data/weather/` – METAR/TAF models and `WeatherRepository` (aviationweather.gov, offline cache table)
+- `lib/features/<feature>/` – screens and controllers: `plan` (flights, route editor, navlog table, runway selector), `e6b` (calculators), `kneeboard` (`KneeboardController`: active flight, times, stopwatch), `fly` (kneeboard UI), `notes` (stylus notepad), `weather` (`WeatherController` shares reports app-wide, `WeatherCard`), `onboarding`, `settings`, `airports`, `aircraft`, `navdata`
 - `lib/widgets/` – shared widgets
 - `lib/app_scope.dart` – all providers; used by `main.dart` and widget tests
 
@@ -42,6 +43,7 @@ The full roadmap (milestones M1–M7) lives in OpenChamber's project knowledge (
 - Navigation destinations: Plan, Fly, E6B, Logbook, Settings (max. 5 for the phone NavigationBar). Aircraft profiles live under Plan (`/plan/aircraft`).
 - Layout breakpoint: `width >= 600` → NavigationRail, else NavigationBar. Every screen must work at 360 px wide and in both tablet orientations.
 - Stylus input: a stylus always draws (inverted end / button erases); a finger draws only with the "draw with finger" setting, otherwise it scrolls/zooms. Only one pointer is tracked so a palm can't scribble. Notepad pages use 1000-unit-wide page coordinates and palette indices (not ARGB) so ink adapts to dark mode.
+- Widget tests never hit the network: pass `httpClient: fakeWeatherClient()` (test/fixtures.dart) to `AppScope`.
 - Widget tests with drift: call `unmount` (pump an empty widget + short pumps) at the end, and run DB work inside `tester.runAsync`; see `test/screens_test.dart`.
 
 ## Commands
@@ -61,4 +63,5 @@ flutter analyze && flutter test
 ## Data sources
 
 - OurAirports (public domain): airports, runways, frequencies, navaids – downloaded in-app from `davidmegginson.github.io/ourairports-data`.
-- Later: OpenAIP (airspaces, API key), SimBrief API (IFR OFP), aviationweather.gov (METAR/TAF), X-Plane CIFP/earth_awy.dat (IFR procedures).
+- aviationweather.gov (no key): METAR/TAF JSON. Airports without METAR use the nearest station within 40 NM (bbox query). METAR wind is true; only a station within 5 NM counts as local wind for runway choice.
+- Later: OpenAIP (airspaces, API key), SimBrief API (IFR OFP), X-Plane CIFP/earth_awy.dat (IFR procedures).

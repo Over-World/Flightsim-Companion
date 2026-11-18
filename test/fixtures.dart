@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:drift/drift.dart';
 import 'package:flightsim_companion/data/db/database.dart';
 import 'package:flightsim_companion/data/repositories/flight_repository.dart';
+import 'package:http/http.dart' as http;
+import 'package:http/testing.dart';
 
 /// Egelsbach, Mainz-Finthen and the Frankfurt VOR with a few frequencies.
 Future<void> insertNavdataFixtures(AppDatabase db) async {
@@ -126,3 +130,35 @@ Future<int> createFixtureFlight(FlightRepository flights) async {
   );
   return id;
 }
+
+/// Fake aviationweather.gov: a METAR for EDDF (also found by area search,
+/// so EDFE gets it as nearest station), nothing else.
+http.Client fakeWeatherClient() => MockClient((request) async {
+  final q = request.url.queryParameters;
+  final kind = request.url.pathSegments.last;
+  if (kind == 'metar' && (q['ids'] == 'EDDF' || q['bbox'] != null)) {
+    return http.Response(
+      jsonEncode([
+        {
+          'icaoId': 'EDDF',
+          'obsTime': DateTime.now().millisecondsSinceEpoch ~/ 1000 - 600,
+          'temp': 10,
+          'dewp': 8,
+          'wdir': 220,
+          'wspd': 17,
+          'visib': '6+',
+          'altim': 989,
+          'rawOb': 'METAR EDDF 180820Z 22017KT 9999 FEW021 10/08 Q0989',
+          'lat': 50.045,
+          'lon': 8.598,
+          'clouds': [
+            {'cover': 'FEW', 'base': 2100},
+          ],
+          'fltCat': 'VFR',
+        },
+      ]),
+      200,
+    );
+  }
+  return http.Response('', 204);
+});

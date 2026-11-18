@@ -53,6 +53,7 @@ void main() {
         db: db,
         prefs: prefs,
         settings: settings,
+        httpClient: fakeWeatherClient(),
         child: FlightsimCompanionApp(router: router),
       ),
     );
@@ -245,6 +246,27 @@ void main() {
       await tester.tap(find.widgetWithText(ChoiceChip, '08').first);
       await settle(tester);
       expect(find.textContaining('Tailwind –'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+      await unmount(tester);
+    });
+
+    testWidgets('weather tab and use wind on $name', (tester) async {
+      final router = await pumpApp(tester, size);
+      router.go('/plan/flights/$flightId');
+      await settle(tester);
+      await tester.tap(find.text('Weather'));
+      await settle(tester);
+      await settle(tester);
+      // EDFE has no METAR of its own: nearest station EDDF.
+      expect(find.textContaining('Nearest report EDDF'), findsWidgets);
+      expect(find.text('989'), findsWidgets);
+      await tester.tap(find.text('Use wind 220° / 17 kt').first);
+      await settle(tester);
+      final flight = await tester.runAsync(
+        () => FlightRepository(db).loadFlight(flightId),
+      );
+      expect(flight!.flight.windDirection, 220);
+      expect(flight.flight.windSpeedKt, 17);
       expect(tester.takeException(), isNull);
       await unmount(tester);
     });

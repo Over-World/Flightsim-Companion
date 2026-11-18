@@ -2082,6 +2082,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Speed, distance, altitude, temperature, pressure, volume, mass'**
   String get e6bConverterHint;
+
+  /// No description provided for @flightTabWeather.
+  ///
+  /// In en, this message translates to:
+  /// **'Weather'**
+  String get flightTabWeather;
+
+  /// No description provided for @weatherTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Weather'**
+  String get weatherTitle;
+
+  /// No description provided for @weatherRefresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh'**
+  String get weatherRefresh;
+
+  /// No description provided for @weatherLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading weather…'**
+  String get weatherLoading;
+
+  /// No description provided for @weatherError.
+  ///
+  /// In en, this message translates to:
+  /// **'No weather: {error}'**
+  String weatherError(String error);
+
+  /// No description provided for @weatherNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No METAR or TAF within 40 NM'**
+  String get weatherNone;
+
+  /// No description provided for @weatherNearby.
+  ///
+  /// In en, this message translates to:
+  /// **'Nearest report {station} ({nm} NM)'**
+  String weatherNearby(String station, int nm);
+
+  /// No description provided for @weatherObserved.
+  ///
+  /// In en, this message translates to:
+  /// **'Observed {time}, {age}'**
+  String weatherObserved(String time, String age);
+
+  /// No description provided for @weatherAgeMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min ago'**
+  String weatherAgeMinutes(int minutes);
+
+  /// No description provided for @weatherAgeHours.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours} h ago'**
+  String weatherAgeHours(int hours);
+
+  /// No description provided for @weatherUseWind.
+  ///
+  /// In en, this message translates to:
+  /// **'Use wind {direction}° / {speed} kt'**
+  String weatherUseWind(String direction, int speed);
+
+  /// No description provided for @weatherUseWindHint.
+  ///
+  /// In en, this message translates to:
+  /// **'\"Use wind\" sets the flight\'s planning wind (true direction, as in the METAR).'**
+  String get weatherUseWindHint;
+
+  /// No description provided for @weatherShowTaf.
+  ///
+  /// In en, this message translates to:
+  /// **'Show TAF'**
+  String get weatherShowTaf;
+
+  /// No description provided for @weatherHideTaf.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide TAF'**
+  String get weatherHideTaf;
+
+  /// No description provided for @weatherVisibility.
+  ///
+  /// In en, this message translates to:
+  /// **'Visibility'**
+  String get weatherVisibility;
+
+  /// No description provided for @weatherClouds.
+  ///
+  /// In en, this message translates to:
+  /// **'Clouds'**
+  String get weatherClouds;
+
+  /// No description provided for @weatherTemperature.
+  ///
+  /// In en, this message translates to:
+  /// **'Temp / dew point'**
+  String get weatherTemperature;
+
+  /// No description provided for @weatherPhenomena.
+  ///
+  /// In en, this message translates to:
+  /// **'Weather'**
+  String get weatherPhenomena;
+
+  /// No description provided for @runwayWindMetar.
+  ///
+  /// In en, this message translates to:
+  /// **'Wind METAR {station}'**
+  String runwayWindMetar(String station);
+
+  /// No description provided for @runwayWindPlanned.
+  ///
+  /// In en, this message translates to:
+  /// **'Planning wind'**
+  String get runwayWindPlanned;
 }
 
 class _AppLocalizationsDelegate

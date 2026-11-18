@@ -196,3 +196,13 @@ class ScratchPages extends Table {
   TextColumn get strokes => text().withDefault(const Constant('[]'))();
   DateTimeColumn get updatedAt => dateTime().withDefault(currentDateAndTime)();
 }
+
+/// Last METAR/TAF per airport for offline use (`WeatherReport.encode`).
+class WeatherCache extends Table {
+  TextColumn get airportIdent => text()();
+  TextColumn get payload => text()();
+  DateTimeColumn get fetchedAt => dateTime()();
+
+  @override
+  Set<Column> get primaryKey => {airportIdent};
+}

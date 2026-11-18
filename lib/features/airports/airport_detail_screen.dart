@@ -9,6 +9,7 @@ import '../../core/units.dart';
 import '../../data/db/database.dart';
 import '../../data/repositories/navdata_repository.dart';
 import '../../l10n/app_localizations.dart';
+import '../weather/weather_card.dart';
 import 'airport_type.dart';
 
 class AirportDetailScreen extends StatefulWidget {
@@ -52,6 +53,10 @@ class _DetailsBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final header = _Header(details.airport);
+    final weather = WeatherCard(
+      airportIdent: details.airport.ident,
+      margin: const EdgeInsets.only(bottom: 8),
+    );
     final runways = _RunwaysCard(details.runways);
     final frequencies = _FrequenciesCard(details.frequencies);
     final navaids = _NavaidsCard(details);
@@ -61,7 +66,7 @@ class _DetailsBody extends StatelessWidget {
         if (constraints.maxWidth < 840) {
           return ListView(
             padding: const EdgeInsets.all(16),
-            children: [header, frequencies, runways, navaids],
+            children: [header, weather, frequencies, runways, navaids],
           );
         }
         return SingleChildScrollView(
@@ -69,6 +74,7 @@ class _DetailsBody extends StatelessWidget {
           child: Column(
             children: [
               header,
+              weather,
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

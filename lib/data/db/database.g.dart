@@ -6056,6 +6056,281 @@ class ScratchPagesCompanion extends UpdateCompanion<ScratchPage> {
   }
 }
 
+class $WeatherCacheTable extends WeatherCache
+    with TableInfo<$WeatherCacheTable, WeatherCacheData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $WeatherCacheTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _airportIdentMeta = const VerificationMeta(
+    'airportIdent',
+  );
+  @override
+  late final GeneratedColumn<String> airportIdent = GeneratedColumn<String>(
+    'airport_ident',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _payloadMeta = const VerificationMeta(
+    'payload',
+  );
+  @override
+  late final GeneratedColumn<String> payload = GeneratedColumn<String>(
+    'payload',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _fetchedAtMeta = const VerificationMeta(
+    'fetchedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> fetchedAt = GeneratedColumn<DateTime>(
+    'fetched_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [airportIdent, payload, fetchedAt];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'weather_cache';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<WeatherCacheData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('airport_ident')) {
+      context.handle(
+        _airportIdentMeta,
+        airportIdent.isAcceptableOrUnknown(
+          data['airport_ident']!,
+          _airportIdentMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_airportIdentMeta);
+    }
+    if (data.containsKey('payload')) {
+      context.handle(
+        _payloadMeta,
+        payload.isAcceptableOrUnknown(data['payload']!, _payloadMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_payloadMeta);
+    }
+    if (data.containsKey('fetched_at')) {
+      context.handle(
+        _fetchedAtMeta,
+        fetchedAt.isAcceptableOrUnknown(data['fetched_at']!, _fetchedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_fetchedAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {airportIdent};
+  @override
+  WeatherCacheData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return WeatherCacheData(
+      airportIdent: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}airport_ident'],
+      )!,
+      payload: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}payload'],
+      )!,
+      fetchedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}fetched_at'],
+      )!,
+    );
+  }
+
+  @override
+  $WeatherCacheTable createAlias(String alias) {
+    return $WeatherCacheTable(attachedDatabase, alias);
+  }
+}
+
+class WeatherCacheData extends DataClass
+    implements Insertable<WeatherCacheData> {
+  final String airportIdent;
+  final String payload;
+  final DateTime fetchedAt;
+  const WeatherCacheData({
+    required this.airportIdent,
+    required this.payload,
+    required this.fetchedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['airport_ident'] = Variable<String>(airportIdent);
+    map['payload'] = Variable<String>(payload);
+    map['fetched_at'] = Variable<DateTime>(fetchedAt);
+    return map;
+  }
+
+  WeatherCacheCompanion toCompanion(bool nullToAbsent) {
+    return WeatherCacheCompanion(
+      airportIdent: Value(airportIdent),
+      payload: Value(payload),
+      fetchedAt: Value(fetchedAt),
+    );
+  }
+
+  factory WeatherCacheData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return WeatherCacheData(
+      airportIdent: serializer.fromJson<String>(json['airportIdent']),
+      payload: serializer.fromJson<String>(json['payload']),
+      fetchedAt: serializer.fromJson<DateTime>(json['fetchedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'airportIdent': serializer.toJson<String>(airportIdent),
+      'payload': serializer.toJson<String>(payload),
+      'fetchedAt': serializer.toJson<DateTime>(fetchedAt),
+    };
+  }
+
+  WeatherCacheData copyWith({
+    String? airportIdent,
+    String? payload,
+    DateTime? fetchedAt,
+  }) => WeatherCacheData(
+    airportIdent: airportIdent ?? this.airportIdent,
+    payload: payload ?? this.payload,
+    fetchedAt: fetchedAt ?? this.fetchedAt,
+  );
+  WeatherCacheData copyWithCompanion(WeatherCacheCompanion data) {
+    return WeatherCacheData(
+      airportIdent: data.airportIdent.present
+          ? data.airportIdent.value
+          : this.airportIdent,
+      payload: data.payload.present ? data.payload.value : this.payload,
+      fetchedAt: data.fetchedAt.present ? data.fetchedAt.value : this.fetchedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('WeatherCacheData(')
+          ..write('airportIdent: $airportIdent, ')
+          ..write('payload: $payload, ')
+          ..write('fetchedAt: $fetchedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(airportIdent, payload, fetchedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is WeatherCacheData &&
+          other.airportIdent == this.airportIdent &&
+          other.payload == this.payload &&
+          other.fetchedAt == this.fetchedAt);
+}
+
+class WeatherCacheCompanion extends UpdateCompanion<WeatherCacheData> {
+  final Value<String> airportIdent;
+  final Value<String> payload;
+  final Value<DateTime> fetchedAt;
+  final Value<int> rowid;
+  const WeatherCacheCompanion({
+    this.airportIdent = const Value.absent(),
+    this.payload = const Value.absent(),
+    this.fetchedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  WeatherCacheCompanion.insert({
+    required String airportIdent,
+    required String payload,
+    required DateTime fetchedAt,
+    this.rowid = const Value.absent(),
+  }) : airportIdent = Value(airportIdent),
+       payload = Value(payload),
+       fetchedAt = Value(fetchedAt);
+  static Insertable<WeatherCacheData> custom({
+    Expression<String>? airportIdent,
+    Expression<String>? payload,
+    Expression<DateTime>? fetchedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (airportIdent != null) 'airport_ident': airportIdent,
+      if (payload != null) 'payload': payload,
+      if (fetchedAt != null) 'fetched_at': fetchedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  WeatherCacheCompanion copyWith({
+    Value<String>? airportIdent,
+    Value<String>? payload,
+    Value<DateTime>? fetchedAt,
+    Value<int>? rowid,
+  }) {
+    return WeatherCacheCompanion(
+      airportIdent: airportIdent ?? this.airportIdent,
+      payload: payload ?? this.payload,
+      fetchedAt: fetchedAt ?? this.fetchedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (airportIdent.present) {
+      map['airport_ident'] = Variable<String>(airportIdent.value);
+    }
+    if (payload.present) {
+      map['payload'] = Variable<String>(payload.value);
+    }
+    if (fetchedAt.present) {
+      map['fetched_at'] = Variable<DateTime>(fetchedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('WeatherCacheCompanion(')
+          ..write('airportIdent: $airportIdent, ')
+          ..write('payload: $payload, ')
+          ..write('fetchedAt: $fetchedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -6072,6 +6347,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     this,
   );
   late final $ScratchPagesTable scratchPages = $ScratchPagesTable(this);
+  late final $WeatherCacheTable weatherCache = $WeatherCacheTable(this);
   late final Index airportsIdent = Index(
     'airports_ident',
     'CREATE INDEX airports_ident ON airports (ident)',
@@ -6117,6 +6393,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     flights,
     flightWaypoints,
     scratchPages,
+    weatherCache,
     airportsIdent,
     airportsPosition,
     runwaysAirport,
@@ -9626,6 +9903,179 @@ typedef $$ScratchPagesTableProcessedTableManager =
       ScratchPage,
       PrefetchHooks Function({bool flightId})
     >;
+typedef $$WeatherCacheTableCreateCompanionBuilder =
+    WeatherCacheCompanion Function({
+      required String airportIdent,
+      required String payload,
+      required DateTime fetchedAt,
+      Value<int> rowid,
+    });
+typedef $$WeatherCacheTableUpdateCompanionBuilder =
+    WeatherCacheCompanion Function({
+      Value<String> airportIdent,
+      Value<String> payload,
+      Value<DateTime> fetchedAt,
+      Value<int> rowid,
+    });
+
+class $$WeatherCacheTableFilterComposer
+    extends Composer<_$AppDatabase, $WeatherCacheTable> {
+  $$WeatherCacheTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get airportIdent => $composableBuilder(
+    column: $table.airportIdent,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get payload => $composableBuilder(
+    column: $table.payload,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get fetchedAt => $composableBuilder(
+    column: $table.fetchedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$WeatherCacheTableOrderingComposer
+    extends Composer<_$AppDatabase, $WeatherCacheTable> {
+  $$WeatherCacheTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get airportIdent => $composableBuilder(
+    column: $table.airportIdent,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get payload => $composableBuilder(
+    column: $table.payload,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get fetchedAt => $composableBuilder(
+    column: $table.fetchedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$WeatherCacheTableAnnotationComposer
+    extends Composer<_$AppDatabase, $WeatherCacheTable> {
+  $$WeatherCacheTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get airportIdent => $composableBuilder(
+    column: $table.airportIdent,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get payload =>
+      $composableBuilder(column: $table.payload, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get fetchedAt =>
+      $composableBuilder(column: $table.fetchedAt, builder: (column) => column);
+}
+
+class $$WeatherCacheTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $WeatherCacheTable,
+          WeatherCacheData,
+          $$WeatherCacheTableFilterComposer,
+          $$WeatherCacheTableOrderingComposer,
+          $$WeatherCacheTableAnnotationComposer,
+          $$WeatherCacheTableCreateCompanionBuilder,
+          $$WeatherCacheTableUpdateCompanionBuilder,
+          (
+            WeatherCacheData,
+            BaseReferences<_$AppDatabase, $WeatherCacheTable, WeatherCacheData>,
+          ),
+          WeatherCacheData,
+          PrefetchHooks Function()
+        > {
+  $$WeatherCacheTableTableManager(_$AppDatabase db, $WeatherCacheTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$WeatherCacheTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$WeatherCacheTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$WeatherCacheTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> airportIdent = const Value.absent(),
+                Value<String> payload = const Value.absent(),
+                Value<DateTime> fetchedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => WeatherCacheCompanion(
+                airportIdent: airportIdent,
+                payload: payload,
+                fetchedAt: fetchedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String airportIdent,
+                required String payload,
+                required DateTime fetchedAt,
+                Value<int> rowid = const Value.absent(),
+              }) => WeatherCacheCompanion.insert(
+                airportIdent: airportIdent,
+                payload: payload,
+                fetchedAt: fetchedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$WeatherCacheTable, WeatherCacheData>(table),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $WeatherCacheTable,
+                    WeatherCacheData
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$WeatherCacheTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $WeatherCacheTable,
+      WeatherCacheData,
+      $$WeatherCacheTableFilterComposer,
+      $$WeatherCacheTableOrderingComposer,
+      $$WeatherCacheTableAnnotationComposer,
+      $$WeatherCacheTableCreateCompanionBuilder,
+      $$WeatherCacheTableUpdateCompanionBuilder,
+      (
+        WeatherCacheData,
+        BaseReferences<_$AppDatabase, $WeatherCacheTable, WeatherCacheData>,
+      ),
+      WeatherCacheData,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -9646,4 +10096,6 @@ class $AppDatabaseManager {
       $$FlightWaypointsTableTableManager(_db, _db.flightWaypoints);
   $$ScratchPagesTableTableManager get scratchPages =>
       $$ScratchPagesTableTableManager(_db, _db.scratchPages);
+  $$WeatherCacheTableTableManager get weatherCache =>
+      $$WeatherCacheTableTableManager(_db, _db.weatherCache);
 }

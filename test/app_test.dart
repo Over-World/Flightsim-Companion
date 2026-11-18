@@ -8,6 +8,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'fixtures.dart';
+
 /// Unmounts the app so drift's stream-close timers fire inside the test.
 Future<void> unmount(WidgetTester tester) async {
   await tester.pumpWidget(const SizedBox());
@@ -45,6 +47,7 @@ void main() {
         db: db,
         prefs: prefs,
         settings: settings,
+        httpClient: fakeWeatherClient(),
         child: FlightsimCompanionApp(router: createRouter(settings)),
       ),
     );

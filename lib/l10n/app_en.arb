@@ -513,5 +513,83 @@
   "e6bColdTemperatureHint": "Altitude correction at low temperatures (ICAO)",
   "e6bDescentHint": "Top of descent, vertical speed for 3° or a distance",
   "e6bClimbHint": "Climb gradient in ft/NM, % and degrees",
-  "e6bConverterHint": "Speed, distance, altitude, temperature, pressure, volume, mass"
+  "e6bConverterHint": "Speed, distance, altitude, temperature, pressure, volume, mass",
+  "flightTabWeather": "Weather",
+  "weatherTitle": "Weather",
+  "weatherRefresh": "Refresh",
+  "weatherLoading": "Loading weather…",
+  "weatherError": "No weather: {error}",
+  "@weatherError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "weatherNone": "No METAR or TAF within 40 NM",
+  "weatherNearby": "Nearest report {station} ({nm} NM)",
+  "@weatherNearby": {
+    "placeholders": {
+      "station": {
+        "type": "String"
+      },
+      "nm": {
+        "type": "int"
+      }
+    }
+  },
+  "weatherObserved": "Observed {time}, {age}",
+  "@weatherObserved": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      },
+      "age": {
+        "type": "String"
+      }
+    }
+  },
+  "weatherAgeMinutes": "{minutes} min ago",
+  "@weatherAgeMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "weatherAgeHours": "{hours} h ago",
+  "@weatherAgeHours": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "weatherUseWind": "Use wind {direction}° / {speed} kt",
+  "@weatherUseWind": {
+    "placeholders": {
+      "direction": {
+        "type": "String"
+      },
+      "speed": {
+        "type": "int"
+      }
+    }
+  },
+  "weatherUseWindHint": "\"Use wind\" sets the flight's planning wind (true direction, as in the METAR).",
+  "weatherShowTaf": "Show TAF",
+  "weatherHideTaf": "Hide TAF",
+  "weatherVisibility": "Visibility",
+  "weatherClouds": "Clouds",
+  "weatherTemperature": "Temp / dew point",
+  "weatherPhenomena": "Weather",
+  "runwayWindMetar": "Wind METAR {station}",
+  "@runwayWindMetar": {
+    "placeholders": {
+      "station": {
+        "type": "String"
+      }
+    }
+  },
+  "runwayWindPlanned": "Planning wind"
 }

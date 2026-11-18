@@ -10,23 +10,64 @@ import '../../data/db/database.dart';
 import '../../data/repositories/flight_repository.dart';
 import '../../data/repositories/navdata_repository.dart';
 import '../../l10n/app_localizations.dart';
+import '../weather/weather_controller.dart';
 
 /// Expected departure and arrival runway of a flight, with wind components
-/// from the flight's wind.
-class RunwaysCard extends StatelessWidget {
+/// from the airport's own METAR when available, else the flight's wind.
+class RunwaysCard extends StatefulWidget {
   const RunwaysCard(this.data, {super.key, this.margin = EdgeInsets.zero});
 
   final FlightWithRoute data;
   final EdgeInsetsGeometry margin;
 
   @override
+  State<RunwaysCard> createState() => _RunwaysCardState();
+}
+
+class _RunwaysCardState extends State<RunwaysCard> {
+  @override
+  void initState() {
+    super.initState();
+    final weather = context.read<WeatherController>();
+    weather.loadCached(widget.data.flight.departureIdent);
+    weather.loadCached(widget.data.flight.destinationIdent);
+  }
+
+  @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final f = data.flight;
+    final f = widget.data.flight;
     final repo = context.read<FlightRepository>();
+    final weather = context.watch<WeatherController>();
     final theme = Theme.of(context);
+
+    RunwaySelector selector(
+      String label,
+      String ident,
+      String? selected,
+      FlightsCompanion Function(String?) change,
+    ) {
+      final report = weather.report(ident);
+      final metar = report?.metar;
+      final useMetar =
+          report != null && report.isLocal && (metar?.hasUsableWind ?? false);
+      return RunwaySelector(
+        label: label,
+        airportIdent: ident,
+        selected: selected,
+        windDirection: useMetar ? metar!.windDirection : f.windDirection,
+        windSpeedKt: useMetar ? metar!.windSpeedKt : f.windSpeedKt,
+        gustKt: useMetar ? metar!.gustKt : null,
+        windSource: useMetar
+            ? l10n.runwayWindMetar(metar!.station)
+            : l10n.runwayWindPlanned,
+        maxCrosswindKt: widget.data.aircraft?.maxCrosswindKt,
+        onSelected: (r) => repo.updateFlight(f.id, change(r)),
+      );
+    }
+
     return Card(
-      margin: margin,
+      margin: widget.margin,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
         child: Column(
@@ -39,30 +80,18 @@ class RunwaysCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            RunwaySelector(
-              label: l10n.flightDeparture,
-              airportIdent: f.departureIdent,
-              selected: f.departureRunway,
-              windDirection: f.windDirection,
-              windSpeedKt: f.windSpeedKt,
-              maxCrosswindKt: data.aircraft?.maxCrosswindKt,
-              onSelected: (r) => repo.updateFlight(
-                f.id,
-                FlightsCompanion(departureRunway: Value(r)),
-              ),
+            selector(
+              l10n.flightDeparture,
+              f.departureIdent,
+              f.departureRunway,
+              (r) => FlightsCompanion(departureRunway: Value(r)),
             ),
             const Divider(height: 24),
-            RunwaySelector(
-              label: l10n.flightDestination,
-              airportIdent: f.destinationIdent,
-              selected: f.arrivalRunway,
-              windDirection: f.windDirection,
-              windSpeedKt: f.windSpeedKt,
-              maxCrosswindKt: data.aircraft?.maxCrosswindKt,
-              onSelected: (r) => repo.updateFlight(
-                f.id,
-                FlightsCompanion(arrivalRunway: Value(r)),
-              ),
+            selector(
+              l10n.flightDestination,
+              f.destinationIdent,
+              f.arrivalRunway,
+              (r) => FlightsCompanion(arrivalRunway: Value(r)),
             ),
           ],
         ),
@@ -80,6 +109,8 @@ class RunwaySelector extends StatefulWidget {
     required this.onSelected,
     this.windDirection,
     this.windSpeedKt,
+    this.gustKt,
+    this.windSource,
     this.maxCrosswindKt,
   });
 
@@ -91,6 +122,10 @@ class RunwaySelector extends StatefulWidget {
   /// True direction the wind blows from.
   final int? windDirection;
   final int? windSpeedKt;
+  final int? gustKt;
+
+  /// Where the wind comes from (METAR or planning), shown with the values.
+  final String? windSource;
   final int? maxCrosswindKt;
 
   @override
@@ -165,6 +200,8 @@ class _RunwaySelectorState extends State<RunwaySelector> {
                 end: selected,
                 windDirection: _hasWind ? widget.windDirection : null,
                 windSpeedKt: widget.windSpeedKt,
+                gustKt: widget.gustKt,
+                windSource: widget.windSource,
                 maxCrosswindKt: widget.maxCrosswindKt,
               ),
             ] else if (suggested != null)
@@ -187,12 +224,16 @@ class _RunwayDetails extends StatelessWidget {
     required this.end,
     this.windDirection,
     this.windSpeedKt,
+    this.gustKt,
+    this.windSource,
     this.maxCrosswindKt,
   });
 
   final RunwayEnd end;
   final int? windDirection;
   final int? windSpeedKt;
+  final int? gustKt;
+  final String? windSource;
   final int? maxCrosswindKt;
 
   @override
@@ -221,8 +262,12 @@ class _RunwayDetails extends StatelessWidget {
       ).single;
       final head = w.headwind.round();
       final cross = w.crosswind.round();
+      // Gusts count for the crosswind limit.
+      final gustCross = gustKt == null
+          ? cross
+          : (w.crosswind * gustKt! / windSpeedKt!).round();
       final tooMuchCross =
-          maxCrosswindKt != null && cross.abs() > maxCrosswindKt!;
+          maxCrosswindKt != null && gustCross.abs() > maxCrosswindKt!;
       final tailwind = head < 0;
       final warning = [
         if (tailwind) l10n.runwayTailwindWarning,
@@ -231,6 +276,12 @@ class _RunwayDetails extends StatelessWidget {
       wind = Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          if (windSource != null)
+            Text(
+              '$windSource: ${formatCourse(windDirection!.toDouble())}° / '
+              '$windSpeedKt${gustKt == null ? '' : 'G$gustKt'} kt',
+              style: theme.textTheme.bodySmall,
+            ),
           Text(
             [
               head >= 0
@@ -238,7 +289,8 @@ class _RunwayDetails extends StatelessWidget {
                   : '${l10n.e6bTailwind} ${-head} kt',
               cross == 0
                   ? '${l10n.e6bCrosswind} 0 kt'
-                  : '${l10n.e6bCrosswind} ${cross.abs()} kt '
+                  : '${l10n.e6bCrosswind} ${cross.abs()}'
+                        '${gustCross.abs() != cross.abs() ? '–${gustCross.abs()}' : ''} kt '
                         '${cross > 0 ? l10n.e6bFromRight : l10n.e6bFromLeft}',
             ].join(' · '),
             style: theme.textTheme.bodyMedium?.copyWith(

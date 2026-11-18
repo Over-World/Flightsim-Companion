@@ -1,3 +1,4 @@
+import 'package:drift/drift.dart' show Value;
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
@@ -12,6 +13,7 @@ import '../../l10n/app_localizations.dart';
 import '../kneeboard/kneeboard_controller.dart';
 import 'add_waypoint_dialog.dart';
 import 'edit_dialogs.dart';
+import '../weather/weather_card.dart';
 import 'navlog_table.dart';
 import 'runway_selector.dart';
 
@@ -106,34 +108,93 @@ class _FlightEditorScreenState extends State<FlightEditorScreen> {
             builder: (context, constraints) {
               final route = _RoutePanel(data);
               final navlog = _NavlogPanel(data);
+              final weather = _WeatherPanel(data);
               if (constraints.maxWidth >= 1000) {
                 return Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(width: 380, child: route),
                     const VerticalDivider(width: 1),
-                    Expanded(child: navlog),
+                    Expanded(
+                      child: _Tabs(
+                        labels: [l10n.flightTabNavlog, l10n.flightTabWeather],
+                        children: [navlog, weather],
+                      ),
+                    ),
                   ],
                 );
               }
-              return DefaultTabController(
-                length: 2,
-                child: Column(
-                  children: [
-                    TabBar(
-                      tabs: [
-                        Tab(text: l10n.flightTabRoute),
-                        Tab(text: l10n.flightTabNavlog),
-                      ],
-                    ),
-                    Expanded(child: TabBarView(children: [route, navlog])),
-                  ],
-                ),
+              return _Tabs(
+                labels: [
+                  l10n.flightTabRoute,
+                  l10n.flightTabNavlog,
+                  l10n.flightTabWeather,
+                ],
+                children: [route, navlog, weather],
               );
             },
           ),
         );
       },
+    );
+  }
+}
+
+class _Tabs extends StatelessWidget {
+  const _Tabs({required this.labels, required this.children});
+
+  final List<String> labels;
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) => DefaultTabController(
+    length: children.length,
+    child: Column(
+      children: [
+        TabBar(tabs: [for (final l in labels) Tab(text: l)]),
+        Expanded(child: TabBarView(children: children)),
+      ],
+    ),
+  );
+}
+
+/// Departure, destination and alternate weather; departure METAR wind can
+/// become the flight's planning wind.
+class _WeatherPanel extends StatelessWidget {
+  const _WeatherPanel(this.data);
+
+  final FlightWithRoute data;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final f = data.flight;
+    final repo = context.read<FlightRepository>();
+    void useWind(int dir, int speed) => repo.updateFlight(
+      f.id,
+      FlightsCompanion(windDirection: Value(dir), windSpeedKt: Value(speed)),
+    );
+    final airports = [
+      (f.departureIdent, l10n.flightDeparture),
+      if (f.destinationIdent != f.departureIdent)
+        (f.destinationIdent, l10n.flightDestination),
+      if (f.alternateIdent case final altn?) (altn, l10n.flightAlternate),
+    ];
+    return ListView(
+      padding: const EdgeInsets.all(16),
+      children: [
+        for (final (ident, role) in airports)
+          WeatherCard(
+            airportIdent: ident,
+            title: '$role · $ident',
+            onUseWind: useWind,
+            margin: const EdgeInsets.only(bottom: 12),
+          ),
+        Text(
+          l10n.weatherUseWindHint,
+          style: Theme.of(context).textTheme.bodySmall,
+        ),
+      ],
     );
   }
 }

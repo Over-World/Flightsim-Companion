@@ -13,6 +13,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../fixtures.dart';
+
 void main() {
   group('DrawingController', () {
     test('draw, undo, redo and erase', () {
@@ -85,6 +87,7 @@ void main() {
           db: db,
           prefs: prefs,
           settings: settings,
+          httpClient: fakeWeatherClient(),
           child: FlightsimCompanionApp(router: createRouter(settings)),
         ),
       );

@@ -1077,4 +1077,79 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get e6bConverterHint =>
       'Geschwindigkeit, Strecke, Höhe, Temperatur, Druck, Volumen, Masse';
+
+  @override
+  String get flightTabWeather => 'Wetter';
+
+  @override
+  String get weatherTitle => 'Wetter';
+
+  @override
+  String get weatherRefresh => 'Aktualisieren';
+
+  @override
+  String get weatherLoading => 'Lade Wetter…';
+
+  @override
+  String weatherError(String error) {
+    return 'Kein Wetter: $error';
+  }
+
+  @override
+  String get weatherNone => 'Kein METAR oder TAF im Umkreis von 40 NM';
+
+  @override
+  String weatherNearby(String station, int nm) {
+    return 'Nächste Meldung $station ($nm NM)';
+  }
+
+  @override
+  String weatherObserved(String time, String age) {
+    return 'Beobachtet $time, $age';
+  }
+
+  @override
+  String weatherAgeMinutes(int minutes) {
+    return 'vor $minutes min';
+  }
+
+  @override
+  String weatherAgeHours(int hours) {
+    return 'vor $hours h';
+  }
+
+  @override
+  String weatherUseWind(String direction, int speed) {
+    return 'Wind übernehmen $direction° / $speed kt';
+  }
+
+  @override
+  String get weatherUseWindHint =>
+      '„Wind übernehmen“ setzt den Planungswind des Flugs (rechtweisend, wie im METAR).';
+
+  @override
+  String get weatherShowTaf => 'TAF anzeigen';
+
+  @override
+  String get weatherHideTaf => 'TAF ausblenden';
+
+  @override
+  String get weatherVisibility => 'Sicht';
+
+  @override
+  String get weatherClouds => 'Wolken';
+
+  @override
+  String get weatherTemperature => 'Temp. / Taupunkt';
+
+  @override
+  String get weatherPhenomena => 'Wetter';
+
+  @override
+  String runwayWindMetar(String station) {
+    return 'Wind METAR $station';
+  }
+
+  @override
+  String get runwayWindPlanned => 'Planungswind';
 }
