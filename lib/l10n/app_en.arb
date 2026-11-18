@@ -15,7 +15,6 @@
   "navdataMissingMessage": "Download airports, runways, frequencies and navaids once to use the app offline.",
   "navdataMissingAction": "Download",
   "flightsEmptyTitle": "No flights planned",
-  "flightsEmptyMessage": "Your planned VFR and IFR flights will appear here. Meanwhile, look up airports, frequencies and navaids.",
   "flyNoActiveFlightTitle": "No active flight",
   "flyNoActiveFlightMessage": "Start a planned flight to open the kneeboard with navlog, stopwatch and frequencies.",
   "logbookEmptyTitle": "Logbook is empty",
@@ -238,5 +237,128 @@
   "onboardingAccountsText": "Optional. With your SimBrief username the app can import your latest flight plan later.",
   "onboardingHomeTitle": "Home base",
   "onboardingHomeText": "Your home airport is suggested as departure for new flights, your default aircraft is preselected.",
-  "onboardingHomeNeedsNavdata": "Download the navigation data first to pick a home airport – you can set it later in the settings."
+  "onboardingHomeNeedsNavdata": "Download the navigation data first to pick a home airport – you can set it later in the settings.",
+  "flightsEmptyMessage": "Plan your first VFR or IFR flight: departure, destination, waypoints – the navlog is calculated for you.",
+  "flightNew": "New flight",
+  "flightCreate": "Create",
+  "flightEdit": "Flight data",
+  "flightTitle": "Title",
+  "flightDeparture": "Departure",
+  "flightDestination": "Destination",
+  "flightAlternate": "Alternate",
+  "flightAlternateShort": "Altn {ident}",
+  "@flightAlternateShort": {
+    "placeholders": {
+      "ident": {
+        "type": "String"
+      }
+    }
+  },
+  "flightAircraft": "Aircraft",
+  "flightCruiseAltitude": "Cruise altitude",
+  "flightPlannedDeparture": "Planned departure (off-block)",
+  "flightWindHint": "Wind for all legs without their own wind (true direction, from).",
+  "flightNoAircraft": "No aircraft selected",
+  "flightChooseAircraft": "Choose aircraft",
+  "flightFly": "Fly",
+  "flightTabRoute": "Route",
+  "flightTabNavlog": "Navlog",
+  "flightStatusPlanned": "Planned",
+  "flightStatusActive": "In flight",
+  "flightStatusCompleted": "Completed",
+  "flightDeleteTitle": "Delete flight?",
+  "flightDeleteMessage": "\"{title}\" and all its notes will be removed permanently.",
+  "@flightDeleteMessage": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "windDirection": "Wind from",
+  "windSpeed": "Wind speed",
+  "legTo": "Leg to {ident}",
+  "@legTo": {
+    "placeholders": {
+      "ident": {
+        "type": "String"
+      }
+    }
+  },
+  "legEdit": "Edit leg",
+  "legAltitude": "Altitude",
+  "legWindHint": "Leave empty to use the flight's wind.",
+  "legNotes": "Notes for this leg",
+  "waypointAdd": "Add waypoint",
+  "waypointTabSearch": "Search",
+  "waypointTabRadial": "Radial/DME",
+  "waypointTabCoordinates": "Coordinates",
+  "waypointSearchHint": "Navaid or airport: ident or name",
+  "waypointNavaidIdent": "Navaid ident (e.g. FFM)",
+  "waypointRadial": "Radial",
+  "waypointDistance": "Distance",
+  "waypointName": "Name",
+  "waypointNameHint": "e.g. lake, motorway junction, reporting point",
+  "waypointLatitude": "Latitude",
+  "waypointLongitude": "Longitude",
+  "waypointCoordinatesHint": "Decimal degrees, south and west negative.",
+  "navlogWaypoint": "To",
+  "navlogWind": "Wind",
+  "navlogCalm": "calm",
+  "navlogTotal": "Total",
+  "navlogDistance": "Distance",
+  "navlogTime": "Flight time",
+  "navlogFuel": "Trip fuel",
+  "navlogNeedsAircraft": "Choose an aircraft to calculate headings, times and fuel.",
+  "navlogUnsolvable": "! The wind is too strong for at least one leg at this airspeed.",
+  "navlogFootnote": "Constant cruise TAS, no climb or descent. MH = magnetic heading with WMM variation. Tap a leg to set its altitude and wind.",
+  "kneeboardCurrentLeg": "Current leg",
+  "kneeboardTimes": "Times",
+  "kneeboardEditPlan": "Edit plan",
+  "kneeboardReset": "Reset times",
+  "kneeboardResetMessage": "All recorded times of this flight are cleared.",
+  "kneeboardClose": "Close kneeboard",
+  "actionBlockOff": "Off block",
+  "actionTakeoff": "Takeoff",
+  "actionPassed": "Over {ident}",
+  "@actionPassed": {
+    "placeholders": {
+      "ident": {
+        "type": "String"
+      }
+    }
+  },
+  "actionLanding": "Landing",
+  "actionBlockOn": "On block",
+  "actionCompleted": "Flight completed",
+  "actionUndo": "Undo",
+  "legProgress": "Leg {current} of {total}",
+  "@legProgress": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "legElapsed": "Leg time",
+  "legRemaining": "Remaining",
+  "legOverdue": "Overdue",
+  "phasePreflight": "Ready. Tap \"Off block\" when you start taxiing – or directly \"Takeoff\" after it.",
+  "phaseTaxiOut": "Taxiing. Tap \"Takeoff\" when the wheels leave the ground.",
+  "phaseArrived": "All waypoints passed. Tap \"Landing\" at touchdown.",
+  "phaseLanded": "Landed. Tap \"On block\" when parked.",
+  "phaseParked": "Flight completed.",
+  "timeBlockOff": "Off block",
+  "timeTakeoff": "Takeoff",
+  "timeLanding": "Landing",
+  "timeBlockOn": "On block",
+  "timeFlight": "Flight time",
+  "timeBlock": "Block time",
+  "stopwatch": "Stopwatch",
+  "stopwatchStart": "Start",
+  "stopwatchStop": "Stop",
+  "stopwatchReset": "Reset"
 }

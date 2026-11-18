@@ -9,6 +9,7 @@ import '../features/airports/airport_search_screen.dart';
 import '../features/fly/fly_screen.dart';
 import '../features/logbook/logbook_screen.dart';
 import '../features/onboarding/onboarding_screen.dart';
+import '../features/plan/flight_editor_screen.dart';
 import '../features/plan/plan_screen.dart';
 import '../features/settings/settings_screen.dart';
 import '../features/shell/adaptive_shell.dart';
@@ -45,7 +46,15 @@ GoRouter createRouter(SettingsController settings) => GoRouter(
             GoRoute(
               path: '/plan',
               builder: (context, state) => const PlanScreen(),
-              routes: [_airportRoutes()],
+              routes: [
+                _airportRoutes(),
+                GoRoute(
+                  path: 'flights/:id',
+                  builder: (context, state) => FlightEditorScreen(
+                    flightId: int.parse(state.pathParameters['id']!),
+                  ),
+                ),
+              ],
             ),
           ],
         ),

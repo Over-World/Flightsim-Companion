@@ -91,3 +91,40 @@ double trueToMagnetic(double trueDeg, double variationEast) =>
     crosswind: windSpeed * math.sin(angle),
   );
 }
+
+/// Point at [distance] NM along true [course] from a start point.
+({double latitude, double longitude}) destinationPoint(
+  double lat,
+  double lon,
+  double course,
+  double distance,
+) {
+  final delta = distance / earthRadiusNm;
+  final theta = _rad(course);
+  final phi1 = _rad(lat);
+  final lambda1 = _rad(lon);
+  final phi2 = math.asin(
+    math.sin(phi1) * math.cos(delta) +
+        math.cos(phi1) * math.sin(delta) * math.cos(theta),
+  );
+  final lambda2 =
+      lambda1 +
+      math.atan2(
+        math.sin(theta) * math.sin(delta) * math.cos(phi1),
+        math.cos(delta) - math.sin(phi1) * math.sin(phi2),
+      );
+  return (latitude: _deg(phi2), longitude: (_deg(lambda2) + 540) % 360 - 180);
+}
+
+/// Midpoint of a great-circle segment (used for the variation of a leg).
+({double latitude, double longitude}) midpoint(
+  double lat1,
+  double lon1,
+  double lat2,
+  double lon2,
+) => destinationPoint(
+  lat1,
+  lon1,
+  initialCourse(lat1, lon1, lat2, lon2),
+  distanceNm(lat1, lon1, lat2, lon2) / 2,
+);

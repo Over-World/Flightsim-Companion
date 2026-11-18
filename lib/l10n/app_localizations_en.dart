@@ -56,10 +56,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get flightsEmptyTitle => 'No flights planned';
 
   @override
-  String get flightsEmptyMessage =>
-      'Your planned VFR and IFR flights will appear here. Meanwhile, look up airports, frequencies and navaids.';
-
-  @override
   String get flyNoActiveFlightTitle => 'No active flight';
 
   @override
@@ -416,4 +412,280 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get onboardingHomeNeedsNavdata =>
       'Download the navigation data first to pick a home airport – you can set it later in the settings.';
+
+  @override
+  String get flightsEmptyMessage =>
+      'Plan your first VFR or IFR flight: departure, destination, waypoints – the navlog is calculated for you.';
+
+  @override
+  String get flightNew => 'New flight';
+
+  @override
+  String get flightCreate => 'Create';
+
+  @override
+  String get flightEdit => 'Flight data';
+
+  @override
+  String get flightTitle => 'Title';
+
+  @override
+  String get flightDeparture => 'Departure';
+
+  @override
+  String get flightDestination => 'Destination';
+
+  @override
+  String get flightAlternate => 'Alternate';
+
+  @override
+  String flightAlternateShort(String ident) {
+    return 'Altn $ident';
+  }
+
+  @override
+  String get flightAircraft => 'Aircraft';
+
+  @override
+  String get flightCruiseAltitude => 'Cruise altitude';
+
+  @override
+  String get flightPlannedDeparture => 'Planned departure (off-block)';
+
+  @override
+  String get flightWindHint =>
+      'Wind for all legs without their own wind (true direction, from).';
+
+  @override
+  String get flightNoAircraft => 'No aircraft selected';
+
+  @override
+  String get flightChooseAircraft => 'Choose aircraft';
+
+  @override
+  String get flightFly => 'Fly';
+
+  @override
+  String get flightTabRoute => 'Route';
+
+  @override
+  String get flightTabNavlog => 'Navlog';
+
+  @override
+  String get flightStatusPlanned => 'Planned';
+
+  @override
+  String get flightStatusActive => 'In flight';
+
+  @override
+  String get flightStatusCompleted => 'Completed';
+
+  @override
+  String get flightDeleteTitle => 'Delete flight?';
+
+  @override
+  String flightDeleteMessage(String title) {
+    return '\"$title\" and all its notes will be removed permanently.';
+  }
+
+  @override
+  String get windDirection => 'Wind from';
+
+  @override
+  String get windSpeed => 'Wind speed';
+
+  @override
+  String legTo(String ident) {
+    return 'Leg to $ident';
+  }
+
+  @override
+  String get legEdit => 'Edit leg';
+
+  @override
+  String get legAltitude => 'Altitude';
+
+  @override
+  String get legWindHint => 'Leave empty to use the flight\'s wind.';
+
+  @override
+  String get legNotes => 'Notes for this leg';
+
+  @override
+  String get waypointAdd => 'Add waypoint';
+
+  @override
+  String get waypointTabSearch => 'Search';
+
+  @override
+  String get waypointTabRadial => 'Radial/DME';
+
+  @override
+  String get waypointTabCoordinates => 'Coordinates';
+
+  @override
+  String get waypointSearchHint => 'Navaid or airport: ident or name';
+
+  @override
+  String get waypointNavaidIdent => 'Navaid ident (e.g. FFM)';
+
+  @override
+  String get waypointRadial => 'Radial';
+
+  @override
+  String get waypointDistance => 'Distance';
+
+  @override
+  String get waypointName => 'Name';
+
+  @override
+  String get waypointNameHint =>
+      'e.g. lake, motorway junction, reporting point';
+
+  @override
+  String get waypointLatitude => 'Latitude';
+
+  @override
+  String get waypointLongitude => 'Longitude';
+
+  @override
+  String get waypointCoordinatesHint =>
+      'Decimal degrees, south and west negative.';
+
+  @override
+  String get navlogWaypoint => 'To';
+
+  @override
+  String get navlogWind => 'Wind';
+
+  @override
+  String get navlogCalm => 'calm';
+
+  @override
+  String get navlogTotal => 'Total';
+
+  @override
+  String get navlogDistance => 'Distance';
+
+  @override
+  String get navlogTime => 'Flight time';
+
+  @override
+  String get navlogFuel => 'Trip fuel';
+
+  @override
+  String get navlogNeedsAircraft =>
+      'Choose an aircraft to calculate headings, times and fuel.';
+
+  @override
+  String get navlogUnsolvable =>
+      '! The wind is too strong for at least one leg at this airspeed.';
+
+  @override
+  String get navlogFootnote =>
+      'Constant cruise TAS, no climb or descent. MH = magnetic heading with WMM variation. Tap a leg to set its altitude and wind.';
+
+  @override
+  String get kneeboardCurrentLeg => 'Current leg';
+
+  @override
+  String get kneeboardTimes => 'Times';
+
+  @override
+  String get kneeboardEditPlan => 'Edit plan';
+
+  @override
+  String get kneeboardReset => 'Reset times';
+
+  @override
+  String get kneeboardResetMessage =>
+      'All recorded times of this flight are cleared.';
+
+  @override
+  String get kneeboardClose => 'Close kneeboard';
+
+  @override
+  String get actionBlockOff => 'Off block';
+
+  @override
+  String get actionTakeoff => 'Takeoff';
+
+  @override
+  String actionPassed(String ident) {
+    return 'Over $ident';
+  }
+
+  @override
+  String get actionLanding => 'Landing';
+
+  @override
+  String get actionBlockOn => 'On block';
+
+  @override
+  String get actionCompleted => 'Flight completed';
+
+  @override
+  String get actionUndo => 'Undo';
+
+  @override
+  String legProgress(int current, int total) {
+    return 'Leg $current of $total';
+  }
+
+  @override
+  String get legElapsed => 'Leg time';
+
+  @override
+  String get legRemaining => 'Remaining';
+
+  @override
+  String get legOverdue => 'Overdue';
+
+  @override
+  String get phasePreflight =>
+      'Ready. Tap \"Off block\" when you start taxiing – or directly \"Takeoff\" after it.';
+
+  @override
+  String get phaseTaxiOut =>
+      'Taxiing. Tap \"Takeoff\" when the wheels leave the ground.';
+
+  @override
+  String get phaseArrived =>
+      'All waypoints passed. Tap \"Landing\" at touchdown.';
+
+  @override
+  String get phaseLanded => 'Landed. Tap \"On block\" when parked.';
+
+  @override
+  String get phaseParked => 'Flight completed.';
+
+  @override
+  String get timeBlockOff => 'Off block';
+
+  @override
+  String get timeTakeoff => 'Takeoff';
+
+  @override
+  String get timeLanding => 'Landing';
+
+  @override
+  String get timeBlockOn => 'On block';
+
+  @override
+  String get timeFlight => 'Flight time';
+
+  @override
+  String get timeBlock => 'Block time';
+
+  @override
+  String get stopwatch => 'Stopwatch';
+
+  @override
+  String get stopwatchStart => 'Start';
+
+  @override
+  String get stopwatchStop => 'Stop';
+
+  @override
+  String get stopwatchReset => 'Reset';
 }

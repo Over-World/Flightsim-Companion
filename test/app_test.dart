@@ -1,15 +1,11 @@
 import 'package:drift/native.dart';
 import 'package:flightsim_companion/app.dart';
+import 'package:flightsim_companion/app_scope.dart';
 import 'package:flightsim_companion/core/router.dart';
 import 'package:flightsim_companion/core/settings.dart';
 import 'package:flightsim_companion/data/db/database.dart';
-import 'package:flightsim_companion/data/navdata/navdata_importer.dart';
-import 'package:flightsim_companion/data/repositories/aircraft_repository.dart';
-import 'package:flightsim_companion/data/repositories/navdata_repository.dart';
-import 'package:flightsim_companion/features/navdata/navdata_controller.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Unmounts the app so drift's stream-close timers fire inside the test.
@@ -42,23 +38,13 @@ void main() {
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.reset);
 
-    final settings = await SettingsController.load();
-    final navdata = NavdataRepository(db);
+    final prefs = await SharedPreferences.getInstance();
+    final settings = SettingsController(prefs);
     await tester.pumpWidget(
-      MultiProvider(
-        providers: [
-          Provider.value(value: db),
-          Provider.value(value: AircraftRepository(db)),
-          Provider.value(value: navdata),
-          ChangeNotifierProvider.value(value: settings),
-          ChangeNotifierProvider(
-            create: (_) => NavdataController(
-              importerFactory: () => NavdataImporter(db),
-              repository: navdata,
-              settings: settings,
-            ),
-          ),
-        ],
+      AppScope(
+        db: db,
+        prefs: prefs,
+        settings: settings,
         child: FlightsimCompanionApp(router: createRouter(settings)),
       ),
     );

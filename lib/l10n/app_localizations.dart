@@ -188,12 +188,6 @@ abstract class AppLocalizations {
   /// **'No flights planned'**
   String get flightsEmptyTitle;
 
-  /// No description provided for @flightsEmptyMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'Your planned VFR and IFR flights will appear here. Meanwhile, look up airports, frequencies and navaids.'**
-  String get flightsEmptyMessage;
-
   /// No description provided for @flyNoActiveFlightTitle.
   ///
   /// In en, this message translates to:
@@ -828,6 +822,516 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Download the navigation data first to pick a home airport – you can set it later in the settings.'**
   String get onboardingHomeNeedsNavdata;
+
+  /// No description provided for @flightsEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan your first VFR or IFR flight: departure, destination, waypoints – the navlog is calculated for you.'**
+  String get flightsEmptyMessage;
+
+  /// No description provided for @flightNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New flight'**
+  String get flightNew;
+
+  /// No description provided for @flightCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create'**
+  String get flightCreate;
+
+  /// No description provided for @flightEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Flight data'**
+  String get flightEdit;
+
+  /// No description provided for @flightTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get flightTitle;
+
+  /// No description provided for @flightDeparture.
+  ///
+  /// In en, this message translates to:
+  /// **'Departure'**
+  String get flightDeparture;
+
+  /// No description provided for @flightDestination.
+  ///
+  /// In en, this message translates to:
+  /// **'Destination'**
+  String get flightDestination;
+
+  /// No description provided for @flightAlternate.
+  ///
+  /// In en, this message translates to:
+  /// **'Alternate'**
+  String get flightAlternate;
+
+  /// No description provided for @flightAlternateShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Altn {ident}'**
+  String flightAlternateShort(String ident);
+
+  /// No description provided for @flightAircraft.
+  ///
+  /// In en, this message translates to:
+  /// **'Aircraft'**
+  String get flightAircraft;
+
+  /// No description provided for @flightCruiseAltitude.
+  ///
+  /// In en, this message translates to:
+  /// **'Cruise altitude'**
+  String get flightCruiseAltitude;
+
+  /// No description provided for @flightPlannedDeparture.
+  ///
+  /// In en, this message translates to:
+  /// **'Planned departure (off-block)'**
+  String get flightPlannedDeparture;
+
+  /// No description provided for @flightWindHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Wind for all legs without their own wind (true direction, from).'**
+  String get flightWindHint;
+
+  /// No description provided for @flightNoAircraft.
+  ///
+  /// In en, this message translates to:
+  /// **'No aircraft selected'**
+  String get flightNoAircraft;
+
+  /// No description provided for @flightChooseAircraft.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose aircraft'**
+  String get flightChooseAircraft;
+
+  /// No description provided for @flightFly.
+  ///
+  /// In en, this message translates to:
+  /// **'Fly'**
+  String get flightFly;
+
+  /// No description provided for @flightTabRoute.
+  ///
+  /// In en, this message translates to:
+  /// **'Route'**
+  String get flightTabRoute;
+
+  /// No description provided for @flightTabNavlog.
+  ///
+  /// In en, this message translates to:
+  /// **'Navlog'**
+  String get flightTabNavlog;
+
+  /// No description provided for @flightStatusPlanned.
+  ///
+  /// In en, this message translates to:
+  /// **'Planned'**
+  String get flightStatusPlanned;
+
+  /// No description provided for @flightStatusActive.
+  ///
+  /// In en, this message translates to:
+  /// **'In flight'**
+  String get flightStatusActive;
+
+  /// No description provided for @flightStatusCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get flightStatusCompleted;
+
+  /// No description provided for @flightDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete flight?'**
+  String get flightDeleteTitle;
+
+  /// No description provided for @flightDeleteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'\"{title}\" and all its notes will be removed permanently.'**
+  String flightDeleteMessage(String title);
+
+  /// No description provided for @windDirection.
+  ///
+  /// In en, this message translates to:
+  /// **'Wind from'**
+  String get windDirection;
+
+  /// No description provided for @windSpeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Wind speed'**
+  String get windSpeed;
+
+  /// No description provided for @legTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Leg to {ident}'**
+  String legTo(String ident);
+
+  /// No description provided for @legEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit leg'**
+  String get legEdit;
+
+  /// No description provided for @legAltitude.
+  ///
+  /// In en, this message translates to:
+  /// **'Altitude'**
+  String get legAltitude;
+
+  /// No description provided for @legWindHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave empty to use the flight\'s wind.'**
+  String get legWindHint;
+
+  /// No description provided for @legNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes for this leg'**
+  String get legNotes;
+
+  /// No description provided for @waypointAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add waypoint'**
+  String get waypointAdd;
+
+  /// No description provided for @waypointTabSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get waypointTabSearch;
+
+  /// No description provided for @waypointTabRadial.
+  ///
+  /// In en, this message translates to:
+  /// **'Radial/DME'**
+  String get waypointTabRadial;
+
+  /// No description provided for @waypointTabCoordinates.
+  ///
+  /// In en, this message translates to:
+  /// **'Coordinates'**
+  String get waypointTabCoordinates;
+
+  /// No description provided for @waypointSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Navaid or airport: ident or name'**
+  String get waypointSearchHint;
+
+  /// No description provided for @waypointNavaidIdent.
+  ///
+  /// In en, this message translates to:
+  /// **'Navaid ident (e.g. FFM)'**
+  String get waypointNavaidIdent;
+
+  /// No description provided for @waypointRadial.
+  ///
+  /// In en, this message translates to:
+  /// **'Radial'**
+  String get waypointRadial;
+
+  /// No description provided for @waypointDistance.
+  ///
+  /// In en, this message translates to:
+  /// **'Distance'**
+  String get waypointDistance;
+
+  /// No description provided for @waypointName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get waypointName;
+
+  /// No description provided for @waypointNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. lake, motorway junction, reporting point'**
+  String get waypointNameHint;
+
+  /// No description provided for @waypointLatitude.
+  ///
+  /// In en, this message translates to:
+  /// **'Latitude'**
+  String get waypointLatitude;
+
+  /// No description provided for @waypointLongitude.
+  ///
+  /// In en, this message translates to:
+  /// **'Longitude'**
+  String get waypointLongitude;
+
+  /// No description provided for @waypointCoordinatesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Decimal degrees, south and west negative.'**
+  String get waypointCoordinatesHint;
+
+  /// No description provided for @navlogWaypoint.
+  ///
+  /// In en, this message translates to:
+  /// **'To'**
+  String get navlogWaypoint;
+
+  /// No description provided for @navlogWind.
+  ///
+  /// In en, this message translates to:
+  /// **'Wind'**
+  String get navlogWind;
+
+  /// No description provided for @navlogCalm.
+  ///
+  /// In en, this message translates to:
+  /// **'calm'**
+  String get navlogCalm;
+
+  /// No description provided for @navlogTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get navlogTotal;
+
+  /// No description provided for @navlogDistance.
+  ///
+  /// In en, this message translates to:
+  /// **'Distance'**
+  String get navlogDistance;
+
+  /// No description provided for @navlogTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Flight time'**
+  String get navlogTime;
+
+  /// No description provided for @navlogFuel.
+  ///
+  /// In en, this message translates to:
+  /// **'Trip fuel'**
+  String get navlogFuel;
+
+  /// No description provided for @navlogNeedsAircraft.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose an aircraft to calculate headings, times and fuel.'**
+  String get navlogNeedsAircraft;
+
+  /// No description provided for @navlogUnsolvable.
+  ///
+  /// In en, this message translates to:
+  /// **'! The wind is too strong for at least one leg at this airspeed.'**
+  String get navlogUnsolvable;
+
+  /// No description provided for @navlogFootnote.
+  ///
+  /// In en, this message translates to:
+  /// **'Constant cruise TAS, no climb or descent. MH = magnetic heading with WMM variation. Tap a leg to set its altitude and wind.'**
+  String get navlogFootnote;
+
+  /// No description provided for @kneeboardCurrentLeg.
+  ///
+  /// In en, this message translates to:
+  /// **'Current leg'**
+  String get kneeboardCurrentLeg;
+
+  /// No description provided for @kneeboardTimes.
+  ///
+  /// In en, this message translates to:
+  /// **'Times'**
+  String get kneeboardTimes;
+
+  /// No description provided for @kneeboardEditPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit plan'**
+  String get kneeboardEditPlan;
+
+  /// No description provided for @kneeboardReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset times'**
+  String get kneeboardReset;
+
+  /// No description provided for @kneeboardResetMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'All recorded times of this flight are cleared.'**
+  String get kneeboardResetMessage;
+
+  /// No description provided for @kneeboardClose.
+  ///
+  /// In en, this message translates to:
+  /// **'Close kneeboard'**
+  String get kneeboardClose;
+
+  /// No description provided for @actionBlockOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Off block'**
+  String get actionBlockOff;
+
+  /// No description provided for @actionTakeoff.
+  ///
+  /// In en, this message translates to:
+  /// **'Takeoff'**
+  String get actionTakeoff;
+
+  /// No description provided for @actionPassed.
+  ///
+  /// In en, this message translates to:
+  /// **'Over {ident}'**
+  String actionPassed(String ident);
+
+  /// No description provided for @actionLanding.
+  ///
+  /// In en, this message translates to:
+  /// **'Landing'**
+  String get actionLanding;
+
+  /// No description provided for @actionBlockOn.
+  ///
+  /// In en, this message translates to:
+  /// **'On block'**
+  String get actionBlockOn;
+
+  /// No description provided for @actionCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Flight completed'**
+  String get actionCompleted;
+
+  /// No description provided for @actionUndo.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get actionUndo;
+
+  /// No description provided for @legProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Leg {current} of {total}'**
+  String legProgress(int current, int total);
+
+  /// No description provided for @legElapsed.
+  ///
+  /// In en, this message translates to:
+  /// **'Leg time'**
+  String get legElapsed;
+
+  /// No description provided for @legRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining'**
+  String get legRemaining;
+
+  /// No description provided for @legOverdue.
+  ///
+  /// In en, this message translates to:
+  /// **'Overdue'**
+  String get legOverdue;
+
+  /// No description provided for @phasePreflight.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready. Tap \"Off block\" when you start taxiing – or directly \"Takeoff\" after it.'**
+  String get phasePreflight;
+
+  /// No description provided for @phaseTaxiOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Taxiing. Tap \"Takeoff\" when the wheels leave the ground.'**
+  String get phaseTaxiOut;
+
+  /// No description provided for @phaseArrived.
+  ///
+  /// In en, this message translates to:
+  /// **'All waypoints passed. Tap \"Landing\" at touchdown.'**
+  String get phaseArrived;
+
+  /// No description provided for @phaseLanded.
+  ///
+  /// In en, this message translates to:
+  /// **'Landed. Tap \"On block\" when parked.'**
+  String get phaseLanded;
+
+  /// No description provided for @phaseParked.
+  ///
+  /// In en, this message translates to:
+  /// **'Flight completed.'**
+  String get phaseParked;
+
+  /// No description provided for @timeBlockOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Off block'**
+  String get timeBlockOff;
+
+  /// No description provided for @timeTakeoff.
+  ///
+  /// In en, this message translates to:
+  /// **'Takeoff'**
+  String get timeTakeoff;
+
+  /// No description provided for @timeLanding.
+  ///
+  /// In en, this message translates to:
+  /// **'Landing'**
+  String get timeLanding;
+
+  /// No description provided for @timeBlockOn.
+  ///
+  /// In en, this message translates to:
+  /// **'On block'**
+  String get timeBlockOn;
+
+  /// No description provided for @timeFlight.
+  ///
+  /// In en, this message translates to:
+  /// **'Flight time'**
+  String get timeFlight;
+
+  /// No description provided for @timeBlock.
+  ///
+  /// In en, this message translates to:
+  /// **'Block time'**
+  String get timeBlock;
+
+  /// No description provided for @stopwatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Stopwatch'**
+  String get stopwatch;
+
+  /// No description provided for @stopwatchStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get stopwatchStart;
+
+  /// No description provided for @stopwatchStop.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop'**
+  String get stopwatchStop;
+
+  /// No description provided for @stopwatchReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get stopwatchReset;
 }
 
 class _AppLocalizationsDelegate

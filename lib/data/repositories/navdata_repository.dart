@@ -85,6 +85,39 @@ class NavdataRepository {
     return results.take(limit).toList();
   }
 
+  Future<List<Navaid>> searchNavaids(String query, {int limit = 30}) async {
+    final q = query.trim();
+    if (q.length < 2) return const [];
+    final upper = q.toUpperCase();
+    final results =
+        await (_db.select(_db.navaids)
+              ..where((n) => n.ident.like('$upper%') | n.name.like('%$q%'))
+              ..limit(limit * 3))
+            .get();
+    results.sort(
+      (a, b) => (a.ident == upper ? 0 : 1).compareTo(b.ident == upper ? 0 : 1),
+    );
+    return results.take(limit).toList();
+  }
+
+  Future<List<Navaid>> navaidsByIdent(String ident) => (_db.select(
+    _db.navaids,
+  )..where((n) => n.ident.equals(ident.toUpperCase()))).get();
+
+  Future<Navaid?> navaidById(int id) => (_db.select(
+    _db.navaids,
+  )..where((n) => n.id.equals(id))).getSingleOrNull();
+
+  Future<Airport?> airportById(int id) => (_db.select(
+    _db.airports,
+  )..where((a) => a.id.equals(id))).getSingleOrNull();
+
+  Future<List<AirportFrequency>> frequencies(int airportId) =>
+      (_db.select(_db.airportFrequencies)
+            ..where((f) => f.airportId.equals(airportId))
+            ..orderBy([(f) => OrderingTerm.asc(f.type)]))
+          .get();
+
   Future<Airport?> airportByIdent(String ident) =>
       (_db.select(_db.airports)
             ..where((a) => a.ident.equals(ident.toUpperCase()))
