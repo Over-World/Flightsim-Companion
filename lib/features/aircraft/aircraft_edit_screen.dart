@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../../core/settings.dart';
 import '../../core/units.dart';
+import '../../core/weight_balance.dart';
 import '../../data/db/database.dart';
 import '../../data/repositories/aircraft_repository.dart';
 import '../../l10n/app_localizations.dart';
@@ -35,6 +36,11 @@ class _AircraftEditScreenState extends State<AircraftEditScreen> {
   final _emptyWeight = TextEditingController();
   final _mtow = TextEditingController();
   final _notes = TextEditingController();
+  final _taxiFuel = TextEditingController();
+  final _emptyArm = TextEditingController();
+  String _armUnit = 'in';
+  final List<_StationRow> _stations = [];
+  final List<_EnvelopeRow> _envelope = [];
   String _fuelType = 'avgas';
   bool _loading = true;
 
@@ -57,6 +63,8 @@ class _AircraftEditScreenState extends State<AircraftEditScreen> {
     _emptyWeight,
     _mtow,
     _notes,
+    _taxiFuel,
+    _emptyArm,
   ];
 
   @override
@@ -93,8 +101,39 @@ class _AircraftEditScreenState extends State<AircraftEditScreen> {
       );
       _notes.text = a.notes;
       _fuelType = a.fuelType;
+      _taxiFuel.text = fmt(
+        a.taxiFuelL == null ? null : _fuelUnit.fromLiters(a.taxiFuelL!),
+      );
+      _armUnit = a.armUnit;
+      _emptyArm.text = a.emptyArm == null ? '' : _plain(a.emptyArm!);
+      for (final st in WbStation.decodeAll(a.stations)) {
+        _stations.add(
+          _StationRow(
+            name: st.name,
+            arm: _plain(st.arm),
+            max: st.maxKg == null
+                ? ''
+                : _weightUnit.fromKg(st.maxKg!).round().toString(),
+            kind: st.kind,
+          ),
+        );
+      }
+      for (final p in EnvelopePoint.decodeAll(a.envelope)) {
+        _envelope.add(
+          _EnvelopeRow(
+            arm: _plain(p.arm),
+            weight: _weightUnit.fromKg(p.weightKg).round().toString(),
+          ),
+        );
+      }
     }
     setState(() => _loading = false);
+  }
+
+  /// Arms keep their POH precision.
+  static String _plain(double v) {
+    final s = v.toStringAsFixed(3);
+    return s.contains('.') ? s.replaceFirst(RegExp(r'\.?0+$'), '') : s;
   }
 
   static String _trim(double v) =>
@@ -104,6 +143,12 @@ class _AircraftEditScreenState extends State<AircraftEditScreen> {
   void dispose() {
     for (final c in _controllers) {
       c.dispose();
+    }
+    for (final r in _stations) {
+      r.dispose();
+    }
+    for (final r in _envelope) {
+      r.dispose();
     }
     super.dispose();
   }
@@ -116,6 +161,25 @@ class _AircraftEditScreenState extends State<AircraftEditScreen> {
     if (!_formKey.currentState!.validate()) return;
     final emptyWeight = _double(_emptyWeight);
     final mtow = _double(_mtow);
+    final taxi = _double(_taxiFuel);
+    final stations = [
+      for (final r in _stations)
+        if (_double(r.arm) case final arm?)
+          WbStation(
+            name: r.name.text.trim(),
+            arm: arm,
+            kind: r.kind,
+            maxKg: switch (_double(r.max)) {
+              final m? => _weightUnit.toKg(m),
+              _ => null,
+            },
+          ),
+    ];
+    final envelope = [
+      for (final r in _envelope)
+        if ((_double(r.arm), _double(r.weight)) case (final arm?, final w?))
+          EnvelopePoint(arm, _weightUnit.toKg(w)),
+    ];
     final profile = AircraftProfilesCompanion(
       id: widget.aircraftId == null
           ? const Value.absent()
@@ -136,6 +200,11 @@ class _AircraftEditScreenState extends State<AircraftEditScreen> {
       ),
       maxTakeoffWeightKg: Value(mtow == null ? null : _weightUnit.toKg(mtow)),
       notes: Value(_notes.text.trim()),
+      taxiFuelL: Value(taxi == null ? null : _fuelUnit.toLiters(taxi)),
+      armUnit: Value(_armUnit),
+      emptyArm: Value(_double(_emptyArm)),
+      stations: Value(WbStation.encodeAll(stations)),
+      envelope: Value(EnvelopePoint.encodeAll(envelope)),
     );
     await context.read<AircraftRepository>().save(profile);
     if (mounted) context.pop();
@@ -272,12 +341,94 @@ class _AircraftEditScreenState extends State<AircraftEditScreen> {
                 ],
                 onChanged: (v) => setState(() => _fuelType = v!),
               ),
+              _number(_taxiFuel, l10n.fuelTaxi, fuel),
             ]),
             _Section(l10n.aircraftSectionWeights),
             _Fields([
               _number(_emptyWeight, l10n.aircraftEmptyWeight, weight),
               _number(_mtow, l10n.aircraftMtow, weight),
             ]),
+            _Section(l10n.wbTitle),
+            _Fields([
+              DropdownButtonFormField<String>(
+                initialValue: _armUnit,
+                decoration: InputDecoration(labelText: l10n.wbArmUnit),
+                items: [
+                  DropdownMenuItem(value: 'in', child: Text(l10n.wbArmInches)),
+                  DropdownMenuItem(value: 'm', child: Text(l10n.wbArmMeters)),
+                  DropdownMenuItem(
+                    value: 'mm',
+                    child: Text(l10n.wbArmMillimeters),
+                  ),
+                ],
+                onChanged: (v) => setState(() => _armUnit = v!),
+              ),
+              _number(_emptyArm, l10n.wbEmptyArm, _armUnit),
+            ]),
+            const SizedBox(height: 16),
+            Text(
+              l10n.wbStations,
+              style: Theme.of(context).textTheme.labelLarge,
+            ),
+            const SizedBox(height: 8),
+            for (final r in _stations)
+              _StationEditor(
+                key: ObjectKey(r),
+                row: r,
+                armUnit: _armUnit,
+                weightUnit: weight,
+                onRemove: () => setState(() {
+                  _stations.remove(r);
+                  r.dispose();
+                }),
+                onChanged: () => setState(() {}),
+              ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: TextButton.icon(
+                onPressed: () => setState(() => _stations.add(_StationRow())),
+                icon: const Icon(Icons.add),
+                label: Text(l10n.wbAddStation),
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              l10n.wbEnvelope,
+              style: Theme.of(context).textTheme.labelLarge,
+            ),
+            Text(
+              l10n.wbEnvelopeHint,
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+            const SizedBox(height: 8),
+            for (final r in _envelope)
+              Padding(
+                key: ObjectKey(r),
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Row(
+                  children: [
+                    Expanded(child: _number(r.arm, l10n.wbArm, _armUnit)),
+                    const SizedBox(width: 8),
+                    Expanded(child: _number(r.weight, l10n.wbWeight, weight)),
+                    IconButton(
+                      tooltip: l10n.delete,
+                      icon: const Icon(Icons.remove_circle_outline),
+                      onPressed: () => setState(() {
+                        _envelope.remove(r);
+                        r.dispose();
+                      }),
+                    ),
+                  ],
+                ),
+              ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: TextButton.icon(
+                onPressed: () => setState(() => _envelope.add(_EnvelopeRow())),
+                icon: const Icon(Icons.add),
+                label: Text(l10n.wbAddEnvelopePoint),
+              ),
+            ),
             _Section(l10n.aircraftNotes),
             TextFormField(
               controller: _notes,
@@ -322,6 +473,141 @@ class _AircraftEditScreenState extends State<AircraftEditScreen> {
     ],
     decoration: InputDecoration(labelText: label, suffixText: suffix),
   );
+}
+
+class _StationRow {
+  _StationRow({
+    String name = '',
+    String arm = '',
+    String max = '',
+    this.kind = StationKind.seat,
+  }) : name = TextEditingController(text: name),
+       arm = TextEditingController(text: arm),
+       max = TextEditingController(text: max);
+
+  final TextEditingController name;
+  final TextEditingController arm;
+  final TextEditingController max;
+  StationKind kind;
+
+  void dispose() {
+    name.dispose();
+    arm.dispose();
+    max.dispose();
+  }
+}
+
+class _EnvelopeRow {
+  _EnvelopeRow({String arm = '', String weight = ''})
+    : arm = TextEditingController(text: arm),
+      weight = TextEditingController(text: weight);
+
+  final TextEditingController arm;
+  final TextEditingController weight;
+
+  void dispose() {
+    arm.dispose();
+    weight.dispose();
+  }
+}
+
+class _StationEditor extends StatelessWidget {
+  const _StationEditor({
+    super.key,
+    required this.row,
+    required this.armUnit,
+    required this.weightUnit,
+    required this.onRemove,
+    required this.onChanged,
+  });
+
+  final _StationRow row;
+  final String armUnit;
+  final String weightUnit;
+  final VoidCallback onRemove;
+  final VoidCallback onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    InputDecoration deco(String label, [String? suffix]) =>
+        InputDecoration(labelText: label, suffixText: suffix, isDense: true);
+    final number = TextInputType.numberWithOptions(decimal: true);
+    final digits = [FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]'))];
+    return Card(
+      margin: const EdgeInsets.only(bottom: 8),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(12, 12, 4, 12),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  SizedBox(
+                    width: 220,
+                    child: TextField(
+                      controller: row.name,
+                      decoration: deco(l10n.wbStationName),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 110,
+                    child: TextField(
+                      controller: row.arm,
+                      keyboardType: number,
+                      inputFormatters: digits,
+                      decoration: deco(l10n.wbArm, armUnit),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 110,
+                    child: TextField(
+                      controller: row.max,
+                      keyboardType: number,
+                      inputFormatters: digits,
+                      decoration: deco(l10n.wbMaxLoad, weightUnit),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 150,
+                    child: DropdownButtonFormField<StationKind>(
+                      initialValue: row.kind,
+                      isDense: true,
+                      decoration: deco(l10n.wbStationKind),
+                      items: [
+                        for (final k in StationKind.values)
+                          DropdownMenuItem(
+                            value: k,
+                            child: Text(switch (k) {
+                              StationKind.seat => l10n.wbKindSeat,
+                              StationKind.baggage => l10n.wbKindBaggage,
+                              StationKind.fuel => l10n.wbKindFuel,
+                              StationKind.other => l10n.wbKindOther,
+                            }),
+                          ),
+                      ],
+                      onChanged: (k) {
+                        row.kind = k!;
+                        onChanged();
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            IconButton(
+              tooltip: l10n.delete,
+              icon: const Icon(Icons.remove_circle_outline),
+              onPressed: onRemove,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 class _Section extends StatelessWidget {

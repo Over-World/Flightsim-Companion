@@ -254,6 +254,8 @@ void main() {
       final router = await pumpApp(tester, size);
       router.go('/plan/flights/$flightId');
       await settle(tester);
+      await tester.ensureVisible(find.text('Weather'));
+      await tester.pumpAndSettle();
       await tester.tap(find.text('Weather'));
       await settle(tester);
       await settle(tester);
@@ -267,6 +269,48 @@ void main() {
       );
       expect(flight!.flight.windDirection, 220);
       expect(flight.flight.windSpeedKt, 17);
+      expect(tester.takeException(), isNull);
+      await unmount(tester);
+    });
+
+    testWidgets('fuel plan and weight & balance on $name', (tester) async {
+      final router = await pumpApp(tester, size);
+      router.go('/plan/flights/$flightId');
+      await settle(tester);
+      Future<void> openTab(String label) async {
+        await tester.ensureVisible(find.text(label).first);
+        await tester.pumpAndSettle();
+        await tester.tap(find.text(label).first);
+        await settle(tester);
+      }
+
+      await openTab('Fuel');
+      // The breakdown is built below the inputs; bring rows into view
+      // directly instead of dragging (the drag point can hit a text field).
+      Future<void> reveal(String text) async {
+        await tester.ensureVisible(find.text(text, skipOffstage: false));
+        await tester.pumpAndSettle();
+        expect(find.text(text), findsOneWidget);
+      }
+
+      await reveal('Fuel plan');
+      await reveal('Final reserve 30 min');
+      // C172: 4 L taxi + trip + 17 L reserve, planned as required.
+      await reveal('+0.0 L');
+
+      await openTab('W&B');
+      expect(find.text('Loading'), findsOneWidget);
+      await tester.enterText(
+        find.widgetWithText(TextField, 'Pilot & front passenger'),
+        '160',
+      );
+      await tester.testTextInput.receiveAction(TextInputAction.done);
+      await settle(tester);
+      final f = await tester.runAsync(
+        () => FlightRepository(db).loadFlight(flightId),
+      );
+      expect(f!.loadsKg[0], 160);
+      expect(f.weightBalance!.ok, isTrue);
       expect(tester.takeException(), isNull);
       await unmount(tester);
     });

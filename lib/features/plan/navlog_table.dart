@@ -17,6 +17,9 @@ enum NavlogColumn {
   gs,
   ete,
   fuel,
+
+  /// Planned fuel remaining over the waypoint.
+  remaining,
   eta,
   ato,
 }
@@ -41,6 +44,7 @@ const flyingColumns = [
   NavlogColumn.dist,
   NavlogColumn.ete,
   NavlogColumn.eta,
+  NavlogColumn.remaining,
   NavlogColumn.ato,
 ];
 
@@ -53,6 +57,7 @@ class NavlogTable extends StatelessWidget {
     this.columns = planningColumns,
     this.currentLeg,
     this.etas,
+    this.fuelAtTakeoffL,
     this.onTapLeg,
   });
 
@@ -65,6 +70,9 @@ class NavlogTable extends StatelessWidget {
 
   /// Estimated time over per leg end, same length as the legs.
   final List<DateTime?>? etas;
+
+  /// Basis for [NavlogColumn.remaining].
+  final double? fuelAtTakeoffL;
   final ValueChanged<int>? onTapLeg;
 
   @override
@@ -93,6 +101,7 @@ class NavlogTable extends StatelessWidget {
       NavlogColumn.gs => 'GS',
       NavlogColumn.ete => 'ETE',
       NavlogColumn.fuel => fuelUnit.symbol,
+      NavlogColumn.remaining => 'REM',
       NavlogColumn.eta => 'ETA',
       NavlogColumn.ato => 'ATO',
     };
@@ -122,6 +131,12 @@ class NavlogTable extends StatelessWidget {
           leg.fuelL == null
               ? '!'
               : fuelUnit.fromLiters(leg.fuelL!).toStringAsFixed(1),
+        NavlogColumn.remaining =>
+          fuelAtTakeoffL == null || leg.cumulativeFuelL == null
+              ? '–'
+              : fuelUnit
+                    .fromLiters(fuelAtTakeoffL! - leg.cumulativeFuelL!)
+                    .toStringAsFixed(0),
         NavlogColumn.eta => switch (etas?[i]) {
           final t? => time.format(t),
           _ => '–',

@@ -2889,6 +2889,64 @@ class $AircraftProfilesTable extends AircraftProfiles
     type: DriftSqlType.int,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _taxiFuelLMeta = const VerificationMeta(
+    'taxiFuelL',
+  );
+  @override
+  late final GeneratedColumn<double> taxiFuelL = GeneratedColumn<double>(
+    'taxi_fuel_l',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _armUnitMeta = const VerificationMeta(
+    'armUnit',
+  );
+  @override
+  late final GeneratedColumn<String> armUnit = GeneratedColumn<String>(
+    'arm_unit',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('in'),
+  );
+  static const VerificationMeta _emptyArmMeta = const VerificationMeta(
+    'emptyArm',
+  );
+  @override
+  late final GeneratedColumn<double> emptyArm = GeneratedColumn<double>(
+    'empty_arm',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _stationsMeta = const VerificationMeta(
+    'stations',
+  );
+  @override
+  late final GeneratedColumn<String> stations = GeneratedColumn<String>(
+    'stations',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('[]'),
+  );
+  static const VerificationMeta _envelopeMeta = const VerificationMeta(
+    'envelope',
+  );
+  @override
+  late final GeneratedColumn<String> envelope = GeneratedColumn<String>(
+    'envelope',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('[]'),
+  );
   static const VerificationMeta _notesMeta = const VerificationMeta('notes');
   @override
   late final GeneratedColumn<String> notes = GeneratedColumn<String>(
@@ -2915,6 +2973,11 @@ class $AircraftProfilesTable extends AircraftProfiles
     emptyWeightKg,
     maxTakeoffWeightKg,
     maxCrosswindKt,
+    taxiFuelL,
+    armUnit,
+    emptyArm,
+    stations,
+    envelope,
     notes,
   ];
   @override
@@ -3044,6 +3107,36 @@ class $AircraftProfilesTable extends AircraftProfiles
         ),
       );
     }
+    if (data.containsKey('taxi_fuel_l')) {
+      context.handle(
+        _taxiFuelLMeta,
+        taxiFuelL.isAcceptableOrUnknown(data['taxi_fuel_l']!, _taxiFuelLMeta),
+      );
+    }
+    if (data.containsKey('arm_unit')) {
+      context.handle(
+        _armUnitMeta,
+        armUnit.isAcceptableOrUnknown(data['arm_unit']!, _armUnitMeta),
+      );
+    }
+    if (data.containsKey('empty_arm')) {
+      context.handle(
+        _emptyArmMeta,
+        emptyArm.isAcceptableOrUnknown(data['empty_arm']!, _emptyArmMeta),
+      );
+    }
+    if (data.containsKey('stations')) {
+      context.handle(
+        _stationsMeta,
+        stations.isAcceptableOrUnknown(data['stations']!, _stationsMeta),
+      );
+    }
+    if (data.containsKey('envelope')) {
+      context.handle(
+        _envelopeMeta,
+        envelope.isAcceptableOrUnknown(data['envelope']!, _envelopeMeta),
+      );
+    }
     if (data.containsKey('notes')) {
       context.handle(
         _notesMeta,
@@ -3115,6 +3208,26 @@ class $AircraftProfilesTable extends AircraftProfiles
         DriftSqlType.int,
         data['${effectivePrefix}max_crosswind_kt'],
       ),
+      taxiFuelL: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}taxi_fuel_l'],
+      ),
+      armUnit: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}arm_unit'],
+      )!,
+      emptyArm: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}empty_arm'],
+      ),
+      stations: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}stations'],
+      )!,
+      envelope: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}envelope'],
+      )!,
       notes: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}notes'],
@@ -3147,6 +3260,17 @@ class AircraftProfile extends DataClass implements Insertable<AircraftProfile> {
 
   /// Maximum demonstrated crosswind component.
   final int? maxCrosswindKt;
+
+  /// Typical taxi fuel.
+  final double? taxiFuelL;
+
+  /// Weight & balance: arm unit as in the POH (`in`, `m`, `mm`), empty CG
+  /// arm, loading stations and CG envelope as JSON (see
+  /// `core/weight_balance.dart`).
+  final String armUnit;
+  final double? emptyArm;
+  final String stations;
+  final String envelope;
   final String notes;
   const AircraftProfile({
     required this.id,
@@ -3163,6 +3287,11 @@ class AircraftProfile extends DataClass implements Insertable<AircraftProfile> {
     this.emptyWeightKg,
     this.maxTakeoffWeightKg,
     this.maxCrosswindKt,
+    this.taxiFuelL,
+    required this.armUnit,
+    this.emptyArm,
+    required this.stations,
+    required this.envelope,
     required this.notes,
   });
   @override
@@ -3194,6 +3323,15 @@ class AircraftProfile extends DataClass implements Insertable<AircraftProfile> {
     if (!nullToAbsent || maxCrosswindKt != null) {
       map['max_crosswind_kt'] = Variable<int>(maxCrosswindKt);
     }
+    if (!nullToAbsent || taxiFuelL != null) {
+      map['taxi_fuel_l'] = Variable<double>(taxiFuelL);
+    }
+    map['arm_unit'] = Variable<String>(armUnit);
+    if (!nullToAbsent || emptyArm != null) {
+      map['empty_arm'] = Variable<double>(emptyArm);
+    }
+    map['stations'] = Variable<String>(stations);
+    map['envelope'] = Variable<String>(envelope);
     map['notes'] = Variable<String>(notes);
     return map;
   }
@@ -3226,6 +3364,15 @@ class AircraftProfile extends DataClass implements Insertable<AircraftProfile> {
       maxCrosswindKt: maxCrosswindKt == null && nullToAbsent
           ? const Value.absent()
           : Value(maxCrosswindKt),
+      taxiFuelL: taxiFuelL == null && nullToAbsent
+          ? const Value.absent()
+          : Value(taxiFuelL),
+      armUnit: Value(armUnit),
+      emptyArm: emptyArm == null && nullToAbsent
+          ? const Value.absent()
+          : Value(emptyArm),
+      stations: Value(stations),
+      envelope: Value(envelope),
       notes: Value(notes),
     );
   }
@@ -3252,6 +3399,11 @@ class AircraftProfile extends DataClass implements Insertable<AircraftProfile> {
         json['maxTakeoffWeightKg'],
       ),
       maxCrosswindKt: serializer.fromJson<int?>(json['maxCrosswindKt']),
+      taxiFuelL: serializer.fromJson<double?>(json['taxiFuelL']),
+      armUnit: serializer.fromJson<String>(json['armUnit']),
+      emptyArm: serializer.fromJson<double?>(json['emptyArm']),
+      stations: serializer.fromJson<String>(json['stations']),
+      envelope: serializer.fromJson<String>(json['envelope']),
       notes: serializer.fromJson<String>(json['notes']),
     );
   }
@@ -3273,6 +3425,11 @@ class AircraftProfile extends DataClass implements Insertable<AircraftProfile> {
       'emptyWeightKg': serializer.toJson<double?>(emptyWeightKg),
       'maxTakeoffWeightKg': serializer.toJson<double?>(maxTakeoffWeightKg),
       'maxCrosswindKt': serializer.toJson<int?>(maxCrosswindKt),
+      'taxiFuelL': serializer.toJson<double?>(taxiFuelL),
+      'armUnit': serializer.toJson<String>(armUnit),
+      'emptyArm': serializer.toJson<double?>(emptyArm),
+      'stations': serializer.toJson<String>(stations),
+      'envelope': serializer.toJson<String>(envelope),
       'notes': serializer.toJson<String>(notes),
     };
   }
@@ -3292,6 +3449,11 @@ class AircraftProfile extends DataClass implements Insertable<AircraftProfile> {
     Value<double?> emptyWeightKg = const Value.absent(),
     Value<double?> maxTakeoffWeightKg = const Value.absent(),
     Value<int?> maxCrosswindKt = const Value.absent(),
+    Value<double?> taxiFuelL = const Value.absent(),
+    String? armUnit,
+    Value<double?> emptyArm = const Value.absent(),
+    String? stations,
+    String? envelope,
     String? notes,
   }) => AircraftProfile(
     id: id ?? this.id,
@@ -3316,6 +3478,11 @@ class AircraftProfile extends DataClass implements Insertable<AircraftProfile> {
     maxCrosswindKt: maxCrosswindKt.present
         ? maxCrosswindKt.value
         : this.maxCrosswindKt,
+    taxiFuelL: taxiFuelL.present ? taxiFuelL.value : this.taxiFuelL,
+    armUnit: armUnit ?? this.armUnit,
+    emptyArm: emptyArm.present ? emptyArm.value : this.emptyArm,
+    stations: stations ?? this.stations,
+    envelope: envelope ?? this.envelope,
     notes: notes ?? this.notes,
   );
   AircraftProfile copyWithCompanion(AircraftProfilesCompanion data) {
@@ -3350,6 +3517,11 @@ class AircraftProfile extends DataClass implements Insertable<AircraftProfile> {
       maxCrosswindKt: data.maxCrosswindKt.present
           ? data.maxCrosswindKt.value
           : this.maxCrosswindKt,
+      taxiFuelL: data.taxiFuelL.present ? data.taxiFuelL.value : this.taxiFuelL,
+      armUnit: data.armUnit.present ? data.armUnit.value : this.armUnit,
+      emptyArm: data.emptyArm.present ? data.emptyArm.value : this.emptyArm,
+      stations: data.stations.present ? data.stations.value : this.stations,
+      envelope: data.envelope.present ? data.envelope.value : this.envelope,
       notes: data.notes.present ? data.notes.value : this.notes,
     );
   }
@@ -3371,6 +3543,11 @@ class AircraftProfile extends DataClass implements Insertable<AircraftProfile> {
           ..write('emptyWeightKg: $emptyWeightKg, ')
           ..write('maxTakeoffWeightKg: $maxTakeoffWeightKg, ')
           ..write('maxCrosswindKt: $maxCrosswindKt, ')
+          ..write('taxiFuelL: $taxiFuelL, ')
+          ..write('armUnit: $armUnit, ')
+          ..write('emptyArm: $emptyArm, ')
+          ..write('stations: $stations, ')
+          ..write('envelope: $envelope, ')
           ..write('notes: $notes')
           ..write(')'))
         .toString();
@@ -3392,6 +3569,11 @@ class AircraftProfile extends DataClass implements Insertable<AircraftProfile> {
     emptyWeightKg,
     maxTakeoffWeightKg,
     maxCrosswindKt,
+    taxiFuelL,
+    armUnit,
+    emptyArm,
+    stations,
+    envelope,
     notes,
   );
   @override
@@ -3412,6 +3594,11 @@ class AircraftProfile extends DataClass implements Insertable<AircraftProfile> {
           other.emptyWeightKg == this.emptyWeightKg &&
           other.maxTakeoffWeightKg == this.maxTakeoffWeightKg &&
           other.maxCrosswindKt == this.maxCrosswindKt &&
+          other.taxiFuelL == this.taxiFuelL &&
+          other.armUnit == this.armUnit &&
+          other.emptyArm == this.emptyArm &&
+          other.stations == this.stations &&
+          other.envelope == this.envelope &&
           other.notes == this.notes);
 }
 
@@ -3430,6 +3617,11 @@ class AircraftProfilesCompanion extends UpdateCompanion<AircraftProfile> {
   final Value<double?> emptyWeightKg;
   final Value<double?> maxTakeoffWeightKg;
   final Value<int?> maxCrosswindKt;
+  final Value<double?> taxiFuelL;
+  final Value<String> armUnit;
+  final Value<double?> emptyArm;
+  final Value<String> stations;
+  final Value<String> envelope;
   final Value<String> notes;
   const AircraftProfilesCompanion({
     this.id = const Value.absent(),
@@ -3446,6 +3638,11 @@ class AircraftProfilesCompanion extends UpdateCompanion<AircraftProfile> {
     this.emptyWeightKg = const Value.absent(),
     this.maxTakeoffWeightKg = const Value.absent(),
     this.maxCrosswindKt = const Value.absent(),
+    this.taxiFuelL = const Value.absent(),
+    this.armUnit = const Value.absent(),
+    this.emptyArm = const Value.absent(),
+    this.stations = const Value.absent(),
+    this.envelope = const Value.absent(),
     this.notes = const Value.absent(),
   });
   AircraftProfilesCompanion.insert({
@@ -3463,6 +3660,11 @@ class AircraftProfilesCompanion extends UpdateCompanion<AircraftProfile> {
     this.emptyWeightKg = const Value.absent(),
     this.maxTakeoffWeightKg = const Value.absent(),
     this.maxCrosswindKt = const Value.absent(),
+    this.taxiFuelL = const Value.absent(),
+    this.armUnit = const Value.absent(),
+    this.emptyArm = const Value.absent(),
+    this.stations = const Value.absent(),
+    this.envelope = const Value.absent(),
     this.notes = const Value.absent(),
   }) : name = Value(name),
        icaoType = Value(icaoType),
@@ -3484,6 +3686,11 @@ class AircraftProfilesCompanion extends UpdateCompanion<AircraftProfile> {
     Expression<double>? emptyWeightKg,
     Expression<double>? maxTakeoffWeightKg,
     Expression<int>? maxCrosswindKt,
+    Expression<double>? taxiFuelL,
+    Expression<String>? armUnit,
+    Expression<double>? emptyArm,
+    Expression<String>? stations,
+    Expression<String>? envelope,
     Expression<String>? notes,
   }) {
     return RawValuesInsertable({
@@ -3502,6 +3709,11 @@ class AircraftProfilesCompanion extends UpdateCompanion<AircraftProfile> {
       if (maxTakeoffWeightKg != null)
         'max_takeoff_weight_kg': maxTakeoffWeightKg,
       if (maxCrosswindKt != null) 'max_crosswind_kt': maxCrosswindKt,
+      if (taxiFuelL != null) 'taxi_fuel_l': taxiFuelL,
+      if (armUnit != null) 'arm_unit': armUnit,
+      if (emptyArm != null) 'empty_arm': emptyArm,
+      if (stations != null) 'stations': stations,
+      if (envelope != null) 'envelope': envelope,
       if (notes != null) 'notes': notes,
     });
   }
@@ -3521,6 +3733,11 @@ class AircraftProfilesCompanion extends UpdateCompanion<AircraftProfile> {
     Value<double?>? emptyWeightKg,
     Value<double?>? maxTakeoffWeightKg,
     Value<int?>? maxCrosswindKt,
+    Value<double?>? taxiFuelL,
+    Value<String>? armUnit,
+    Value<double?>? emptyArm,
+    Value<String>? stations,
+    Value<String>? envelope,
     Value<String>? notes,
   }) {
     return AircraftProfilesCompanion(
@@ -3538,6 +3755,11 @@ class AircraftProfilesCompanion extends UpdateCompanion<AircraftProfile> {
       emptyWeightKg: emptyWeightKg ?? this.emptyWeightKg,
       maxTakeoffWeightKg: maxTakeoffWeightKg ?? this.maxTakeoffWeightKg,
       maxCrosswindKt: maxCrosswindKt ?? this.maxCrosswindKt,
+      taxiFuelL: taxiFuelL ?? this.taxiFuelL,
+      armUnit: armUnit ?? this.armUnit,
+      emptyArm: emptyArm ?? this.emptyArm,
+      stations: stations ?? this.stations,
+      envelope: envelope ?? this.envelope,
       notes: notes ?? this.notes,
     );
   }
@@ -3587,6 +3809,21 @@ class AircraftProfilesCompanion extends UpdateCompanion<AircraftProfile> {
     if (maxCrosswindKt.present) {
       map['max_crosswind_kt'] = Variable<int>(maxCrosswindKt.value);
     }
+    if (taxiFuelL.present) {
+      map['taxi_fuel_l'] = Variable<double>(taxiFuelL.value);
+    }
+    if (armUnit.present) {
+      map['arm_unit'] = Variable<String>(armUnit.value);
+    }
+    if (emptyArm.present) {
+      map['empty_arm'] = Variable<double>(emptyArm.value);
+    }
+    if (stations.present) {
+      map['stations'] = Variable<String>(stations.value);
+    }
+    if (envelope.present) {
+      map['envelope'] = Variable<String>(envelope.value);
+    }
     if (notes.present) {
       map['notes'] = Variable<String>(notes.value);
     }
@@ -3610,6 +3847,11 @@ class AircraftProfilesCompanion extends UpdateCompanion<AircraftProfile> {
           ..write('emptyWeightKg: $emptyWeightKg, ')
           ..write('maxTakeoffWeightKg: $maxTakeoffWeightKg, ')
           ..write('maxCrosswindKt: $maxCrosswindKt, ')
+          ..write('taxiFuelL: $taxiFuelL, ')
+          ..write('armUnit: $armUnit, ')
+          ..write('emptyArm: $emptyArm, ')
+          ..write('stations: $stations, ')
+          ..write('envelope: $envelope, ')
           ..write('notes: $notes')
           ..write(')'))
         .toString();
@@ -3754,6 +3996,83 @@ class $FlightsTable extends Flights with TableInfo<$FlightsTable, Flight> {
         type: DriftSqlType.dateTime,
         requiredDuringInsert: false,
       );
+  static const VerificationMeta _taxiFuelLMeta = const VerificationMeta(
+    'taxiFuelL',
+  );
+  @override
+  late final GeneratedColumn<double> taxiFuelL = GeneratedColumn<double>(
+    'taxi_fuel_l',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _contingencyPercentMeta =
+      const VerificationMeta('contingencyPercent');
+  @override
+  late final GeneratedColumn<double> contingencyPercent =
+      GeneratedColumn<double>(
+        'contingency_percent',
+        aliasedName,
+        true,
+        type: DriftSqlType.double,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _finalReserveMinutesMeta =
+      const VerificationMeta('finalReserveMinutes');
+  @override
+  late final GeneratedColumn<int> finalReserveMinutes = GeneratedColumn<int>(
+    'final_reserve_minutes',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _extraFuelLMeta = const VerificationMeta(
+    'extraFuelL',
+  );
+  @override
+  late final GeneratedColumn<double> extraFuelL = GeneratedColumn<double>(
+    'extra_fuel_l',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _fuelOnBoardLMeta = const VerificationMeta(
+    'fuelOnBoardL',
+  );
+  @override
+  late final GeneratedColumn<double> fuelOnBoardL = GeneratedColumn<double>(
+    'fuel_on_board_l',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _nightMeta = const VerificationMeta('night');
+  @override
+  late final GeneratedColumn<bool> night = GeneratedColumn<bool>(
+    'night',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("night" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _loadsMeta = const VerificationMeta('loads');
+  @override
+  late final GeneratedColumn<String> loads = GeneratedColumn<String>(
+    'loads',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('{}'),
+  );
   static const VerificationMeta _windDirectionMeta = const VerificationMeta(
     'windDirection',
   );
@@ -3868,6 +4187,13 @@ class $FlightsTable extends Flights with TableInfo<$FlightsTable, Flight> {
     arrivalRunway,
     cruiseAltitudeFt,
     plannedDeparture,
+    taxiFuelL,
+    contingencyPercent,
+    finalReserveMinutes,
+    extraFuelL,
+    fuelOnBoardL,
+    night,
+    loads,
     windDirection,
     windSpeedKt,
     notes,
@@ -3972,6 +4298,60 @@ class $FlightsTable extends Flights with TableInfo<$FlightsTable, Flight> {
           data['planned_departure']!,
           _plannedDepartureMeta,
         ),
+      );
+    }
+    if (data.containsKey('taxi_fuel_l')) {
+      context.handle(
+        _taxiFuelLMeta,
+        taxiFuelL.isAcceptableOrUnknown(data['taxi_fuel_l']!, _taxiFuelLMeta),
+      );
+    }
+    if (data.containsKey('contingency_percent')) {
+      context.handle(
+        _contingencyPercentMeta,
+        contingencyPercent.isAcceptableOrUnknown(
+          data['contingency_percent']!,
+          _contingencyPercentMeta,
+        ),
+      );
+    }
+    if (data.containsKey('final_reserve_minutes')) {
+      context.handle(
+        _finalReserveMinutesMeta,
+        finalReserveMinutes.isAcceptableOrUnknown(
+          data['final_reserve_minutes']!,
+          _finalReserveMinutesMeta,
+        ),
+      );
+    }
+    if (data.containsKey('extra_fuel_l')) {
+      context.handle(
+        _extraFuelLMeta,
+        extraFuelL.isAcceptableOrUnknown(
+          data['extra_fuel_l']!,
+          _extraFuelLMeta,
+        ),
+      );
+    }
+    if (data.containsKey('fuel_on_board_l')) {
+      context.handle(
+        _fuelOnBoardLMeta,
+        fuelOnBoardL.isAcceptableOrUnknown(
+          data['fuel_on_board_l']!,
+          _fuelOnBoardLMeta,
+        ),
+      );
+    }
+    if (data.containsKey('night')) {
+      context.handle(
+        _nightMeta,
+        night.isAcceptableOrUnknown(data['night']!, _nightMeta),
+      );
+    }
+    if (data.containsKey('loads')) {
+      context.handle(
+        _loadsMeta,
+        loads.isAcceptableOrUnknown(data['loads']!, _loadsMeta),
       );
     }
     if (data.containsKey('wind_direction')) {
@@ -4098,6 +4478,34 @@ class $FlightsTable extends Flights with TableInfo<$FlightsTable, Flight> {
         DriftSqlType.dateTime,
         data['${effectivePrefix}planned_departure'],
       ),
+      taxiFuelL: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}taxi_fuel_l'],
+      ),
+      contingencyPercent: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}contingency_percent'],
+      ),
+      finalReserveMinutes: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}final_reserve_minutes'],
+      ),
+      extraFuelL: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}extra_fuel_l'],
+      ),
+      fuelOnBoardL: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}fuel_on_board_l'],
+      ),
+      night: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}night'],
+      )!,
+      loads: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}loads'],
+      )!,
       windDirection: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}wind_direction'],
@@ -4163,6 +4571,15 @@ class Flight extends DataClass implements Insertable<Flight> {
   final String? arrivalRunway;
   final int? cruiseAltitudeFt;
   final DateTime? plannedDeparture;
+  final double? taxiFuelL;
+  final double? contingencyPercent;
+  final int? finalReserveMinutes;
+  final double? extraFuelL;
+  final double? fuelOnBoardL;
+  final bool night;
+
+  /// Loads per W&B station in kg, JSON `{"<station index>": kg}`.
+  final String loads;
 
   /// Wind used for every leg without its own wind (true direction, from).
   final int? windDirection;
@@ -4187,6 +4604,13 @@ class Flight extends DataClass implements Insertable<Flight> {
     this.arrivalRunway,
     this.cruiseAltitudeFt,
     this.plannedDeparture,
+    this.taxiFuelL,
+    this.contingencyPercent,
+    this.finalReserveMinutes,
+    this.extraFuelL,
+    this.fuelOnBoardL,
+    required this.night,
+    required this.loads,
     this.windDirection,
     this.windSpeedKt,
     required this.notes,
@@ -4232,6 +4656,23 @@ class Flight extends DataClass implements Insertable<Flight> {
     if (!nullToAbsent || plannedDeparture != null) {
       map['planned_departure'] = Variable<DateTime>(plannedDeparture);
     }
+    if (!nullToAbsent || taxiFuelL != null) {
+      map['taxi_fuel_l'] = Variable<double>(taxiFuelL);
+    }
+    if (!nullToAbsent || contingencyPercent != null) {
+      map['contingency_percent'] = Variable<double>(contingencyPercent);
+    }
+    if (!nullToAbsent || finalReserveMinutes != null) {
+      map['final_reserve_minutes'] = Variable<int>(finalReserveMinutes);
+    }
+    if (!nullToAbsent || extraFuelL != null) {
+      map['extra_fuel_l'] = Variable<double>(extraFuelL);
+    }
+    if (!nullToAbsent || fuelOnBoardL != null) {
+      map['fuel_on_board_l'] = Variable<double>(fuelOnBoardL);
+    }
+    map['night'] = Variable<bool>(night);
+    map['loads'] = Variable<String>(loads);
     if (!nullToAbsent || windDirection != null) {
       map['wind_direction'] = Variable<int>(windDirection);
     }
@@ -4282,6 +4723,23 @@ class Flight extends DataClass implements Insertable<Flight> {
       plannedDeparture: plannedDeparture == null && nullToAbsent
           ? const Value.absent()
           : Value(plannedDeparture),
+      taxiFuelL: taxiFuelL == null && nullToAbsent
+          ? const Value.absent()
+          : Value(taxiFuelL),
+      contingencyPercent: contingencyPercent == null && nullToAbsent
+          ? const Value.absent()
+          : Value(contingencyPercent),
+      finalReserveMinutes: finalReserveMinutes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(finalReserveMinutes),
+      extraFuelL: extraFuelL == null && nullToAbsent
+          ? const Value.absent()
+          : Value(extraFuelL),
+      fuelOnBoardL: fuelOnBoardL == null && nullToAbsent
+          ? const Value.absent()
+          : Value(fuelOnBoardL),
+      night: Value(night),
+      loads: Value(loads),
       windDirection: windDirection == null && nullToAbsent
           ? const Value.absent()
           : Value(windDirection),
@@ -4330,6 +4788,17 @@ class Flight extends DataClass implements Insertable<Flight> {
       plannedDeparture: serializer.fromJson<DateTime?>(
         json['plannedDeparture'],
       ),
+      taxiFuelL: serializer.fromJson<double?>(json['taxiFuelL']),
+      contingencyPercent: serializer.fromJson<double?>(
+        json['contingencyPercent'],
+      ),
+      finalReserveMinutes: serializer.fromJson<int?>(
+        json['finalReserveMinutes'],
+      ),
+      extraFuelL: serializer.fromJson<double?>(json['extraFuelL']),
+      fuelOnBoardL: serializer.fromJson<double?>(json['fuelOnBoardL']),
+      night: serializer.fromJson<bool>(json['night']),
+      loads: serializer.fromJson<String>(json['loads']),
       windDirection: serializer.fromJson<int?>(json['windDirection']),
       windSpeedKt: serializer.fromJson<int?>(json['windSpeedKt']),
       notes: serializer.fromJson<String>(json['notes']),
@@ -4361,6 +4830,13 @@ class Flight extends DataClass implements Insertable<Flight> {
       'arrivalRunway': serializer.toJson<String?>(arrivalRunway),
       'cruiseAltitudeFt': serializer.toJson<int?>(cruiseAltitudeFt),
       'plannedDeparture': serializer.toJson<DateTime?>(plannedDeparture),
+      'taxiFuelL': serializer.toJson<double?>(taxiFuelL),
+      'contingencyPercent': serializer.toJson<double?>(contingencyPercent),
+      'finalReserveMinutes': serializer.toJson<int?>(finalReserveMinutes),
+      'extraFuelL': serializer.toJson<double?>(extraFuelL),
+      'fuelOnBoardL': serializer.toJson<double?>(fuelOnBoardL),
+      'night': serializer.toJson<bool>(night),
+      'loads': serializer.toJson<String>(loads),
       'windDirection': serializer.toJson<int?>(windDirection),
       'windSpeedKt': serializer.toJson<int?>(windSpeedKt),
       'notes': serializer.toJson<String>(notes),
@@ -4386,6 +4862,13 @@ class Flight extends DataClass implements Insertable<Flight> {
     Value<String?> arrivalRunway = const Value.absent(),
     Value<int?> cruiseAltitudeFt = const Value.absent(),
     Value<DateTime?> plannedDeparture = const Value.absent(),
+    Value<double?> taxiFuelL = const Value.absent(),
+    Value<double?> contingencyPercent = const Value.absent(),
+    Value<int?> finalReserveMinutes = const Value.absent(),
+    Value<double?> extraFuelL = const Value.absent(),
+    Value<double?> fuelOnBoardL = const Value.absent(),
+    bool? night,
+    String? loads,
     Value<int?> windDirection = const Value.absent(),
     Value<int?> windSpeedKt = const Value.absent(),
     String? notes,
@@ -4418,6 +4901,17 @@ class Flight extends DataClass implements Insertable<Flight> {
     plannedDeparture: plannedDeparture.present
         ? plannedDeparture.value
         : this.plannedDeparture,
+    taxiFuelL: taxiFuelL.present ? taxiFuelL.value : this.taxiFuelL,
+    contingencyPercent: contingencyPercent.present
+        ? contingencyPercent.value
+        : this.contingencyPercent,
+    finalReserveMinutes: finalReserveMinutes.present
+        ? finalReserveMinutes.value
+        : this.finalReserveMinutes,
+    extraFuelL: extraFuelL.present ? extraFuelL.value : this.extraFuelL,
+    fuelOnBoardL: fuelOnBoardL.present ? fuelOnBoardL.value : this.fuelOnBoardL,
+    night: night ?? this.night,
+    loads: loads ?? this.loads,
     windDirection: windDirection.present
         ? windDirection.value
         : this.windDirection,
@@ -4460,6 +4954,21 @@ class Flight extends DataClass implements Insertable<Flight> {
       plannedDeparture: data.plannedDeparture.present
           ? data.plannedDeparture.value
           : this.plannedDeparture,
+      taxiFuelL: data.taxiFuelL.present ? data.taxiFuelL.value : this.taxiFuelL,
+      contingencyPercent: data.contingencyPercent.present
+          ? data.contingencyPercent.value
+          : this.contingencyPercent,
+      finalReserveMinutes: data.finalReserveMinutes.present
+          ? data.finalReserveMinutes.value
+          : this.finalReserveMinutes,
+      extraFuelL: data.extraFuelL.present
+          ? data.extraFuelL.value
+          : this.extraFuelL,
+      fuelOnBoardL: data.fuelOnBoardL.present
+          ? data.fuelOnBoardL.value
+          : this.fuelOnBoardL,
+      night: data.night.present ? data.night.value : this.night,
+      loads: data.loads.present ? data.loads.value : this.loads,
       windDirection: data.windDirection.present
           ? data.windDirection.value
           : this.windDirection,
@@ -4493,6 +5002,13 @@ class Flight extends DataClass implements Insertable<Flight> {
           ..write('arrivalRunway: $arrivalRunway, ')
           ..write('cruiseAltitudeFt: $cruiseAltitudeFt, ')
           ..write('plannedDeparture: $plannedDeparture, ')
+          ..write('taxiFuelL: $taxiFuelL, ')
+          ..write('contingencyPercent: $contingencyPercent, ')
+          ..write('finalReserveMinutes: $finalReserveMinutes, ')
+          ..write('extraFuelL: $extraFuelL, ')
+          ..write('fuelOnBoardL: $fuelOnBoardL, ')
+          ..write('night: $night, ')
+          ..write('loads: $loads, ')
           ..write('windDirection: $windDirection, ')
           ..write('windSpeedKt: $windSpeedKt, ')
           ..write('notes: $notes, ')
@@ -4520,6 +5036,13 @@ class Flight extends DataClass implements Insertable<Flight> {
     arrivalRunway,
     cruiseAltitudeFt,
     plannedDeparture,
+    taxiFuelL,
+    contingencyPercent,
+    finalReserveMinutes,
+    extraFuelL,
+    fuelOnBoardL,
+    night,
+    loads,
     windDirection,
     windSpeedKt,
     notes,
@@ -4546,6 +5069,13 @@ class Flight extends DataClass implements Insertable<Flight> {
           other.arrivalRunway == this.arrivalRunway &&
           other.cruiseAltitudeFt == this.cruiseAltitudeFt &&
           other.plannedDeparture == this.plannedDeparture &&
+          other.taxiFuelL == this.taxiFuelL &&
+          other.contingencyPercent == this.contingencyPercent &&
+          other.finalReserveMinutes == this.finalReserveMinutes &&
+          other.extraFuelL == this.extraFuelL &&
+          other.fuelOnBoardL == this.fuelOnBoardL &&
+          other.night == this.night &&
+          other.loads == this.loads &&
           other.windDirection == this.windDirection &&
           other.windSpeedKt == this.windSpeedKt &&
           other.notes == this.notes &&
@@ -4570,6 +5100,13 @@ class FlightsCompanion extends UpdateCompanion<Flight> {
   final Value<String?> arrivalRunway;
   final Value<int?> cruiseAltitudeFt;
   final Value<DateTime?> plannedDeparture;
+  final Value<double?> taxiFuelL;
+  final Value<double?> contingencyPercent;
+  final Value<int?> finalReserveMinutes;
+  final Value<double?> extraFuelL;
+  final Value<double?> fuelOnBoardL;
+  final Value<bool> night;
+  final Value<String> loads;
   final Value<int?> windDirection;
   final Value<int?> windSpeedKt;
   final Value<String> notes;
@@ -4592,6 +5129,13 @@ class FlightsCompanion extends UpdateCompanion<Flight> {
     this.arrivalRunway = const Value.absent(),
     this.cruiseAltitudeFt = const Value.absent(),
     this.plannedDeparture = const Value.absent(),
+    this.taxiFuelL = const Value.absent(),
+    this.contingencyPercent = const Value.absent(),
+    this.finalReserveMinutes = const Value.absent(),
+    this.extraFuelL = const Value.absent(),
+    this.fuelOnBoardL = const Value.absent(),
+    this.night = const Value.absent(),
+    this.loads = const Value.absent(),
     this.windDirection = const Value.absent(),
     this.windSpeedKt = const Value.absent(),
     this.notes = const Value.absent(),
@@ -4615,6 +5159,13 @@ class FlightsCompanion extends UpdateCompanion<Flight> {
     this.arrivalRunway = const Value.absent(),
     this.cruiseAltitudeFt = const Value.absent(),
     this.plannedDeparture = const Value.absent(),
+    this.taxiFuelL = const Value.absent(),
+    this.contingencyPercent = const Value.absent(),
+    this.finalReserveMinutes = const Value.absent(),
+    this.extraFuelL = const Value.absent(),
+    this.fuelOnBoardL = const Value.absent(),
+    this.night = const Value.absent(),
+    this.loads = const Value.absent(),
     this.windDirection = const Value.absent(),
     this.windSpeedKt = const Value.absent(),
     this.notes = const Value.absent(),
@@ -4641,6 +5192,13 @@ class FlightsCompanion extends UpdateCompanion<Flight> {
     Expression<String>? arrivalRunway,
     Expression<int>? cruiseAltitudeFt,
     Expression<DateTime>? plannedDeparture,
+    Expression<double>? taxiFuelL,
+    Expression<double>? contingencyPercent,
+    Expression<int>? finalReserveMinutes,
+    Expression<double>? extraFuelL,
+    Expression<double>? fuelOnBoardL,
+    Expression<bool>? night,
+    Expression<String>? loads,
     Expression<int>? windDirection,
     Expression<int>? windSpeedKt,
     Expression<String>? notes,
@@ -4664,6 +5222,14 @@ class FlightsCompanion extends UpdateCompanion<Flight> {
       if (arrivalRunway != null) 'arrival_runway': arrivalRunway,
       if (cruiseAltitudeFt != null) 'cruise_altitude_ft': cruiseAltitudeFt,
       if (plannedDeparture != null) 'planned_departure': plannedDeparture,
+      if (taxiFuelL != null) 'taxi_fuel_l': taxiFuelL,
+      if (contingencyPercent != null) 'contingency_percent': contingencyPercent,
+      if (finalReserveMinutes != null)
+        'final_reserve_minutes': finalReserveMinutes,
+      if (extraFuelL != null) 'extra_fuel_l': extraFuelL,
+      if (fuelOnBoardL != null) 'fuel_on_board_l': fuelOnBoardL,
+      if (night != null) 'night': night,
+      if (loads != null) 'loads': loads,
       if (windDirection != null) 'wind_direction': windDirection,
       if (windSpeedKt != null) 'wind_speed_kt': windSpeedKt,
       if (notes != null) 'notes': notes,
@@ -4689,6 +5255,13 @@ class FlightsCompanion extends UpdateCompanion<Flight> {
     Value<String?>? arrivalRunway,
     Value<int?>? cruiseAltitudeFt,
     Value<DateTime?>? plannedDeparture,
+    Value<double?>? taxiFuelL,
+    Value<double?>? contingencyPercent,
+    Value<int?>? finalReserveMinutes,
+    Value<double?>? extraFuelL,
+    Value<double?>? fuelOnBoardL,
+    Value<bool>? night,
+    Value<String>? loads,
     Value<int?>? windDirection,
     Value<int?>? windSpeedKt,
     Value<String>? notes,
@@ -4712,6 +5285,13 @@ class FlightsCompanion extends UpdateCompanion<Flight> {
       arrivalRunway: arrivalRunway ?? this.arrivalRunway,
       cruiseAltitudeFt: cruiseAltitudeFt ?? this.cruiseAltitudeFt,
       plannedDeparture: plannedDeparture ?? this.plannedDeparture,
+      taxiFuelL: taxiFuelL ?? this.taxiFuelL,
+      contingencyPercent: contingencyPercent ?? this.contingencyPercent,
+      finalReserveMinutes: finalReserveMinutes ?? this.finalReserveMinutes,
+      extraFuelL: extraFuelL ?? this.extraFuelL,
+      fuelOnBoardL: fuelOnBoardL ?? this.fuelOnBoardL,
+      night: night ?? this.night,
+      loads: loads ?? this.loads,
       windDirection: windDirection ?? this.windDirection,
       windSpeedKt: windSpeedKt ?? this.windSpeedKt,
       notes: notes ?? this.notes,
@@ -4767,6 +5347,27 @@ class FlightsCompanion extends UpdateCompanion<Flight> {
     if (plannedDeparture.present) {
       map['planned_departure'] = Variable<DateTime>(plannedDeparture.value);
     }
+    if (taxiFuelL.present) {
+      map['taxi_fuel_l'] = Variable<double>(taxiFuelL.value);
+    }
+    if (contingencyPercent.present) {
+      map['contingency_percent'] = Variable<double>(contingencyPercent.value);
+    }
+    if (finalReserveMinutes.present) {
+      map['final_reserve_minutes'] = Variable<int>(finalReserveMinutes.value);
+    }
+    if (extraFuelL.present) {
+      map['extra_fuel_l'] = Variable<double>(extraFuelL.value);
+    }
+    if (fuelOnBoardL.present) {
+      map['fuel_on_board_l'] = Variable<double>(fuelOnBoardL.value);
+    }
+    if (night.present) {
+      map['night'] = Variable<bool>(night.value);
+    }
+    if (loads.present) {
+      map['loads'] = Variable<String>(loads.value);
+    }
     if (windDirection.present) {
       map['wind_direction'] = Variable<int>(windDirection.value);
     }
@@ -4812,6 +5413,13 @@ class FlightsCompanion extends UpdateCompanion<Flight> {
           ..write('arrivalRunway: $arrivalRunway, ')
           ..write('cruiseAltitudeFt: $cruiseAltitudeFt, ')
           ..write('plannedDeparture: $plannedDeparture, ')
+          ..write('taxiFuelL: $taxiFuelL, ')
+          ..write('contingencyPercent: $contingencyPercent, ')
+          ..write('finalReserveMinutes: $finalReserveMinutes, ')
+          ..write('extraFuelL: $extraFuelL, ')
+          ..write('fuelOnBoardL: $fuelOnBoardL, ')
+          ..write('night: $night, ')
+          ..write('loads: $loads, ')
           ..write('windDirection: $windDirection, ')
           ..write('windSpeedKt: $windSpeedKt, ')
           ..write('notes: $notes, ')
@@ -7752,6 +8360,11 @@ typedef $$AircraftProfilesTableCreateCompanionBuilder =
       Value<double?> emptyWeightKg,
       Value<double?> maxTakeoffWeightKg,
       Value<int?> maxCrosswindKt,
+      Value<double?> taxiFuelL,
+      Value<String> armUnit,
+      Value<double?> emptyArm,
+      Value<String> stations,
+      Value<String> envelope,
       Value<String> notes,
     });
 typedef $$AircraftProfilesTableUpdateCompanionBuilder =
@@ -7770,6 +8383,11 @@ typedef $$AircraftProfilesTableUpdateCompanionBuilder =
       Value<double?> emptyWeightKg,
       Value<double?> maxTakeoffWeightKg,
       Value<int?> maxCrosswindKt,
+      Value<double?> taxiFuelL,
+      Value<String> armUnit,
+      Value<double?> emptyArm,
+      Value<String> stations,
+      Value<String> envelope,
       Value<String> notes,
     });
 
@@ -7878,6 +8496,31 @@ class $$AircraftProfilesTableFilterComposer
 
   ColumnFilters<int> get maxCrosswindKt => $composableBuilder(
     column: $table.maxCrosswindKt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get taxiFuelL => $composableBuilder(
+    column: $table.taxiFuelL,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get armUnit => $composableBuilder(
+    column: $table.armUnit,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get emptyArm => $composableBuilder(
+    column: $table.emptyArm,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get stations => $composableBuilder(
+    column: $table.stations,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get envelope => $composableBuilder(
+    column: $table.envelope,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -7991,6 +8634,31 @@ class $$AircraftProfilesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<double> get taxiFuelL => $composableBuilder(
+    column: $table.taxiFuelL,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get armUnit => $composableBuilder(
+    column: $table.armUnit,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get emptyArm => $composableBuilder(
+    column: $table.emptyArm,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get stations => $composableBuilder(
+    column: $table.stations,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get envelope => $composableBuilder(
+    column: $table.envelope,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get notes => $composableBuilder(
     column: $table.notes,
     builder: (column) => ColumnOrderings(column),
@@ -8063,6 +8731,21 @@ class $$AircraftProfilesTableAnnotationComposer
     column: $table.maxCrosswindKt,
     builder: (column) => column,
   );
+
+  GeneratedColumn<double> get taxiFuelL =>
+      $composableBuilder(column: $table.taxiFuelL, builder: (column) => column);
+
+  GeneratedColumn<String> get armUnit =>
+      $composableBuilder(column: $table.armUnit, builder: (column) => column);
+
+  GeneratedColumn<double> get emptyArm =>
+      $composableBuilder(column: $table.emptyArm, builder: (column) => column);
+
+  GeneratedColumn<String> get stations =>
+      $composableBuilder(column: $table.stations, builder: (column) => column);
+
+  GeneratedColumn<String> get envelope =>
+      $composableBuilder(column: $table.envelope, builder: (column) => column);
 
   GeneratedColumn<String> get notes =>
       $composableBuilder(column: $table.notes, builder: (column) => column);
@@ -8137,6 +8820,11 @@ class $$AircraftProfilesTableTableManager
                 Value<double?> emptyWeightKg = const Value.absent(),
                 Value<double?> maxTakeoffWeightKg = const Value.absent(),
                 Value<int?> maxCrosswindKt = const Value.absent(),
+                Value<double?> taxiFuelL = const Value.absent(),
+                Value<String> armUnit = const Value.absent(),
+                Value<double?> emptyArm = const Value.absent(),
+                Value<String> stations = const Value.absent(),
+                Value<String> envelope = const Value.absent(),
                 Value<String> notes = const Value.absent(),
               }) => AircraftProfilesCompanion(
                 id: id,
@@ -8153,6 +8841,11 @@ class $$AircraftProfilesTableTableManager
                 emptyWeightKg: emptyWeightKg,
                 maxTakeoffWeightKg: maxTakeoffWeightKg,
                 maxCrosswindKt: maxCrosswindKt,
+                taxiFuelL: taxiFuelL,
+                armUnit: armUnit,
+                emptyArm: emptyArm,
+                stations: stations,
+                envelope: envelope,
                 notes: notes,
               ),
           createCompanionCallback:
@@ -8171,6 +8864,11 @@ class $$AircraftProfilesTableTableManager
                 Value<double?> emptyWeightKg = const Value.absent(),
                 Value<double?> maxTakeoffWeightKg = const Value.absent(),
                 Value<int?> maxCrosswindKt = const Value.absent(),
+                Value<double?> taxiFuelL = const Value.absent(),
+                Value<String> armUnit = const Value.absent(),
+                Value<double?> emptyArm = const Value.absent(),
+                Value<String> stations = const Value.absent(),
+                Value<String> envelope = const Value.absent(),
                 Value<String> notes = const Value.absent(),
               }) => AircraftProfilesCompanion.insert(
                 id: id,
@@ -8187,6 +8885,11 @@ class $$AircraftProfilesTableTableManager
                 emptyWeightKg: emptyWeightKg,
                 maxTakeoffWeightKg: maxTakeoffWeightKg,
                 maxCrosswindKt: maxCrosswindKt,
+                taxiFuelL: taxiFuelL,
+                armUnit: armUnit,
+                emptyArm: emptyArm,
+                stations: stations,
+                envelope: envelope,
                 notes: notes,
               ),
           withReferenceMapper: (p0) => p0
@@ -8259,6 +8962,13 @@ typedef $$FlightsTableCreateCompanionBuilder = FlightsCompanion Function({
   Value<String?> arrivalRunway,
   Value<int?> cruiseAltitudeFt,
   Value<DateTime?> plannedDeparture,
+  Value<double?> taxiFuelL,
+  Value<double?> contingencyPercent,
+  Value<int?> finalReserveMinutes,
+  Value<double?> extraFuelL,
+  Value<double?> fuelOnBoardL,
+  Value<bool> night,
+  Value<String> loads,
   Value<int?> windDirection,
   Value<int?> windSpeedKt,
   Value<String> notes,
@@ -8282,6 +8992,13 @@ typedef $$FlightsTableUpdateCompanionBuilder = FlightsCompanion Function({
   Value<String?> arrivalRunway,
   Value<int?> cruiseAltitudeFt,
   Value<DateTime?> plannedDeparture,
+  Value<double?> taxiFuelL,
+  Value<double?> contingencyPercent,
+  Value<int?> finalReserveMinutes,
+  Value<double?> extraFuelL,
+  Value<double?> fuelOnBoardL,
+  Value<bool> night,
+  Value<String> loads,
   Value<int?> windDirection,
   Value<int?> windSpeedKt,
   Value<String> notes,
@@ -8417,6 +9134,41 @@ class $$FlightsTableFilterComposer
 
   ColumnFilters<DateTime> get plannedDeparture => $composableBuilder(
     column: $table.plannedDeparture,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get taxiFuelL => $composableBuilder(
+    column: $table.taxiFuelL,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get contingencyPercent => $composableBuilder(
+    column: $table.contingencyPercent,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get finalReserveMinutes => $composableBuilder(
+    column: $table.finalReserveMinutes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get extraFuelL => $composableBuilder(
+    column: $table.extraFuelL,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get fuelOnBoardL => $composableBuilder(
+    column: $table.fuelOnBoardL,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get night => $composableBuilder(
+    column: $table.night,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get loads => $composableBuilder(
+    column: $table.loads,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -8603,6 +9355,41 @@ class $$FlightsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<double> get taxiFuelL => $composableBuilder(
+    column: $table.taxiFuelL,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get contingencyPercent => $composableBuilder(
+    column: $table.contingencyPercent,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get finalReserveMinutes => $composableBuilder(
+    column: $table.finalReserveMinutes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get extraFuelL => $composableBuilder(
+    column: $table.extraFuelL,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get fuelOnBoardL => $composableBuilder(
+    column: $table.fuelOnBoardL,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get night => $composableBuilder(
+    column: $table.night,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get loads => $composableBuilder(
+    column: $table.loads,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<int> get windDirection => $composableBuilder(
     column: $table.windDirection,
     builder: (column) => ColumnOrderings(column),
@@ -8727,6 +9514,35 @@ class $$FlightsTableAnnotationComposer
     column: $table.plannedDeparture,
     builder: (column) => column,
   );
+
+  GeneratedColumn<double> get taxiFuelL =>
+      $composableBuilder(column: $table.taxiFuelL, builder: (column) => column);
+
+  GeneratedColumn<double> get contingencyPercent => $composableBuilder(
+    column: $table.contingencyPercent,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get finalReserveMinutes => $composableBuilder(
+    column: $table.finalReserveMinutes,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get extraFuelL => $composableBuilder(
+    column: $table.extraFuelL,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get fuelOnBoardL => $composableBuilder(
+    column: $table.fuelOnBoardL,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get night =>
+      $composableBuilder(column: $table.night, builder: (column) => column);
+
+  GeneratedColumn<String> get loads =>
+      $composableBuilder(column: $table.loads, builder: (column) => column);
 
   GeneratedColumn<int> get windDirection => $composableBuilder(
     column: $table.windDirection,
@@ -8879,6 +9695,13 @@ class $$FlightsTableTableManager
                 Value<String?> arrivalRunway = const Value.absent(),
                 Value<int?> cruiseAltitudeFt = const Value.absent(),
                 Value<DateTime?> plannedDeparture = const Value.absent(),
+                Value<double?> taxiFuelL = const Value.absent(),
+                Value<double?> contingencyPercent = const Value.absent(),
+                Value<int?> finalReserveMinutes = const Value.absent(),
+                Value<double?> extraFuelL = const Value.absent(),
+                Value<double?> fuelOnBoardL = const Value.absent(),
+                Value<bool> night = const Value.absent(),
+                Value<String> loads = const Value.absent(),
                 Value<int?> windDirection = const Value.absent(),
                 Value<int?> windSpeedKt = const Value.absent(),
                 Value<String> notes = const Value.absent(),
@@ -8901,6 +9724,13 @@ class $$FlightsTableTableManager
                 arrivalRunway: arrivalRunway,
                 cruiseAltitudeFt: cruiseAltitudeFt,
                 plannedDeparture: plannedDeparture,
+                taxiFuelL: taxiFuelL,
+                contingencyPercent: contingencyPercent,
+                finalReserveMinutes: finalReserveMinutes,
+                extraFuelL: extraFuelL,
+                fuelOnBoardL: fuelOnBoardL,
+                night: night,
+                loads: loads,
                 windDirection: windDirection,
                 windSpeedKt: windSpeedKt,
                 notes: notes,
@@ -8925,6 +9755,13 @@ class $$FlightsTableTableManager
                 Value<String?> arrivalRunway = const Value.absent(),
                 Value<int?> cruiseAltitudeFt = const Value.absent(),
                 Value<DateTime?> plannedDeparture = const Value.absent(),
+                Value<double?> taxiFuelL = const Value.absent(),
+                Value<double?> contingencyPercent = const Value.absent(),
+                Value<int?> finalReserveMinutes = const Value.absent(),
+                Value<double?> extraFuelL = const Value.absent(),
+                Value<double?> fuelOnBoardL = const Value.absent(),
+                Value<bool> night = const Value.absent(),
+                Value<String> loads = const Value.absent(),
                 Value<int?> windDirection = const Value.absent(),
                 Value<int?> windSpeedKt = const Value.absent(),
                 Value<String> notes = const Value.absent(),
@@ -8947,6 +9784,13 @@ class $$FlightsTableTableManager
                 arrivalRunway: arrivalRunway,
                 cruiseAltitudeFt: cruiseAltitudeFt,
                 plannedDeparture: plannedDeparture,
+                taxiFuelL: taxiFuelL,
+                contingencyPercent: contingencyPercent,
+                finalReserveMinutes: finalReserveMinutes,
+                extraFuelL: extraFuelL,
+                fuelOnBoardL: fuelOnBoardL,
+                night: night,
+                loads: loads,
                 windDirection: windDirection,
                 windSpeedKt: windSpeedKt,
                 notes: notes,

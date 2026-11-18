@@ -1,6 +1,8 @@
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 
+import '../aircraft_defaults.dart';
+import '../repositories/aircraft_repository.dart';
 import 'tables.dart';
 
 export 'tables.dart';
@@ -25,7 +27,7 @@ class AppDatabase extends _$AppDatabase {
     : super(executor ?? driftDatabase(name: 'flightsim_companion'));
 
   @override
-  int get schemaVersion => 4;
+  int get schemaVersion => 5;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -55,6 +57,36 @@ class AppDatabase extends _$AppDatabase {
       }
       if (from < 4) {
         await m.createTable(weatherCache);
+      }
+      if (from < 5) {
+        for (final c in [
+          flights.taxiFuelL,
+          flights.contingencyPercent,
+          flights.finalReserveMinutes,
+          flights.extraFuelL,
+          flights.fuelOnBoardL,
+          flights.night,
+          flights.loads,
+        ]) {
+          await m.addColumn(flights, c);
+        }
+        for (final c in [
+          aircraftProfiles.taxiFuelL,
+          aircraftProfiles.armUnit,
+          aircraftProfiles.emptyArm,
+          aircraftProfiles.stations,
+          aircraftProfiles.envelope,
+        ]) {
+          await m.addColumn(aircraftProfiles, c);
+        }
+        for (final e in aircraftWbDefaults.entries) {
+          await AircraftRepository.applyWbDefaults(this, e.key, e.value);
+        }
+        for (final e in defaultTaxiFuelL.entries) {
+          await (update(aircraftProfiles)
+                ..where((a) => a.icaoType.equals(e.key)))
+              .write(AircraftProfilesCompanion(taxiFuelL: Value(e.value)));
+        }
       }
     },
     beforeOpen: (details) async {

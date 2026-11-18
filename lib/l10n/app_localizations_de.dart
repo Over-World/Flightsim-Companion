@@ -1152,4 +1152,198 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get runwayWindPlanned => 'Planungswind';
+
+  @override
+  String get flightTabFuel => 'Kraftstoff';
+
+  @override
+  String get flightTabWb => 'Masse & Schwerpunkt';
+
+  @override
+  String get fuelPlanTitle => 'Kraftstoffplanung';
+
+  @override
+  String get fuelOnBoard => 'Kraftstoff an Bord (geplant)';
+
+  @override
+  String get fuelTaxi => 'Rollkraftstoff';
+
+  @override
+  String get fuelTrip => 'Strecke';
+
+  @override
+  String get fuelContingency => 'Zuschlag';
+
+  @override
+  String fuelContingencyRow(String percent) {
+    return 'Zuschlag $percent %';
+  }
+
+  @override
+  String fuelAlternateRow(String ident) {
+    return 'Ausweichen nach $ident';
+  }
+
+  @override
+  String get fuelAlternateNone => 'Ausweichen (keiner gewählt)';
+
+  @override
+  String get fuelFinalReserve => 'Endreserve';
+
+  @override
+  String fuelFinalReserveRow(int minutes) {
+    return 'Endreserve $minutes min';
+  }
+
+  @override
+  String get fuelExtra => 'Zusatzkraftstoff';
+
+  @override
+  String get fuelRequired => 'Mindestens bei Anlassen';
+
+  @override
+  String get fuelMargin => 'Überschuss';
+
+  @override
+  String get fuelAtLanding => 'Erwartet bei Landung';
+
+  @override
+  String get fuelEndurance => 'Flugdauer ab Start';
+
+  @override
+  String get fuelEnduranceLeft => 'Restflugdauer';
+
+  @override
+  String get fuelNightVfr => 'Nacht-VFR';
+
+  @override
+  String get fuelNightVfrHint => '45 min Endreserve statt 30';
+
+  @override
+  String get fuelDefaultsHint =>
+      'Leere Felder nutzen die angezeigten Standardwerte: VFR 30 min Reserve (nachts 45), IFR 5 % Zuschlag, Ausweichkraftstoff und 45 min Reserve. Der Streckenkraftstoff kommt aus dem Navlog.';
+
+  @override
+  String get fuelBelowRequired =>
+      'Geplanter Kraftstoff liegt unter dem Mindestbedarf.';
+
+  @override
+  String get fuelRequiredExceedsUsable =>
+      'Der Mindestbedarf übersteigt den ausfliegbaren Tankinhalt – Tankstopp einplanen.';
+
+  @override
+  String get fuelOnBoardExceedsUsable =>
+      'Geplanter Kraftstoff übersteigt den ausfliegbaren Tankinhalt.';
+
+  @override
+  String get wbTitle => 'Masse & Schwerpunkt';
+
+  @override
+  String get wbArmUnit => 'Einheit Hebelarm (wie im Handbuch)';
+
+  @override
+  String get wbArmInches => 'Zoll';
+
+  @override
+  String get wbArmMeters => 'Meter';
+
+  @override
+  String get wbArmMillimeters => 'Millimeter';
+
+  @override
+  String get wbEmptyArm => 'Leermassenschwerpunkt (Hebelarm)';
+
+  @override
+  String get wbStations => 'Beladestationen';
+
+  @override
+  String get wbStationName => 'Station';
+
+  @override
+  String get wbArm => 'Hebelarm';
+
+  @override
+  String get wbMaxLoad => 'Max.';
+
+  @override
+  String get wbStationKind => 'Art';
+
+  @override
+  String get wbWeight => 'Masse';
+
+  @override
+  String get wbKindSeat => 'Sitz';
+
+  @override
+  String get wbKindBaggage => 'Gepäck';
+
+  @override
+  String get wbKindFuel => 'Kraftstoff';
+
+  @override
+  String get wbKindOther => 'Sonstiges';
+
+  @override
+  String get wbAddStation => 'Station hinzufügen';
+
+  @override
+  String get wbEnvelope => 'Schwerpunktbereich';
+
+  @override
+  String get wbEnvelopeHint =>
+      'Eckpunkte des Bereichs (Normalkategorie) der Reihe nach (Hebelarm, Masse).';
+
+  @override
+  String get wbAddEnvelopePoint => 'Eckpunkt hinzufügen';
+
+  @override
+  String get wbMissingData =>
+      'Für Masse & Schwerpunkt braucht das Flugzeugprofil Leermasse, Leermassenschwerpunkt und Beladestationen.';
+
+  @override
+  String get wbLoading => 'Beladung';
+
+  @override
+  String get wbFuelFromPlan => 'Beim Start, aus der Kraftstoffplanung';
+
+  @override
+  String wbMax(int max, String unit) {
+    return 'max. $max $unit';
+  }
+
+  @override
+  String get wbResult => 'Masse und Schwerpunkt';
+
+  @override
+  String get wbZeroFuel => 'Ohne Kraftstoff';
+
+  @override
+  String get wbTakeoff => 'Start';
+
+  @override
+  String get wbLanding => 'Landung';
+
+  @override
+  String wbMtow(String weight) {
+    return 'Max. Abflugmasse $weight';
+  }
+
+  @override
+  String wbOverMtow(String weight) {
+    return 'Über der max. Abflugmasse von $weight';
+  }
+
+  @override
+  String get wbTakeoffOutside => 'Startschwerpunkt außerhalb des Bereichs';
+
+  @override
+  String get wbLandingOutside => 'Landeschwerpunkt außerhalb des Bereichs';
+
+  @override
+  String wbStationOverloaded(String station) {
+    return '$station: über der Maximalzuladung';
+  }
+
+  @override
+  String get wbNoEnvelope => 'Kein Schwerpunktbereich im Flugzeugprofil.';
 }

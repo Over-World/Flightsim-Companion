@@ -28,11 +28,11 @@ The full roadmap (milestones M1–M7) lives in OpenChamber's project knowledge (
 - `lib/core/` – nav math (great circle, wind triangle), units, morse, theme, settings, router
 - `lib/data/db/` – drift tables and database (`database.g.dart` is generated)
 - `lib/data/navdata/` – OurAirports CSV parser and importer
-- `lib/core/navlog.dart` – navlog computation; `core/e6b.dart` – flight computer formulas; `core/runways.dart` – runway ends, wind components, suggestion; `core/quantities.dart` – unit conversions; `core/wmm/` – magnetic variation (all pure and tested)
+- `lib/core/navlog.dart` – navlog computation; `core/e6b.dart` – flight computer formulas; `core/runways.dart` – runway ends, wind components, suggestion; `core/quantities.dart` – unit conversions; `core/fuel_plan.dart` – fuel plan (VFR/IFR reserves); `core/weight_balance.dart` – loading, CG and envelope check; `core/wmm/` – magnetic variation (all pure and tested)
 - `lib/data/repositories/` – queries used by the UI
 - `lib/data/sim/` – X-Plane web API client
 - `lib/data/weather/` – METAR/TAF models and `WeatherRepository` (aviationweather.gov, offline cache table)
-- `lib/features/<feature>/` – screens and controllers: `plan` (flights, route editor, navlog table, runway selector), `e6b` (calculators), `kneeboard` (`KneeboardController`: active flight, times, stopwatch), `fly` (kneeboard UI), `notes` (stylus notepad), `weather` (`WeatherController` shares reports app-wide, `WeatherCard`), `onboarding`, `settings`, `airports`, `aircraft`, `navdata`
+- `lib/features/<feature>/` – screens and controllers: `plan` (flights, route editor, navlog table, runway selector, fuel and W&B panels), `e6b` (calculators), `kneeboard` (`KneeboardController`: active flight, times, stopwatch), `fly` (kneeboard UI), `notes` (stylus notepad), `weather` (`WeatherController` shares reports app-wide, `WeatherCard`), `onboarding`, `settings`, `airports`, `aircraft`, `navdata`
 - `lib/widgets/` – shared widgets
 - `lib/app_scope.dart` – all providers; used by `main.dart` and widget tests
 

@@ -1,5 +1,7 @@
 import 'package:drift/drift.dart';
 
+import '../../core/weight_balance.dart';
+import '../aircraft_defaults.dart';
 import '../db/database.dart';
 
 class AircraftRepository {
@@ -25,8 +27,40 @@ class AircraftRepository {
   Future<void> seedDefaults() async {
     final existing = await _db.select(_db.aircraftProfiles).get();
     if (existing.isNotEmpty) return;
-    await _db.batch((b) => b.insertAll(_db.aircraftProfiles, defaultAircraft));
+    await _db.batch(
+      (b) => b.insertAll(_db.aircraftProfiles, [
+        for (final a in defaultAircraft)
+          a.copyWith(
+            taxiFuelL: Value(
+              aircraftWbDefaults[a.icaoType.value]?.taxiFuelL ??
+                  defaultTaxiFuelL[a.icaoType.value],
+            ),
+          ),
+      ]),
+    );
+    for (final entry in aircraftWbDefaults.entries) {
+      await applyWbDefaults(_db, entry.key, entry.value);
+    }
   }
+
+  /// Fills W&B data of a default aircraft type (used by seeding and the
+  /// schema 5 migration).
+  static Future<void> applyWbDefaults(
+    AppDatabase db,
+    String icaoType,
+    AircraftWbDefaults d,
+  ) =>
+      (db.update(
+        db.aircraftProfiles,
+      )..where((a) => a.icaoType.equals(icaoType) & a.emptyArm.isNull())).write(
+        AircraftProfilesCompanion(
+          armUnit: const Value('in'),
+          emptyArm: Value(d.emptyArm),
+          taxiFuelL: Value(d.taxiFuelL),
+          stations: Value(WbStation.encodeAll(d.stations)),
+          envelope: Value(EnvelopePoint.encodeAll(d.envelope)),
+        ),
+      );
 
   static final defaultAircraft = [
     AircraftProfilesCompanion.insert(

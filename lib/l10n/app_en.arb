@@ -591,5 +591,115 @@
       }
     }
   },
-  "runwayWindPlanned": "Planning wind"
+  "runwayWindPlanned": "Planning wind",
+  "flightTabFuel": "Fuel",
+  "flightTabWb": "W&B",
+  "fuelPlanTitle": "Fuel plan",
+  "fuelOnBoard": "Fuel on board (planned)",
+  "fuelTaxi": "Taxi fuel",
+  "fuelTrip": "Trip",
+  "fuelContingency": "Contingency",
+  "fuelContingencyRow": "Contingency {percent} %",
+  "@fuelContingencyRow": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "fuelAlternateRow": "Alternate to {ident}",
+  "@fuelAlternateRow": {
+    "placeholders": {
+      "ident": {
+        "type": "String"
+      }
+    }
+  },
+  "fuelAlternateNone": "Alternate (none set)",
+  "fuelFinalReserve": "Final reserve",
+  "fuelFinalReserveRow": "Final reserve {minutes} min",
+  "@fuelFinalReserveRow": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "fuelExtra": "Extra fuel",
+  "fuelRequired": "Required at engine start",
+  "fuelMargin": "Margin",
+  "fuelAtLanding": "Expected on landing",
+  "fuelEndurance": "Endurance from takeoff",
+  "fuelEnduranceLeft": "Endurance",
+  "fuelNightVfr": "Night VFR",
+  "fuelNightVfrHint": "45 min final reserve instead of 30",
+  "fuelDefaultsHint": "Empty fields use the defaults shown: VFR 30 min reserve (night 45), IFR 5 % contingency, alternate fuel and 45 min reserve. Trip fuel comes from the navlog.",
+  "fuelBelowRequired": "Planned fuel is below the required minimum.",
+  "fuelRequiredExceedsUsable": "The required fuel exceeds the usable tank capacity – plan a fuel stop.",
+  "fuelOnBoardExceedsUsable": "Planned fuel exceeds the usable tank capacity.",
+  "wbTitle": "Weight & balance",
+  "wbArmUnit": "Arm unit (as in the POH)",
+  "wbArmInches": "Inches",
+  "wbArmMeters": "Metres",
+  "wbArmMillimeters": "Millimetres",
+  "wbEmptyArm": "Empty weight CG (arm)",
+  "wbStations": "Loading stations",
+  "wbStationName": "Station",
+  "wbArm": "Arm",
+  "wbMaxLoad": "Max.",
+  "wbStationKind": "Type",
+  "wbWeight": "Weight",
+  "wbKindSeat": "Seat",
+  "wbKindBaggage": "Baggage",
+  "wbKindFuel": "Fuel",
+  "wbKindOther": "Other",
+  "wbAddStation": "Add station",
+  "wbEnvelope": "CG envelope",
+  "wbEnvelopeHint": "Corners of the normal category envelope in order (arm, weight).",
+  "wbAddEnvelopePoint": "Add corner",
+  "wbMissingData": "Weight & balance needs the empty weight, empty CG and loading stations in the aircraft profile.",
+  "wbLoading": "Loading",
+  "wbFuelFromPlan": "At takeoff, from the fuel plan",
+  "wbMax": "max. {max} {unit}",
+  "@wbMax": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      },
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "wbResult": "Mass and CG",
+  "wbZeroFuel": "Zero fuel",
+  "wbTakeoff": "Takeoff",
+  "wbLanding": "Landing",
+  "wbMtow": "Max. takeoff weight {weight}",
+  "@wbMtow": {
+    "placeholders": {
+      "weight": {
+        "type": "String"
+      }
+    }
+  },
+  "wbOverMtow": "Above the max. takeoff weight of {weight}",
+  "@wbOverMtow": {
+    "placeholders": {
+      "weight": {
+        "type": "String"
+      }
+    }
+  },
+  "wbTakeoffOutside": "Takeoff CG outside the envelope",
+  "wbLandingOutside": "Landing CG outside the envelope",
+  "wbStationOverloaded": "{station}: above the maximum load",
+  "@wbStationOverloaded": {
+    "placeholders": {
+      "station": {
+        "type": "String"
+      }
+    }
+  },
+  "wbNoEnvelope": "No envelope in the aircraft profile."
 }

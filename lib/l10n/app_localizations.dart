@@ -2202,6 +2202,354 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Planning wind'**
   String get runwayWindPlanned;
+
+  /// No description provided for @flightTabFuel.
+  ///
+  /// In en, this message translates to:
+  /// **'Fuel'**
+  String get flightTabFuel;
+
+  /// No description provided for @flightTabWb.
+  ///
+  /// In en, this message translates to:
+  /// **'W&B'**
+  String get flightTabWb;
+
+  /// No description provided for @fuelPlanTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Fuel plan'**
+  String get fuelPlanTitle;
+
+  /// No description provided for @fuelOnBoard.
+  ///
+  /// In en, this message translates to:
+  /// **'Fuel on board (planned)'**
+  String get fuelOnBoard;
+
+  /// No description provided for @fuelTaxi.
+  ///
+  /// In en, this message translates to:
+  /// **'Taxi fuel'**
+  String get fuelTaxi;
+
+  /// No description provided for @fuelTrip.
+  ///
+  /// In en, this message translates to:
+  /// **'Trip'**
+  String get fuelTrip;
+
+  /// No description provided for @fuelContingency.
+  ///
+  /// In en, this message translates to:
+  /// **'Contingency'**
+  String get fuelContingency;
+
+  /// No description provided for @fuelContingencyRow.
+  ///
+  /// In en, this message translates to:
+  /// **'Contingency {percent} %'**
+  String fuelContingencyRow(String percent);
+
+  /// No description provided for @fuelAlternateRow.
+  ///
+  /// In en, this message translates to:
+  /// **'Alternate to {ident}'**
+  String fuelAlternateRow(String ident);
+
+  /// No description provided for @fuelAlternateNone.
+  ///
+  /// In en, this message translates to:
+  /// **'Alternate (none set)'**
+  String get fuelAlternateNone;
+
+  /// No description provided for @fuelFinalReserve.
+  ///
+  /// In en, this message translates to:
+  /// **'Final reserve'**
+  String get fuelFinalReserve;
+
+  /// No description provided for @fuelFinalReserveRow.
+  ///
+  /// In en, this message translates to:
+  /// **'Final reserve {minutes} min'**
+  String fuelFinalReserveRow(int minutes);
+
+  /// No description provided for @fuelExtra.
+  ///
+  /// In en, this message translates to:
+  /// **'Extra fuel'**
+  String get fuelExtra;
+
+  /// No description provided for @fuelRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Required at engine start'**
+  String get fuelRequired;
+
+  /// No description provided for @fuelMargin.
+  ///
+  /// In en, this message translates to:
+  /// **'Margin'**
+  String get fuelMargin;
+
+  /// No description provided for @fuelAtLanding.
+  ///
+  /// In en, this message translates to:
+  /// **'Expected on landing'**
+  String get fuelAtLanding;
+
+  /// No description provided for @fuelEndurance.
+  ///
+  /// In en, this message translates to:
+  /// **'Endurance from takeoff'**
+  String get fuelEndurance;
+
+  /// No description provided for @fuelEnduranceLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'Endurance'**
+  String get fuelEnduranceLeft;
+
+  /// No description provided for @fuelNightVfr.
+  ///
+  /// In en, this message translates to:
+  /// **'Night VFR'**
+  String get fuelNightVfr;
+
+  /// No description provided for @fuelNightVfrHint.
+  ///
+  /// In en, this message translates to:
+  /// **'45 min final reserve instead of 30'**
+  String get fuelNightVfrHint;
+
+  /// No description provided for @fuelDefaultsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Empty fields use the defaults shown: VFR 30 min reserve (night 45), IFR 5 % contingency, alternate fuel and 45 min reserve. Trip fuel comes from the navlog.'**
+  String get fuelDefaultsHint;
+
+  /// No description provided for @fuelBelowRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Planned fuel is below the required minimum.'**
+  String get fuelBelowRequired;
+
+  /// No description provided for @fuelRequiredExceedsUsable.
+  ///
+  /// In en, this message translates to:
+  /// **'The required fuel exceeds the usable tank capacity – plan a fuel stop.'**
+  String get fuelRequiredExceedsUsable;
+
+  /// No description provided for @fuelOnBoardExceedsUsable.
+  ///
+  /// In en, this message translates to:
+  /// **'Planned fuel exceeds the usable tank capacity.'**
+  String get fuelOnBoardExceedsUsable;
+
+  /// No description provided for @wbTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight & balance'**
+  String get wbTitle;
+
+  /// No description provided for @wbArmUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'Arm unit (as in the POH)'**
+  String get wbArmUnit;
+
+  /// No description provided for @wbArmInches.
+  ///
+  /// In en, this message translates to:
+  /// **'Inches'**
+  String get wbArmInches;
+
+  /// No description provided for @wbArmMeters.
+  ///
+  /// In en, this message translates to:
+  /// **'Metres'**
+  String get wbArmMeters;
+
+  /// No description provided for @wbArmMillimeters.
+  ///
+  /// In en, this message translates to:
+  /// **'Millimetres'**
+  String get wbArmMillimeters;
+
+  /// No description provided for @wbEmptyArm.
+  ///
+  /// In en, this message translates to:
+  /// **'Empty weight CG (arm)'**
+  String get wbEmptyArm;
+
+  /// No description provided for @wbStations.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading stations'**
+  String get wbStations;
+
+  /// No description provided for @wbStationName.
+  ///
+  /// In en, this message translates to:
+  /// **'Station'**
+  String get wbStationName;
+
+  /// No description provided for @wbArm.
+  ///
+  /// In en, this message translates to:
+  /// **'Arm'**
+  String get wbArm;
+
+  /// No description provided for @wbMaxLoad.
+  ///
+  /// In en, this message translates to:
+  /// **'Max.'**
+  String get wbMaxLoad;
+
+  /// No description provided for @wbStationKind.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get wbStationKind;
+
+  /// No description provided for @wbWeight.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight'**
+  String get wbWeight;
+
+  /// No description provided for @wbKindSeat.
+  ///
+  /// In en, this message translates to:
+  /// **'Seat'**
+  String get wbKindSeat;
+
+  /// No description provided for @wbKindBaggage.
+  ///
+  /// In en, this message translates to:
+  /// **'Baggage'**
+  String get wbKindBaggage;
+
+  /// No description provided for @wbKindFuel.
+  ///
+  /// In en, this message translates to:
+  /// **'Fuel'**
+  String get wbKindFuel;
+
+  /// No description provided for @wbKindOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get wbKindOther;
+
+  /// No description provided for @wbAddStation.
+  ///
+  /// In en, this message translates to:
+  /// **'Add station'**
+  String get wbAddStation;
+
+  /// No description provided for @wbEnvelope.
+  ///
+  /// In en, this message translates to:
+  /// **'CG envelope'**
+  String get wbEnvelope;
+
+  /// No description provided for @wbEnvelopeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Corners of the normal category envelope in order (arm, weight).'**
+  String get wbEnvelopeHint;
+
+  /// No description provided for @wbAddEnvelopePoint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add corner'**
+  String get wbAddEnvelopePoint;
+
+  /// No description provided for @wbMissingData.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight & balance needs the empty weight, empty CG and loading stations in the aircraft profile.'**
+  String get wbMissingData;
+
+  /// No description provided for @wbLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading'**
+  String get wbLoading;
+
+  /// No description provided for @wbFuelFromPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'At takeoff, from the fuel plan'**
+  String get wbFuelFromPlan;
+
+  /// No description provided for @wbMax.
+  ///
+  /// In en, this message translates to:
+  /// **'max. {max} {unit}'**
+  String wbMax(int max, String unit);
+
+  /// No description provided for @wbResult.
+  ///
+  /// In en, this message translates to:
+  /// **'Mass and CG'**
+  String get wbResult;
+
+  /// No description provided for @wbZeroFuel.
+  ///
+  /// In en, this message translates to:
+  /// **'Zero fuel'**
+  String get wbZeroFuel;
+
+  /// No description provided for @wbTakeoff.
+  ///
+  /// In en, this message translates to:
+  /// **'Takeoff'**
+  String get wbTakeoff;
+
+  /// No description provided for @wbLanding.
+  ///
+  /// In en, this message translates to:
+  /// **'Landing'**
+  String get wbLanding;
+
+  /// No description provided for @wbMtow.
+  ///
+  /// In en, this message translates to:
+  /// **'Max. takeoff weight {weight}'**
+  String wbMtow(String weight);
+
+  /// No description provided for @wbOverMtow.
+  ///
+  /// In en, this message translates to:
+  /// **'Above the max. takeoff weight of {weight}'**
+  String wbOverMtow(String weight);
+
+  /// No description provided for @wbTakeoffOutside.
+  ///
+  /// In en, this message translates to:
+  /// **'Takeoff CG outside the envelope'**
+  String get wbTakeoffOutside;
+
+  /// No description provided for @wbLandingOutside.
+  ///
+  /// In en, this message translates to:
+  /// **'Landing CG outside the envelope'**
+  String get wbLandingOutside;
+
+  /// No description provided for @wbStationOverloaded.
+  ///
+  /// In en, this message translates to:
+  /// **'{station}: above the maximum load'**
+  String wbStationOverloaded(String station);
+
+  /// No description provided for @wbNoEnvelope.
+  ///
+  /// In en, this message translates to:
+  /// **'No envelope in the aircraft profile.'**
+  String get wbNoEnvelope;
 }
 
 class _AppLocalizationsDelegate

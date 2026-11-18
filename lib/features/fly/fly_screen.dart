@@ -377,6 +377,7 @@ class _NavlogCard extends StatelessWidget {
               columns: flyingColumns,
               currentLeg: kb.currentLeg,
               etas: kb.etas,
+              fuelAtTakeoffL: kb.data?.fuelPlan?.atTakeoff,
             ),
     );
   }
@@ -493,6 +494,27 @@ class _TimesCard extends StatelessWidget {
                     l10n.timeBlock,
                     block == null ? '–' : formatClock(block),
                   ),
+                  if (kb.data?.fuelPlan case final plan?)
+                    _Value(
+                      l10n.fuelEnduranceLeft,
+                      formatClock(
+                        f.takeoffAt == null
+                            ? plan.endurance
+                            : plan.endurance - now.difference(f.takeoffAt!),
+                      ),
+                      color:
+                          f.takeoffAt != null &&
+                              plan.endurance - now.difference(f.takeoffAt!) <
+                                  Duration(
+                                    seconds:
+                                        (plan.finalReserve /
+                                                plan.burnLph *
+                                                3600)
+                                            .round(),
+                                  )
+                          ? Theme.of(context).colorScheme.error
+                          : null,
+                    ),
                 ],
               );
             },

@@ -13,9 +13,11 @@ import '../../l10n/app_localizations.dart';
 import '../kneeboard/kneeboard_controller.dart';
 import 'add_waypoint_dialog.dart';
 import 'edit_dialogs.dart';
+import 'fuel_panel.dart';
 import '../weather/weather_card.dart';
 import 'navlog_table.dart';
 import 'runway_selector.dart';
+import 'wb_panel.dart';
 
 class FlightEditorScreen extends StatefulWidget {
   const FlightEditorScreen({super.key, required this.flightId});
@@ -109,6 +111,8 @@ class _FlightEditorScreenState extends State<FlightEditorScreen> {
               final route = _RoutePanel(data);
               final navlog = _NavlogPanel(data);
               final weather = _WeatherPanel(data);
+              final fuel = FuelPanel(data);
+              final wb = WbPanel(data);
               if (constraints.maxWidth >= 1000) {
                 return Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,8 +121,13 @@ class _FlightEditorScreenState extends State<FlightEditorScreen> {
                     const VerticalDivider(width: 1),
                     Expanded(
                       child: _Tabs(
-                        labels: [l10n.flightTabNavlog, l10n.flightTabWeather],
-                        children: [navlog, weather],
+                        labels: [
+                          l10n.flightTabNavlog,
+                          l10n.flightTabFuel,
+                          l10n.flightTabWb,
+                          l10n.flightTabWeather,
+                        ],
+                        children: [navlog, fuel, wb, weather],
                       ),
                     ),
                   ],
@@ -128,9 +137,11 @@ class _FlightEditorScreenState extends State<FlightEditorScreen> {
                 labels: [
                   l10n.flightTabRoute,
                   l10n.flightTabNavlog,
+                  l10n.flightTabFuel,
+                  l10n.flightTabWb,
                   l10n.flightTabWeather,
                 ],
-                children: [route, navlog, weather],
+                children: [route, navlog, fuel, wb, weather],
               );
             },
           ),
@@ -151,7 +162,17 @@ class _Tabs extends StatelessWidget {
     length: children.length,
     child: Column(
       children: [
-        TabBar(tabs: [for (final l in labels) Tab(text: l)]),
+        LayoutBuilder(
+          builder: (context, constraints) {
+            // Scroll the tab bar when the labels don't fit (phones).
+            final scroll = constraints.maxWidth / labels.length < 110;
+            return TabBar(
+              isScrollable: scroll,
+              tabAlignment: scroll ? TabAlignment.start : null,
+              tabs: [for (final l in labels) Tab(text: l)],
+            );
+          },
+        ),
         Expanded(child: TabBarView(children: children)),
       ],
     ),

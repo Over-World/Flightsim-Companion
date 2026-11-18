@@ -167,3 +167,10 @@ enum FuelKind {
   const FuelKind(this.density);
   final double density;
 }
+
+/// Fuel kind of an aircraft profile's `fuelType` (`avgas`, `mogas`, `jeta`).
+FuelKind fuelKindOf(String fuelType) => switch (fuelType) {
+  'jeta' => FuelKind.jetA1,
+  'mogas' => FuelKind.mogas,
+  _ => FuelKind.avgas,
+};

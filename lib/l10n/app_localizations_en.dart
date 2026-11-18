@@ -1155,4 +1155,197 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get runwayWindPlanned => 'Planning wind';
+
+  @override
+  String get flightTabFuel => 'Fuel';
+
+  @override
+  String get flightTabWb => 'W&B';
+
+  @override
+  String get fuelPlanTitle => 'Fuel plan';
+
+  @override
+  String get fuelOnBoard => 'Fuel on board (planned)';
+
+  @override
+  String get fuelTaxi => 'Taxi fuel';
+
+  @override
+  String get fuelTrip => 'Trip';
+
+  @override
+  String get fuelContingency => 'Contingency';
+
+  @override
+  String fuelContingencyRow(String percent) {
+    return 'Contingency $percent %';
+  }
+
+  @override
+  String fuelAlternateRow(String ident) {
+    return 'Alternate to $ident';
+  }
+
+  @override
+  String get fuelAlternateNone => 'Alternate (none set)';
+
+  @override
+  String get fuelFinalReserve => 'Final reserve';
+
+  @override
+  String fuelFinalReserveRow(int minutes) {
+    return 'Final reserve $minutes min';
+  }
+
+  @override
+  String get fuelExtra => 'Extra fuel';
+
+  @override
+  String get fuelRequired => 'Required at engine start';
+
+  @override
+  String get fuelMargin => 'Margin';
+
+  @override
+  String get fuelAtLanding => 'Expected on landing';
+
+  @override
+  String get fuelEndurance => 'Endurance from takeoff';
+
+  @override
+  String get fuelEnduranceLeft => 'Endurance';
+
+  @override
+  String get fuelNightVfr => 'Night VFR';
+
+  @override
+  String get fuelNightVfrHint => '45 min final reserve instead of 30';
+
+  @override
+  String get fuelDefaultsHint =>
+      'Empty fields use the defaults shown: VFR 30 min reserve (night 45), IFR 5 % contingency, alternate fuel and 45 min reserve. Trip fuel comes from the navlog.';
+
+  @override
+  String get fuelBelowRequired => 'Planned fuel is below the required minimum.';
+
+  @override
+  String get fuelRequiredExceedsUsable =>
+      'The required fuel exceeds the usable tank capacity – plan a fuel stop.';
+
+  @override
+  String get fuelOnBoardExceedsUsable =>
+      'Planned fuel exceeds the usable tank capacity.';
+
+  @override
+  String get wbTitle => 'Weight & balance';
+
+  @override
+  String get wbArmUnit => 'Arm unit (as in the POH)';
+
+  @override
+  String get wbArmInches => 'Inches';
+
+  @override
+  String get wbArmMeters => 'Metres';
+
+  @override
+  String get wbArmMillimeters => 'Millimetres';
+
+  @override
+  String get wbEmptyArm => 'Empty weight CG (arm)';
+
+  @override
+  String get wbStations => 'Loading stations';
+
+  @override
+  String get wbStationName => 'Station';
+
+  @override
+  String get wbArm => 'Arm';
+
+  @override
+  String get wbMaxLoad => 'Max.';
+
+  @override
+  String get wbStationKind => 'Type';
+
+  @override
+  String get wbWeight => 'Weight';
+
+  @override
+  String get wbKindSeat => 'Seat';
+
+  @override
+  String get wbKindBaggage => 'Baggage';
+
+  @override
+  String get wbKindFuel => 'Fuel';
+
+  @override
+  String get wbKindOther => 'Other';
+
+  @override
+  String get wbAddStation => 'Add station';
+
+  @override
+  String get wbEnvelope => 'CG envelope';
+
+  @override
+  String get wbEnvelopeHint =>
+      'Corners of the normal category envelope in order (arm, weight).';
+
+  @override
+  String get wbAddEnvelopePoint => 'Add corner';
+
+  @override
+  String get wbMissingData =>
+      'Weight & balance needs the empty weight, empty CG and loading stations in the aircraft profile.';
+
+  @override
+  String get wbLoading => 'Loading';
+
+  @override
+  String get wbFuelFromPlan => 'At takeoff, from the fuel plan';
+
+  @override
+  String wbMax(int max, String unit) {
+    return 'max. $max $unit';
+  }
+
+  @override
+  String get wbResult => 'Mass and CG';
+
+  @override
+  String get wbZeroFuel => 'Zero fuel';
+
+  @override
+  String get wbTakeoff => 'Takeoff';
+
+  @override
+  String get wbLanding => 'Landing';
+
+  @override
+  String wbMtow(String weight) {
+    return 'Max. takeoff weight $weight';
+  }
+
+  @override
+  String wbOverMtow(String weight) {
+    return 'Above the max. takeoff weight of $weight';
+  }
+
+  @override
+  String get wbTakeoffOutside => 'Takeoff CG outside the envelope';
+
+  @override
+  String get wbLandingOutside => 'Landing CG outside the envelope';
+
+  @override
+  String wbStationOverloaded(String station) {
+    return '$station: above the maximum load';
+  }
+
+  @override
+  String get wbNoEnvelope => 'No envelope in the aircraft profile.';
 }

@@ -1,14 +1,107 @@
+import 'dart:convert';
+
 import 'package:drift/drift.dart';
 
+import '../../core/e6b.dart';
+import '../../core/fuel_plan.dart';
+import '../../core/nav_math.dart';
 import '../../core/navlog.dart';
+import '../../core/weight_balance.dart';
 import '../db/database.dart';
 
 class FlightWithRoute {
-  const FlightWithRoute(this.flight, this.waypoints, this.aircraft);
+  const FlightWithRoute(
+    this.flight,
+    this.waypoints,
+    this.aircraft, {
+    this.alternateAirport,
+  });
 
   final Flight flight;
   final List<FlightWaypoint> waypoints;
   final AircraftProfile? aircraft;
+  final Airport? alternateAirport;
+
+  FuelKind get fuelKind => fuelKindOf(aircraft?.fuelType ?? 'avgas');
+
+  /// Fuel from destination to alternate at cruise TAS with the flight wind.
+  double? get alternateFuelL {
+    final a = aircraft;
+    final altn = alternateAirport;
+    if (a == null || altn == null || waypoints.isEmpty) return null;
+    final dest = waypoints.last;
+    final dist = distanceNm(
+      dest.latitude,
+      dest.longitude,
+      altn.latitude,
+      altn.longitude,
+    );
+    final s = solveWind(
+      trueCourse: initialCourse(
+        dest.latitude,
+        dest.longitude,
+        altn.latitude,
+        altn.longitude,
+      ),
+      trueAirspeed: a.cruiseTas.toDouble(),
+      windFrom: (flight.windDirection ?? 0).toDouble(),
+      windSpeed: (flight.windSpeedKt ?? 0).toDouble(),
+    );
+    return s == null ? null : dist / s.groundSpeed * a.fuelBurnLph;
+  }
+
+  FuelPlan? get fuelPlan {
+    final a = aircraft;
+    final log = navlog;
+    if (a == null || log == null) return null;
+    return FuelPlan.compute(
+      ifr: flight.rules == FlightRules.ifr,
+      night: flight.night,
+      trip: log.totalFuelL,
+      burnLph: a.fuelBurnLph,
+      usable: a.usableFuelL,
+      taxi: flight.taxiFuelL ?? a.taxiFuelL,
+      contingencyPercent: flight.contingencyPercent,
+      finalReserveMinutes: flight.finalReserveMinutes,
+      alternate: alternateFuelL ?? 0,
+      extra: flight.extraFuelL,
+      onBoard: flight.fuelOnBoardL,
+    );
+  }
+
+  List<WbStation> get stations =>
+      aircraft == null ? const [] : WbStation.decodeAll(aircraft!.stations);
+
+  Map<int, double> get loadsKg {
+    final json = jsonDecode(flight.loads);
+    return json is Map
+        ? {
+            for (final e in json.entries)
+              if (int.tryParse('${e.key}') != null && e.value is num)
+                int.parse('${e.key}'): (e.value as num).toDouble(),
+          }
+        : {};
+  }
+
+  /// `null` without empty weight/CG in the aircraft profile.
+  WbResult? get weightBalance {
+    final a = aircraft;
+    if (a == null || a.emptyWeightKg == null || a.emptyArm == null) {
+      return null;
+    }
+    final plan = fuelPlan;
+    final density = fuelKind.density;
+    return WbResult.compute(
+      emptyKg: a.emptyWeightKg!,
+      emptyArm: a.emptyArm!,
+      stations: stations,
+      envelope: EnvelopePoint.decodeAll(a.envelope),
+      loadsKg: loadsKg,
+      takeoffFuelKg: plan == null ? 0 : plan.atTakeoff * density,
+      landingFuelKg: plan == null || !plan.valid ? 0 : plan.atLanding * density,
+      maxTakeoffKg: a.maxTakeoffWeightKg,
+    );
+  }
 
   List<NavlogPoint> get navlogPoints => [
     for (final w in waypoints)
@@ -72,10 +165,18 @@ class FlightRepository {
         .asyncMap((_) async {
           final row = await query.getSingleOrNull();
           if (row == null) return null;
+          final flight = row.readTable(_db.flights);
+          final altn = flight.alternateIdent;
           return FlightWithRoute(
-            row.readTable(_db.flights),
+            flight,
             await waypoints.get(),
             row.readTableOrNull(_db.aircraftProfiles),
+            alternateAirport: altn == null
+                ? null
+                : await (_db.select(_db.airports)
+                        ..where((a) => a.ident.equals(altn))
+                        ..limit(1))
+                      .getSingleOrNull(),
           );
         });
   }

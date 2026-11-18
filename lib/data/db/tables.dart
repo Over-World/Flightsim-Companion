@@ -110,6 +110,17 @@ class AircraftProfiles extends Table {
 
   /// Maximum demonstrated crosswind component.
   IntColumn get maxCrosswindKt => integer().nullable()();
+
+  /// Typical taxi fuel.
+  RealColumn get taxiFuelL => real().nullable()();
+
+  /// Weight & balance: arm unit as in the POH (`in`, `m`, `mm`), empty CG
+  /// arm, loading stations and CG envelope as JSON (see
+  /// `core/weight_balance.dart`).
+  TextColumn get armUnit => text().withDefault(const Constant('in'))();
+  RealColumn get emptyArm => real().nullable()();
+  TextColumn get stations => text().withDefault(const Constant('[]'))();
+  TextColumn get envelope => text().withDefault(const Constant('[]'))();
   TextColumn get notes => text().withDefault(const Constant(''))();
 }
 
@@ -134,6 +145,17 @@ class Flights extends Table {
   TextColumn get arrivalRunway => text().nullable()();
   IntColumn get cruiseAltitudeFt => integer().nullable()();
   DateTimeColumn get plannedDeparture => dateTime().nullable()();
+
+  // Fuel plan; null = defaults from rules and aircraft.
+  RealColumn get taxiFuelL => real().nullable()();
+  RealColumn get contingencyPercent => real().nullable()();
+  IntColumn get finalReserveMinutes => integer().nullable()();
+  RealColumn get extraFuelL => real().nullable()();
+  RealColumn get fuelOnBoardL => real().nullable()();
+  BoolColumn get night => boolean().withDefault(const Constant(false))();
+
+  /// Loads per W&B station in kg, JSON `{"<station index>": kg}`.
+  TextColumn get loads => text().withDefault(const Constant('{}'))();
 
   /// Wind used for every leg without its own wind (true direction, from).
   IntColumn get windDirection => integer().nullable()();
