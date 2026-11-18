@@ -1,0 +1,242 @@
+{
+  "@@locale": "en",
+  "appTitle": "Flightsim Companion",
+  "navPlan": "Plan",
+  "navFly": "Fly",
+  "navAircraft": "Aircraft",
+  "navLogbook": "Logbook",
+  "navSettings": "Settings",
+  "save": "Save",
+  "cancel": "Cancel",
+  "delete": "Delete",
+  "fieldRequired": "Required",
+  "fieldInvalidNumber": "Enter a positive number",
+  "navdataMissingTitle": "No navigation data yet",
+  "navdataMissingMessage": "Download airports, runways, frequencies and navaids once to use the app offline.",
+  "navdataMissingAction": "Download",
+  "flightsEmptyTitle": "No flights planned",
+  "flightsEmptyMessage": "Your planned VFR and IFR flights will appear here. Meanwhile, look up airports, frequencies and navaids.",
+  "flyNoActiveFlightTitle": "No active flight",
+  "flyNoActiveFlightMessage": "Start a planned flight to open the kneeboard with navlog, stopwatch and frequencies.",
+  "logbookEmptyTitle": "Logbook is empty",
+  "logbookEmptyMessage": "Completed flights are logged here with times and landing ratings.",
+  "airportSearchTitle": "Find airport",
+  "airportSearchHint": "ICAO, IATA, name or city",
+  "airportSearchNoResults": "No airport found for \"{query}\"",
+  "@airportSearchNoResults": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "airportTypeLarge": "Large airport",
+  "airportTypeMedium": "Medium airport",
+  "airportTypeSmall": "Small airfield",
+  "airportTypeHeliport": "Heliport",
+  "airportTypeSeaplane": "Seaplane base",
+  "elevationFt": "{ft} ft",
+  "@elevationFt": {
+    "placeholders": {
+      "ft": {
+        "type": "int"
+      }
+    }
+  },
+  "frequencies": "Frequencies",
+  "noFrequencies": "No frequencies known",
+  "runways": "Runways",
+  "noRunways": "No runways known",
+  "runwayDimensions": "{lengthFt} ft ({lengthM} m) × {widthFt} ft",
+  "@runwayDimensions": {
+    "placeholders": {
+      "lengthFt": {
+        "type": "int"
+      },
+      "lengthM": {
+        "type": "int"
+      },
+      "widthFt": {
+        "type": "int"
+      }
+    }
+  },
+  "runwayLighted": "lighted",
+  "navaidsNearby": "Navaids nearby",
+  "noNavaids": "No navaids within 40 NM",
+  "radialDistance": "Airport on R{radial} · {distance} NM",
+  "@radialDistance": {
+    "placeholders": {
+      "radial": {
+        "type": "String"
+      },
+      "distance": {
+        "type": "String"
+      }
+    }
+  },
+  "aircraftAdd": "Add aircraft",
+  "aircraftEdit": "Edit aircraft",
+  "aircraftEmpty": "No aircraft profiles",
+  "aircraftSummary": "{tas} kt TAS · {burn} {unit}/h",
+  "@aircraftSummary": {
+    "placeholders": {
+      "tas": {
+        "type": "int"
+      },
+      "burn": {
+        "type": "String"
+      },
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "aircraftDeleteTitle": "Delete aircraft?",
+  "aircraftDeleteMessage": "\"{name}\" will be removed permanently.",
+  "@aircraftDeleteMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "aircraftSectionGeneral": "General",
+  "aircraftName": "Name",
+  "aircraftIcaoType": "ICAO type",
+  "aircraftRegistration": "Registration",
+  "aircraftSectionPerformance": "Performance",
+  "aircraftCruiseTas": "Cruise TAS",
+  "aircraftClimbTas": "Climb TAS",
+  "aircraftClimbRate": "Climb rate",
+  "aircraftDescentRate": "Descent rate",
+  "aircraftSectionFuel": "Fuel",
+  "aircraftFuelBurn": "Fuel burn (cruise)",
+  "aircraftUsableFuel": "Usable fuel",
+  "aircraftFuelType": "Fuel type",
+  "aircraftSectionWeights": "Weights",
+  "aircraftEmptyWeight": "Empty weight",
+  "aircraftMtow": "Max. takeoff weight",
+  "aircraftNotes": "Notes",
+  "aircraftNotesHint": "V-speeds, procedures, peculiarities…",
+  "settingsAppearance": "Appearance",
+  "settingsTheme": "Theme",
+  "themeSystem": "System",
+  "themeLight": "Light",
+  "themeDark": "Dark",
+  "settingsAccent": "Accent color",
+  "settingsUnits": "Units",
+  "settingsFuelUnit": "Fuel",
+  "unitLiters": "Litres",
+  "unitUsGallons": "US gallons",
+  "settingsWeightUnit": "Weight",
+  "unitKilograms": "Kilograms",
+  "unitPounds": "Pounds",
+  "settingsSimulator": "Simulator",
+  "settingsXplaneHint": "X-Plane 12: enter the IP address of the PC running the simulator. The app connects to X-Plane's web API on your local network.",
+  "settingsSimHost": "X-Plane PC (IP or hostname)",
+  "settingsSimPort": "Port",
+  "settingsNavdata": "Navigation data",
+  "navdataNeverImported": "Not downloaded yet",
+  "navdataImportedAt": "Last updated {date}",
+  "@navdataImportedAt": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "navdataCounts": "{airports} airports · {runways} runways · {frequencies} frequencies · {navaids} navaids",
+  "@navdataCounts": {
+    "placeholders": {
+      "airports": {
+        "type": "String"
+      },
+      "runways": {
+        "type": "String"
+      },
+      "frequencies": {
+        "type": "String"
+      },
+      "navaids": {
+        "type": "String"
+      }
+    }
+  },
+  "navdataImportFailed": "Download failed: {error}",
+  "@navdataImportFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "navdataSource": "Source: OurAirports (public domain), worldwide, about 20 MB.",
+  "navdataDownload": "Download",
+  "navdataUpdate": "Update",
+  "navdataStageDownloading": "Downloading {file}…",
+  "@navdataStageDownloading": {
+    "placeholders": {
+      "file": {
+        "type": "String"
+      }
+    }
+  },
+  "navdataStageParsing": "Processing data…",
+  "navdataStageWriting": "Saving to database…",
+  "back": "Back",
+  "next": "Next",
+  "settingsGeneral": "General",
+  "settingsLanguage": "Language",
+  "languageSystem": "System",
+  "settingsHomeAirport": "Home airport",
+  "settingsDefaultAircraft": "Default aircraft",
+  "settingsAccounts": "Accounts",
+  "settingsSimbriefUser": "SimBrief username or pilot ID",
+  "settingsSimbriefHint": "Used to import your latest OFP for IFR flights.",
+  "settingsNotes": "Notes",
+  "settingsFingerDrawing": "Draw with finger",
+  "settingsFingerDrawingHint": "When off, only a stylus draws and a finger just scrolls.",
+  "settingsRestartOnboarding": "Run setup again",
+  "xplaneTest": "Test connection",
+  "xplaneTesting": "Connecting…",
+  "xplaneConnected": "Connected to X-Plane {version}",
+  "@xplaneConnected": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "xplaneConnectionFailed": "No connection: {error}",
+  "@xplaneConnectionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "onboardingStep": "{current} / {total}",
+  "@onboardingStep": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "onboardingFinish": "Let's fly",
+  "onboardingWelcomeTitle": "Welcome aboard",
+  "onboardingWelcomeText": "Flightsim Companion is your kneeboard for X-Plane and MSFS: plan VFR and IFR flights, fly them with navlog, stopwatch and frequencies, and keep notes like on real paper. A few quick steps and you're ready.",
+  "onboardingNavdataTitle": "Navigation data",
+  "onboardingNavdataText": "Airports, runways, frequencies and navaids worldwide. Downloaded once, then everything works offline.",
+  "onboardingSimTitle": "Connect X-Plane",
+  "onboardingSimText": "Optional. Enter the IP address of the PC running X-Plane 12 – both devices must be on the same network. You can skip this and fly without a live connection.",
+  "onboardingAccountsTitle": "Accounts",
+  "onboardingAccountsText": "Optional. With your SimBrief username the app can import your latest flight plan later.",
+  "onboardingHomeTitle": "Home base",
+  "onboardingHomeText": "Your home airport is suggested as departure for new flights, your default aircraft is preselected.",
+  "onboardingHomeNeedsNavdata": "Download the navigation data first to pick a home airport – you can set it later in the settings."
+}
