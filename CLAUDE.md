@@ -28,16 +28,20 @@ The full roadmap (milestones M1–M7) lives in OpenChamber's project knowledge (
 - `lib/core/` – nav math (great circle, wind triangle), units, morse, theme, settings, router
 - `lib/data/db/` – drift tables and database (`database.g.dart` is generated)
 - `lib/data/navdata/` – OurAirports CSV parser and importer
+- `lib/core/navlog.dart` – navlog computation (pure, tested); `core/wmm/` – magnetic variation
 - `lib/data/repositories/` – queries used by the UI
-- `lib/features/<feature>/` – screens and controllers
+- `lib/data/sim/` – X-Plane web API client
+- `lib/features/<feature>/` – screens and controllers: `plan` (flights, route editor, navlog table), `kneeboard` (`KneeboardController`: active flight, times, stopwatch), `fly` (kneeboard UI), `notes` (stylus notepad), `onboarding`, `settings`, `airports`, `aircraft`, `navdata`
 - `lib/widgets/` – shared widgets
+- `lib/app_scope.dart` – all providers; used by `main.dart` and widget tests
 
 ## Conventions
 
 - Internal units: knots, feet, litres, kilograms. Convert only for display (`core/units.dart`).
 - Directions: true internally; convert to magnetic with `magneticVariation()` (WMM2025, `core/wmm/`, valid until 2030 – replace coefficients with WMM2030 then). Never use OurAirports' `magnetic_variation_deg`, it is decades old.
 - Layout breakpoint: `width >= 600` → NavigationRail, else NavigationBar. Every screen must work at 360 px wide and in both tablet orientations.
-- Stylus input (M2+): stylus draws, finger pans/zooms (`PointerDeviceKind.stylus`).
+- Stylus input: a stylus always draws (inverted end / button erases); a finger draws only with the "draw with finger" setting, otherwise it scrolls/zooms. Only one pointer is tracked so a palm can't scribble. Notepad pages use 1000-unit-wide page coordinates and palette indices (not ARGB) so ink adapts to dark mode.
+- Widget tests with drift: call `unmount` (pump an empty widget + short pumps) at the end, and run DB work inside `tester.runAsync`; see `test/screens_test.dart`.
 
 ## Commands
 

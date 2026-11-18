@@ -194,12 +194,19 @@ class NavlogTable extends StatelessWidget {
       ),
     ];
 
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Table(
-        defaultColumnWidth: const IntrinsicColumnWidth(),
-        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-        children: rows,
+    // Fills the card when there's room, scrolls sideways on phones.
+    return LayoutBuilder(
+      builder: (context, constraints) => SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(minWidth: constraints.maxWidth),
+          child: Table(
+            defaultColumnWidth: const IntrinsicColumnWidth(),
+            columnWidths: const {0: IntrinsicColumnWidth(flex: 1)},
+            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+            children: rows,
+          ),
+        ),
       ),
     );
   }

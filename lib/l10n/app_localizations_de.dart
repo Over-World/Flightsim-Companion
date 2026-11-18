@@ -686,4 +686,94 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get stopwatchReset => 'Zurücksetzen';
+
+  @override
+  String get notesOpen => 'Notizblock';
+
+  @override
+  String get notesFlight => 'Dieser Flug';
+
+  @override
+  String get notesGeneral => 'Allgemeine Notizen';
+
+  @override
+  String get notesAddPage => 'Seite';
+
+  @override
+  String get notesClearPage => 'Seite leeren';
+
+  @override
+  String get notesDeletePage => 'Seite löschen';
+
+  @override
+  String get actionRedo => 'Wiederholen';
+
+  @override
+  String get pageBlank => 'Leer';
+
+  @override
+  String get pageGrid => 'Kariert';
+
+  @override
+  String get pageLined => 'Liniert';
+
+  @override
+  String get pageAtis => 'ATIS';
+
+  @override
+  String get pageCraft => 'Freigabe (CRAFT)';
+
+  @override
+  String get toolPen => 'Stift';
+
+  @override
+  String get toolHighlighter => 'Textmarker';
+
+  @override
+  String get toolEraser => 'Radierer';
+
+  @override
+  String get toolSize => 'Strichstärke';
+
+  @override
+  String get templateAtisInfo => 'INFORMATION  ·  ZEIT';
+
+  @override
+  String get templateAtisRunway => 'PISTE IN BETRIEB';
+
+  @override
+  String get templateAtisWind => 'WIND';
+
+  @override
+  String get templateAtisVisibility => 'SICHT';
+
+  @override
+  String get templateAtisWeather => 'WETTER';
+
+  @override
+  String get templateAtisClouds => 'WOLKEN';
+
+  @override
+  String get templateAtisTemperature => 'TEMP / TAUPUNKT';
+
+  @override
+  String get templateAtisQnh => 'QNH';
+
+  @override
+  String get templateAtisRemarks => 'BEMERKUNGEN / TREND';
+
+  @override
+  String get templateCraftClearance => 'C  Clearance limit (Freigabegrenze)';
+
+  @override
+  String get templateCraftRoute => 'R  Route (SID)';
+
+  @override
+  String get templateCraftAltitude => 'A  Altitude (Höhe)';
+
+  @override
+  String get templateCraftFrequency => 'F  Frequency (Frequenz)';
+
+  @override
+  String get templateCraftTransponder => 'T  Transponder';
 }

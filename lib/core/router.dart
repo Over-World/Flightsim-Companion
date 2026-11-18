@@ -8,6 +8,7 @@ import '../features/airports/airport_detail_screen.dart';
 import '../features/airports/airport_search_screen.dart';
 import '../features/fly/fly_screen.dart';
 import '../features/logbook/logbook_screen.dart';
+import '../features/notes/notepad_screen.dart';
 import '../features/onboarding/onboarding_screen.dart';
 import '../features/plan/flight_editor_screen.dart';
 import '../features/plan/plan_screen.dart';
@@ -38,6 +39,7 @@ GoRouter createRouter(SettingsController settings) => GoRouter(
       path: '/welcome',
       builder: (context, state) => const OnboardingScreen(),
     ),
+    GoRoute(path: '/notes', builder: (context, state) => const NotepadScreen()),
     StatefulShellRoute.indexedStack(
       builder: (context, state, shell) => AdaptiveShell(navigationShell: shell),
       branches: [

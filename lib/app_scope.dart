@@ -9,6 +9,7 @@ import 'data/navdata/navdata_importer.dart';
 import 'data/repositories/aircraft_repository.dart';
 import 'data/repositories/flight_repository.dart';
 import 'data/repositories/navdata_repository.dart';
+import 'data/repositories/notes_repository.dart';
 import 'features/kneeboard/kneeboard_controller.dart';
 import 'features/navdata/navdata_controller.dart';
 
@@ -23,7 +24,8 @@ class AppScope extends StatelessWidget {
     this.credentials = const BuildTimeCredentials(),
   }) : aircraft = AircraftRepository(db),
        navdata = NavdataRepository(db),
-       flights = FlightRepository(db);
+       flights = FlightRepository(db),
+       notes = NotesRepository(db);
 
   final AppDatabase db;
   final SharedPreferences prefs;
@@ -32,6 +34,7 @@ class AppScope extends StatelessWidget {
   final AircraftRepository aircraft;
   final NavdataRepository navdata;
   final FlightRepository flights;
+  final NotesRepository notes;
   final Widget child;
 
   @override
@@ -43,6 +46,7 @@ class AppScope extends StatelessWidget {
         Provider.value(value: aircraft),
         Provider.value(value: navdata),
         Provider.value(value: flights),
+        Provider.value(value: notes),
         ChangeNotifierProvider.value(value: settings),
         ChangeNotifierProvider(
           create: (_) => NavdataController(

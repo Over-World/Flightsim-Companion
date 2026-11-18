@@ -1332,6 +1332,186 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reset'**
   String get stopwatchReset;
+
+  /// No description provided for @notesOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Notepad'**
+  String get notesOpen;
+
+  /// No description provided for @notesFlight.
+  ///
+  /// In en, this message translates to:
+  /// **'This flight'**
+  String get notesFlight;
+
+  /// No description provided for @notesGeneral.
+  ///
+  /// In en, this message translates to:
+  /// **'General notes'**
+  String get notesGeneral;
+
+  /// No description provided for @notesAddPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Page'**
+  String get notesAddPage;
+
+  /// No description provided for @notesClearPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear page'**
+  String get notesClearPage;
+
+  /// No description provided for @notesDeletePage.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete page'**
+  String get notesDeletePage;
+
+  /// No description provided for @actionRedo.
+  ///
+  /// In en, this message translates to:
+  /// **'Redo'**
+  String get actionRedo;
+
+  /// No description provided for @pageBlank.
+  ///
+  /// In en, this message translates to:
+  /// **'Blank'**
+  String get pageBlank;
+
+  /// No description provided for @pageGrid.
+  ///
+  /// In en, this message translates to:
+  /// **'Grid'**
+  String get pageGrid;
+
+  /// No description provided for @pageLined.
+  ///
+  /// In en, this message translates to:
+  /// **'Lined'**
+  String get pageLined;
+
+  /// No description provided for @pageAtis.
+  ///
+  /// In en, this message translates to:
+  /// **'ATIS'**
+  String get pageAtis;
+
+  /// No description provided for @pageCraft.
+  ///
+  /// In en, this message translates to:
+  /// **'Clearance (CRAFT)'**
+  String get pageCraft;
+
+  /// No description provided for @toolPen.
+  ///
+  /// In en, this message translates to:
+  /// **'Pen'**
+  String get toolPen;
+
+  /// No description provided for @toolHighlighter.
+  ///
+  /// In en, this message translates to:
+  /// **'Highlighter'**
+  String get toolHighlighter;
+
+  /// No description provided for @toolEraser.
+  ///
+  /// In en, this message translates to:
+  /// **'Eraser'**
+  String get toolEraser;
+
+  /// No description provided for @toolSize.
+  ///
+  /// In en, this message translates to:
+  /// **'Line width'**
+  String get toolSize;
+
+  /// No description provided for @templateAtisInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'INFORMATION  ·  TIME'**
+  String get templateAtisInfo;
+
+  /// No description provided for @templateAtisRunway.
+  ///
+  /// In en, this message translates to:
+  /// **'RWY IN USE'**
+  String get templateAtisRunway;
+
+  /// No description provided for @templateAtisWind.
+  ///
+  /// In en, this message translates to:
+  /// **'WIND'**
+  String get templateAtisWind;
+
+  /// No description provided for @templateAtisVisibility.
+  ///
+  /// In en, this message translates to:
+  /// **'VISIBILITY'**
+  String get templateAtisVisibility;
+
+  /// No description provided for @templateAtisWeather.
+  ///
+  /// In en, this message translates to:
+  /// **'WEATHER'**
+  String get templateAtisWeather;
+
+  /// No description provided for @templateAtisClouds.
+  ///
+  /// In en, this message translates to:
+  /// **'CLOUDS'**
+  String get templateAtisClouds;
+
+  /// No description provided for @templateAtisTemperature.
+  ///
+  /// In en, this message translates to:
+  /// **'TEMP / DEW POINT'**
+  String get templateAtisTemperature;
+
+  /// No description provided for @templateAtisQnh.
+  ///
+  /// In en, this message translates to:
+  /// **'QNH'**
+  String get templateAtisQnh;
+
+  /// No description provided for @templateAtisRemarks.
+  ///
+  /// In en, this message translates to:
+  /// **'REMARKS / TREND'**
+  String get templateAtisRemarks;
+
+  /// No description provided for @templateCraftClearance.
+  ///
+  /// In en, this message translates to:
+  /// **'C  Clearance limit'**
+  String get templateCraftClearance;
+
+  /// No description provided for @templateCraftRoute.
+  ///
+  /// In en, this message translates to:
+  /// **'R  Route (SID)'**
+  String get templateCraftRoute;
+
+  /// No description provided for @templateCraftAltitude.
+  ///
+  /// In en, this message translates to:
+  /// **'A  Altitude'**
+  String get templateCraftAltitude;
+
+  /// No description provided for @templateCraftFrequency.
+  ///
+  /// In en, this message translates to:
+  /// **'F  Frequency'**
+  String get templateCraftFrequency;
+
+  /// No description provided for @templateCraftTransponder.
+  ///
+  /// In en, this message translates to:
+  /// **'T  Transponder'**
+  String get templateCraftTransponder;
 }
 
 class _AppLocalizationsDelegate

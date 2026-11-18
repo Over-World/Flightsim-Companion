@@ -688,4 +688,94 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get stopwatchReset => 'Reset';
+
+  @override
+  String get notesOpen => 'Notepad';
+
+  @override
+  String get notesFlight => 'This flight';
+
+  @override
+  String get notesGeneral => 'General notes';
+
+  @override
+  String get notesAddPage => 'Page';
+
+  @override
+  String get notesClearPage => 'Clear page';
+
+  @override
+  String get notesDeletePage => 'Delete page';
+
+  @override
+  String get actionRedo => 'Redo';
+
+  @override
+  String get pageBlank => 'Blank';
+
+  @override
+  String get pageGrid => 'Grid';
+
+  @override
+  String get pageLined => 'Lined';
+
+  @override
+  String get pageAtis => 'ATIS';
+
+  @override
+  String get pageCraft => 'Clearance (CRAFT)';
+
+  @override
+  String get toolPen => 'Pen';
+
+  @override
+  String get toolHighlighter => 'Highlighter';
+
+  @override
+  String get toolEraser => 'Eraser';
+
+  @override
+  String get toolSize => 'Line width';
+
+  @override
+  String get templateAtisInfo => 'INFORMATION  ·  TIME';
+
+  @override
+  String get templateAtisRunway => 'RWY IN USE';
+
+  @override
+  String get templateAtisWind => 'WIND';
+
+  @override
+  String get templateAtisVisibility => 'VISIBILITY';
+
+  @override
+  String get templateAtisWeather => 'WEATHER';
+
+  @override
+  String get templateAtisClouds => 'CLOUDS';
+
+  @override
+  String get templateAtisTemperature => 'TEMP / DEW POINT';
+
+  @override
+  String get templateAtisQnh => 'QNH';
+
+  @override
+  String get templateAtisRemarks => 'REMARKS / TREND';
+
+  @override
+  String get templateCraftClearance => 'C  Clearance limit';
+
+  @override
+  String get templateCraftRoute => 'R  Route (SID)';
+
+  @override
+  String get templateCraftAltitude => 'A  Altitude';
+
+  @override
+  String get templateCraftFrequency => 'F  Frequency';
+
+  @override
+  String get templateCraftTransponder => 'T  Transponder';
 }

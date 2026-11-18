@@ -9,6 +9,9 @@ Work in progress. Implemented so far:
 - Worldwide navigation data from OurAirports (airports, runways, frequencies, navaids), offline in SQLite
 - Airport search and details with frequencies, runways and nearby navaids (magnetic radials via WMM2025)
 - Aircraft profiles (cruise speed, fuel burn, weights)
+- Flight planning: route from airports, navaids, radial/DME fixes and coordinates; navlog with wind triangle, magnetic headings, times and fuel
+- Kneeboard (portrait and landscape): current leg with heading, ETA and overdue timer, off/on block, takeoff, waypoint passing, flight and block time, stopwatch, frequencies
+- Stylus notepad with ATIS and CRAFT clearance templates, per flight or general; palm rejection
 - First-start setup, X-Plane 12 web API connection test
 - German and English UI, light and dark theme
 

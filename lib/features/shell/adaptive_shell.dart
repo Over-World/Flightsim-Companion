@@ -32,9 +32,25 @@ class AdaptiveShell extends StatelessWidget {
     ];
 
     final useRail = MediaQuery.sizeOf(context).width >= railBreakpoint;
+    void openNotes() => context.push('/notes');
     if (!useRail) {
       return Scaffold(
-        body: navigationShell,
+        body: Stack(
+          children: [
+            navigationShell,
+            // Bottom-left, clear of the screens' own FABs on the right.
+            Positioned(
+              left: 16,
+              bottom: 16,
+              child: FloatingActionButton.small(
+                heroTag: 'notes',
+                tooltip: l10n.notesOpen,
+                onPressed: openNotes,
+                child: const Icon(Icons.draw_outlined),
+              ),
+            ),
+          ],
+        ),
         bottomNavigationBar: NavigationBar(
           selectedIndex: navigationShell.currentIndex,
           onDestinationSelected: _select,
@@ -59,6 +75,17 @@ class AdaptiveShell extends StatelessWidget {
               onDestinationSelected: _select,
               labelType: NavigationRailLabelType.all,
               groupAlignment: -0.85,
+              trailingAtBottom: true,
+              trailing: Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: FloatingActionButton(
+                  heroTag: 'notes',
+                  elevation: 0,
+                  tooltip: l10n.notesOpen,
+                  onPressed: openNotes,
+                  child: const Icon(Icons.draw_outlined),
+                ),
+              ),
               destinations: [
                 for (final (icon, selected, label) in destinations)
                   NavigationRailDestination(
