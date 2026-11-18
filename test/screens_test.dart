@@ -81,7 +81,24 @@ void main() {
 
       router.go('/plan/flights/$flightId');
       await settle(tester);
-      expect(find.text('FFM'), findsWidgets);
+      Finder inRoute(String text) => find.descendant(
+        of: find.byType(ReorderableListView),
+        matching: find.text(text),
+      );
+      expect(inRoute('FFM'), findsNWidgets(1));
+
+      // Add a second FFM via the waypoint dialog.
+      await tester.tap(find.text('Add waypoint'));
+      await tester.pumpAndSettle();
+      expect(find.text('Radial/DME'), findsOneWidget);
+      await tester.enterText(find.byType(TextField).first, 'FFM');
+      await tester.pump(const Duration(milliseconds: 300));
+      await settle(tester);
+      await tester.tap(find.text('Frankfurt · VOR-DME'));
+      await tester.pumpAndSettle();
+      await settle(tester);
+      expect(inRoute('FFM'), findsNWidgets(2));
+      expect(tester.takeException(), isNull);
       if (size.width < 1000) {
         await tester.tap(find.text('Navlog'));
         await settle(tester);

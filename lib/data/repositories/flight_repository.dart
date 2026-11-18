@@ -91,6 +91,8 @@ class FlightRepository {
     Airport? alternate,
     int? aircraftId,
     int? cruiseAltitudeFt,
+    int? windDirection,
+    int? windSpeedKt,
   }) {
     return _db.transaction(() async {
       final id = await _db
@@ -104,6 +106,8 @@ class FlightRepository {
               alternateIdent: Value(alternate?.ident),
               aircraftId: Value(aircraftId),
               cruiseAltitudeFt: Value(cruiseAltitudeFt),
+              windDirection: Value(windDirection),
+              windSpeedKt: Value(windSpeedKt),
             ),
           );
       await _db.batch(

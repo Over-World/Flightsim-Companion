@@ -17,8 +17,12 @@ Future<Airport?> showAirportPicker(BuildContext context, {String? title}) {
     builder: (context) => fullscreen
         ? Dialog.fullscreen(child: _AirportPicker(title: title))
         : Dialog(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 560, maxHeight: 640),
+            child: SizedBox(
+              width: 560,
+              height: (MediaQuery.sizeOf(context).height * 0.85).clamp(
+                360,
+                640,
+              ),
               child: _AirportPicker(title: title),
             ),
           ),

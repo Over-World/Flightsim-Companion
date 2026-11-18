@@ -35,9 +35,13 @@ void main() {
       destination: _airport(2, 'EDFZ', 49.9675, 8.1475),
       aircraftId: 1,
       cruiseAltitudeFt: 3500,
+      windDirection: 240,
+      windSpeedKt: 15,
     );
     var f = (await repo.loadFlight(id))!;
     expect(f.flight.title, 'EDFE – EDFZ');
+    expect(f.flight.windDirection, 240);
+    expect(f.flight.windSpeedKt, 15);
     expect(f.waypoints.map((w) => w.ident), ['EDFE', 'EDFZ']);
     expect(f.aircraft?.icaoType, 'C172');
 

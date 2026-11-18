@@ -10,14 +10,25 @@ import '../../l10n/app_localizations.dart';
 import '../../widgets/airport_picker.dart';
 import '../settings/preference_controls.dart';
 
+/// Parses wind fields; `null` unless both are set.
+({int direction, int speed})? parseWind(
+  TextEditingController direction,
+  TextEditingController speed,
+) {
+  final d = _int(direction);
+  final s = _int(speed);
+  return d == null || s == null ? null : (direction: d % 360, speed: s);
+}
+
 int? _int(TextEditingController c) => int.tryParse(c.text.trim());
 
 String _text(int? v) => v?.toString() ?? '';
 
 final _digits = [FilteringTextInputFormatter.digitsOnly];
 
-class _WindFields extends StatelessWidget {
-  const _WindFields({required this.direction, required this.speed});
+/// Wind direction (true, from) and speed.
+class WindFields extends StatelessWidget {
+  const WindFields({super.key, required this.direction, required this.speed});
 
   final TextEditingController direction;
   final TextEditingController speed;
@@ -94,16 +105,14 @@ class _EditWaypointDialogState extends State<_EditWaypointDialog> {
   }
 
   Future<void> _save() async {
-    final dir = _int(_windDir);
-    final speed = _int(_windSpeed);
-    final hasWind = dir != null && speed != null;
+    final wind = parseWind(_windDir, _windSpeed);
     await context.read<FlightRepository>().updateWaypoint(
       widget.waypoint.flightId,
       widget.waypoint.id,
       FlightWaypointsCompanion(
         altitudeFt: Value(_int(_altitude)),
-        windDirection: Value(hasWind ? dir % 360 : null),
-        windSpeedKt: Value(hasWind ? speed : null),
+        windDirection: Value(wind?.direction),
+        windSpeedKt: Value(wind?.speed),
         notes: Value(_notes.text.trim()),
       ),
     );
@@ -137,7 +146,7 @@ class _EditWaypointDialogState extends State<_EditWaypointDialog> {
               ),
             ),
             const SizedBox(height: 16),
-            _WindFields(direction: _windDir, speed: _windSpeed),
+            WindFields(direction: _windDir, speed: _windSpeed),
             const SizedBox(height: 4),
             Text(
               l10n.legWindHint,
@@ -241,9 +250,7 @@ class _EditFlightDialogState extends State<_EditFlightDialog> {
   }
 
   Future<void> _save() async {
-    final dir = _int(_windDir);
-    final speed = _int(_windSpeed);
-    final hasWind = dir != null && speed != null;
+    final wind = parseWind(_windDir, _windSpeed);
     await context.read<FlightRepository>().updateFlight(
       widget.flight.id,
       FlightsCompanion(
@@ -252,8 +259,8 @@ class _EditFlightDialogState extends State<_EditFlightDialog> {
         ),
         aircraftId: Value(_aircraftId),
         cruiseAltitudeFt: Value(_int(_altitude)),
-        windDirection: Value(hasWind ? dir % 360 : null),
-        windSpeedKt: Value(hasWind ? speed : null),
+        windDirection: Value(wind?.direction),
+        windSpeedKt: Value(wind?.speed),
         alternateIdent: Value(_alternate),
         plannedDeparture: Value(_departure),
       ),
@@ -295,7 +302,7 @@ class _EditFlightDialogState extends State<_EditFlightDialog> {
               ),
             ),
             const SizedBox(height: 16),
-            _WindFields(direction: _windDir, speed: _windSpeed),
+            WindFields(direction: _windDir, speed: _windSpeed),
             const SizedBox(height: 4),
             Text(
               l10n.flightWindHint,

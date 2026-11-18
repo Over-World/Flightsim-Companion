@@ -9,6 +9,7 @@ import '../../data/repositories/navdata_repository.dart';
 import '../../l10n/app_localizations.dart';
 import '../../widgets/airport_picker.dart';
 import '../settings/preference_controls.dart';
+import 'edit_dialogs.dart';
 
 /// Returns the id of the created flight.
 Future<int?> showNewFlightDialog(BuildContext context) => showDialog<int>(
@@ -30,6 +31,8 @@ class _NewFlightDialogState extends State<_NewFlightDialog> {
   Airport? _alternate;
   late int? _aircraftId = context.read<SettingsController>().defaultAircraftId;
   final _altitude = TextEditingController(text: '3500');
+  final _windDirection = TextEditingController();
+  final _windSpeed = TextEditingController();
   bool _submitted = false;
 
   @override
@@ -46,6 +49,8 @@ class _NewFlightDialogState extends State<_NewFlightDialog> {
   @override
   void dispose() {
     _altitude.dispose();
+    _windDirection.dispose();
+    _windSpeed.dispose();
     super.dispose();
   }
 
@@ -64,6 +69,7 @@ class _NewFlightDialogState extends State<_NewFlightDialog> {
   Future<void> _create() async {
     setState(() => _submitted = true);
     if (_departure == null || _destination == null) return;
+    final wind = parseWind(_windDirection, _windSpeed);
     final id = await context.read<FlightRepository>().createFlight(
       rules: _rules,
       departure: _departure!,
@@ -71,6 +77,8 @@ class _NewFlightDialogState extends State<_NewFlightDialog> {
       alternate: _alternate,
       aircraftId: _aircraftId,
       cruiseAltitudeFt: int.tryParse(_altitude.text),
+      windDirection: wind?.direction,
+      windSpeedKt: wind?.speed,
     );
     if (mounted) Navigator.pop(context, id);
   }
@@ -138,6 +146,13 @@ class _NewFlightDialogState extends State<_NewFlightDialog> {
                 labelText: l10n.flightCruiseAltitude,
                 suffixText: 'ft',
               ),
+            ),
+            const SizedBox(height: 16),
+            WindFields(direction: _windDirection, speed: _windSpeed),
+            const SizedBox(height: 4),
+            Text(
+              l10n.flightWindHint,
+              style: Theme.of(context).textTheme.bodySmall,
             ),
           ],
         ),

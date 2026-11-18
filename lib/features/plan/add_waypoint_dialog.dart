@@ -23,9 +23,14 @@ Future<FlightWaypointsCompanion?> showAddWaypointDialog(BuildContext context) {
     context: context,
     builder: (context) => fullscreen
         ? const Dialog.fullscreen(child: child)
+        // Tab views need a bounded height, so the dialog gets a fixed size.
         : Dialog(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 600, maxHeight: 680),
+            child: SizedBox(
+              width: 600,
+              height: (MediaQuery.sizeOf(context).height * 0.85).clamp(
+                360,
+                680,
+              ),
               child: child,
             ),
           ),
@@ -58,26 +63,23 @@ class _AddWaypointDialog extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     return DefaultTabController(
       length: 3,
-      child: Column(
-        children: [
-          AppBar(
-            automaticallyImplyLeading: false,
-            leading: const CloseButton(),
-            title: Text(l10n.waypointAdd),
-            bottom: TabBar(
-              tabs: [
-                Tab(text: l10n.waypointTabSearch),
-                Tab(text: l10n.waypointTabRadial),
-                Tab(text: l10n.waypointTabCoordinates),
-              ],
-            ),
+      // Scaffold gives the AppBar with its TabBar a bounded height.
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          leading: const CloseButton(),
+          title: Text(l10n.waypointAdd),
+          bottom: TabBar(
+            tabs: [
+              Tab(text: l10n.waypointTabSearch),
+              Tab(text: l10n.waypointTabRadial),
+              Tab(text: l10n.waypointTabCoordinates),
+            ],
           ),
-          const Expanded(
-            child: TabBarView(
-              children: [_SearchTab(), _RadialTab(), _CoordinatesTab()],
-            ),
-          ),
-        ],
+        ),
+        body: const TabBarView(
+          children: [_SearchTab(), _RadialTab(), _CoordinatesTab()],
+        ),
       ),
     );
   }
