@@ -1014,4 +1014,70 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get aircraftMaxCrosswind => 'Max. demonstrated crosswind';
+
+  @override
+  String get e6bSearchHint => 'Search: e.g. TOD, density, crosswind';
+
+  @override
+  String get e6bNoMatch => 'No calculator found';
+
+  @override
+  String get e6bRecent => 'Recently used';
+
+  @override
+  String get e6bGroupNavigation => 'Navigation & wind';
+
+  @override
+  String get e6bGroupFuel => 'Fuel';
+
+  @override
+  String get e6bGroupAtmosphere => 'Altitude & atmosphere';
+
+  @override
+  String get e6bGroupClimbDescent => 'Climb & descent';
+
+  @override
+  String get e6bGroupConversion => 'Conversions';
+
+  @override
+  String get e6bWindTriangleHint =>
+      'Heading, WCA and ground speed – or the wind from heading and GS';
+
+  @override
+  String get e6bWindComponentsHint =>
+      'Headwind/tailwind and crosswind for a runway';
+
+  @override
+  String get e6bSpeedTimeDistanceHint => 'Two given, the third calculated';
+
+  @override
+  String get e6bTurnHint =>
+      'Bank for a standard rate turn, radius, time for 360°';
+
+  @override
+  String get e6bFuelHint =>
+      'Amount, endurance or burn – with mass in kg and lb';
+
+  @override
+  String get e6bAltitudeHint =>
+      'Pressure and density altitude from QNH and OAT';
+
+  @override
+  String get e6bAirspeedHint =>
+      'TAS and Mach from CAS, altitude and temperature';
+
+  @override
+  String get e6bColdTemperatureHint =>
+      'Altitude correction at low temperatures (ICAO)';
+
+  @override
+  String get e6bDescentHint =>
+      'Top of descent, vertical speed for 3° or a distance';
+
+  @override
+  String get e6bClimbHint => 'Climb gradient in ft/NM, % and degrees';
+
+  @override
+  String get e6bConverterHint =>
+      'Speed, distance, altitude, temperature, pressure, volume, mass';
 }

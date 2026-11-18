@@ -53,6 +53,15 @@ class SettingsController extends ChangeNotifier {
   /// Lets a finger draw on notes; otherwise only a stylus draws.
   bool get fingerDrawing => _prefs.getBool('fingerDrawing') ?? true;
 
+  /// Most recently used E6B calculators, newest first.
+  List<String> get e6bRecent => _prefs.getStringList('e6bRecent') ?? const [];
+
+  Future<void> markE6bUsed(String id) async {
+    final list = [id, ...e6bRecent.where((e) => e != id)].take(4).toList();
+    await _prefs.setStringList('e6bRecent', list);
+    notifyListeners();
+  }
+
   ThemeMode get themeMode =>
       _enum('themeMode', ThemeMode.values, ThemeMode.system);
   AccentColor get accent =>

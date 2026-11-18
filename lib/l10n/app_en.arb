@@ -494,5 +494,24 @@
       }
     }
   },
-  "aircraftMaxCrosswind": "Max. demonstrated crosswind"
+  "aircraftMaxCrosswind": "Max. demonstrated crosswind",
+  "e6bSearchHint": "Search: e.g. TOD, density, crosswind",
+  "e6bNoMatch": "No calculator found",
+  "e6bRecent": "Recently used",
+  "e6bGroupNavigation": "Navigation & wind",
+  "e6bGroupFuel": "Fuel",
+  "e6bGroupAtmosphere": "Altitude & atmosphere",
+  "e6bGroupClimbDescent": "Climb & descent",
+  "e6bGroupConversion": "Conversions",
+  "e6bWindTriangleHint": "Heading, WCA and ground speed – or the wind from heading and GS",
+  "e6bWindComponentsHint": "Headwind/tailwind and crosswind for a runway",
+  "e6bSpeedTimeDistanceHint": "Two given, the third calculated",
+  "e6bTurnHint": "Bank for a standard rate turn, radius, time for 360°",
+  "e6bFuelHint": "Amount, endurance or burn – with mass in kg and lb",
+  "e6bAltitudeHint": "Pressure and density altitude from QNH and OAT",
+  "e6bAirspeedHint": "TAS and Mach from CAS, altitude and temperature",
+  "e6bColdTemperatureHint": "Altitude correction at low temperatures (ICAO)",
+  "e6bDescentHint": "Top of descent, vertical speed for 3° or a distance",
+  "e6bClimbHint": "Climb gradient in ft/NM, % and degrees",
+  "e6bConverterHint": "Speed, distance, altitude, temperature, pressure, volume, mass"
 }

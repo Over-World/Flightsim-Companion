@@ -1012,4 +1012,69 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get aircraftMaxCrosswind => 'Max. demonstrierter Seitenwind';
+
+  @override
+  String get e6bSearchHint => 'Suchen: z. B. TOD, Dichte, Seitenwind';
+
+  @override
+  String get e6bNoMatch => 'Kein Rechner gefunden';
+
+  @override
+  String get e6bRecent => 'Zuletzt verwendet';
+
+  @override
+  String get e6bGroupNavigation => 'Navigation & Wind';
+
+  @override
+  String get e6bGroupFuel => 'Kraftstoff';
+
+  @override
+  String get e6bGroupAtmosphere => 'Höhe & Atmosphäre';
+
+  @override
+  String get e6bGroupClimbDescent => 'Steig- & Sinkflug';
+
+  @override
+  String get e6bGroupConversion => 'Umrechnen';
+
+  @override
+  String get e6bWindTriangleHint =>
+      'Steuerkurs, Luvwinkel und Grundgeschwindigkeit – oder Wind aus Kurs und GS';
+
+  @override
+  String get e6bWindComponentsHint =>
+      'Gegen-/Rückenwind und Seitenwind für eine Piste';
+
+  @override
+  String get e6bSpeedTimeDistanceHint =>
+      'Zwei Werte gegeben, der dritte wird berechnet';
+
+  @override
+  String get e6bTurnHint =>
+      'Querneigung für Standardkurve, Radius, Zeit für 360°';
+
+  @override
+  String get e6bFuelHint =>
+      'Menge, Flugdauer oder Verbrauch – mit Masse in kg und lb';
+
+  @override
+  String get e6bAltitudeHint => 'Druck- und Dichtehöhe aus QNH und OAT';
+
+  @override
+  String get e6bAirspeedHint => 'TAS und Mach aus CAS, Höhe und Temperatur';
+
+  @override
+  String get e6bColdTemperatureHint =>
+      'Höhenkorrektur bei tiefen Temperaturen (ICAO)';
+
+  @override
+  String get e6bDescentHint =>
+      'Sinkflugbeginn, Sinkrate für 3° oder eine Strecke';
+
+  @override
+  String get e6bClimbHint => 'Steiggradient in ft/NM, % und Grad';
+
+  @override
+  String get e6bConverterHint =>
+      'Geschwindigkeit, Strecke, Höhe, Temperatur, Druck, Volumen, Masse';
 }

@@ -1968,6 +1968,120 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Max. demonstrated crosswind'**
   String get aircraftMaxCrosswind;
+
+  /// No description provided for @e6bSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search: e.g. TOD, density, crosswind'**
+  String get e6bSearchHint;
+
+  /// No description provided for @e6bNoMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'No calculator found'**
+  String get e6bNoMatch;
+
+  /// No description provided for @e6bRecent.
+  ///
+  /// In en, this message translates to:
+  /// **'Recently used'**
+  String get e6bRecent;
+
+  /// No description provided for @e6bGroupNavigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Navigation & wind'**
+  String get e6bGroupNavigation;
+
+  /// No description provided for @e6bGroupFuel.
+  ///
+  /// In en, this message translates to:
+  /// **'Fuel'**
+  String get e6bGroupFuel;
+
+  /// No description provided for @e6bGroupAtmosphere.
+  ///
+  /// In en, this message translates to:
+  /// **'Altitude & atmosphere'**
+  String get e6bGroupAtmosphere;
+
+  /// No description provided for @e6bGroupClimbDescent.
+  ///
+  /// In en, this message translates to:
+  /// **'Climb & descent'**
+  String get e6bGroupClimbDescent;
+
+  /// No description provided for @e6bGroupConversion.
+  ///
+  /// In en, this message translates to:
+  /// **'Conversions'**
+  String get e6bGroupConversion;
+
+  /// No description provided for @e6bWindTriangleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Heading, WCA and ground speed – or the wind from heading and GS'**
+  String get e6bWindTriangleHint;
+
+  /// No description provided for @e6bWindComponentsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Headwind/tailwind and crosswind for a runway'**
+  String get e6bWindComponentsHint;
+
+  /// No description provided for @e6bSpeedTimeDistanceHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Two given, the third calculated'**
+  String get e6bSpeedTimeDistanceHint;
+
+  /// No description provided for @e6bTurnHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank for a standard rate turn, radius, time for 360°'**
+  String get e6bTurnHint;
+
+  /// No description provided for @e6bFuelHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount, endurance or burn – with mass in kg and lb'**
+  String get e6bFuelHint;
+
+  /// No description provided for @e6bAltitudeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Pressure and density altitude from QNH and OAT'**
+  String get e6bAltitudeHint;
+
+  /// No description provided for @e6bAirspeedHint.
+  ///
+  /// In en, this message translates to:
+  /// **'TAS and Mach from CAS, altitude and temperature'**
+  String get e6bAirspeedHint;
+
+  /// No description provided for @e6bColdTemperatureHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Altitude correction at low temperatures (ICAO)'**
+  String get e6bColdTemperatureHint;
+
+  /// No description provided for @e6bDescentHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Top of descent, vertical speed for 3° or a distance'**
+  String get e6bDescentHint;
+
+  /// No description provided for @e6bClimbHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Climb gradient in ft/NM, % and degrees'**
+  String get e6bClimbHint;
+
+  /// No description provided for @e6bConverterHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Speed, distance, altitude, temperature, pressure, volume, mass'**
+  String get e6bConverterHint;
 }
 
 class _AppLocalizationsDelegate

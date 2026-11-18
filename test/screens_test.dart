@@ -146,6 +146,10 @@ void main() {
       final router = await pumpApp(tester, size);
       router.go('/e6b');
       await settle(tester);
+      if (size.width < 840) {
+        await tester.tap(find.text('Wind triangle'));
+        await tester.pumpAndSettle();
+      }
       // Wind triangle: TC 090, TAS 100, wind 360/20 → WCA -12, GS 98.
       final fields = find.descendant(
         of: find.byType(Card).first,
@@ -158,6 +162,29 @@ void main() {
       await tester.pump();
       expect(find.text('-12°'), findsOneWidget);
       expect(find.text('078°'), findsWidgets);
+      expect(find.text('98 kt'), findsOneWidget);
+
+      // Search narrows the index; values survive switching calculators.
+      if (size.width < 840) {
+        await tester.tap(find.byType(BackButton));
+        await tester.pumpAndSettle();
+      }
+      await tester.enterText(find.byType(TextField).first, 'TOD');
+      await tester.pumpAndSettle();
+      expect(find.text('Descent planning'), findsOneWidget);
+      expect(find.text('Fuel'), findsNothing);
+      await tester.tap(find.text('Descent planning'));
+      await tester.pumpAndSettle();
+      expect(find.text('Top of descent before'), findsOneWidget);
+      if (size.width < 840) {
+        await tester.tap(find.byType(BackButton));
+        await tester.pumpAndSettle();
+      }
+      await tester.enterText(find.byType(TextField).first, '');
+      await tester.pumpAndSettle();
+      expect(find.text('Recently used'), findsOneWidget);
+      await tester.tap(find.text('Wind triangle').last);
+      await tester.pumpAndSettle();
       expect(find.text('98 kt'), findsOneWidget);
       expect(tester.takeException(), isNull);
       await unmount(tester);
@@ -175,6 +202,10 @@ void main() {
       await settle(tester);
       await tester.tap(find.text('From flight'));
       await settle(tester);
+      if (size.width < 840) {
+        await tester.tap(find.text('Wind triangle'));
+        await tester.pumpAndSettle();
+      }
       // C172 cruise TAS lands in the wind triangle.
       expect(find.widgetWithText(TextField, '115'), findsWidgets);
       expect(tester.takeException(), isNull);
