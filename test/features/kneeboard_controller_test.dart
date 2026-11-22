@@ -2,6 +2,7 @@ import 'package:drift/native.dart';
 import 'package:flightsim_companion/data/db/database.dart';
 import 'package:flightsim_companion/data/repositories/aircraft_repository.dart';
 import 'package:flightsim_companion/data/repositories/flight_repository.dart';
+import 'package:flightsim_companion/data/repositories/logbook_repository.dart';
 import 'package:flightsim_companion/data/repositories/navdata_repository.dart';
 import 'package:flightsim_companion/features/kneeboard/kneeboard_controller.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -31,6 +32,7 @@ void main() {
       prefs: prefs,
       flights: flights,
       navdata: NavdataRepository(db),
+      logbook: LogbookRepository(db),
     );
   });
 
@@ -103,6 +105,7 @@ void main() {
       prefs: prefs,
       flights: flights,
       navdata: NavdataRepository(db),
+      logbook: LogbookRepository(db),
     );
     await settle();
     expect(restored.flight?.id, flightId);

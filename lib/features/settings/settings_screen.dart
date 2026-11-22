@@ -43,6 +43,21 @@ class SettingsScreen extends StatelessWidget {
                   _Hint(l10n.settingsXplaneHint),
                   const SizedBox(height: 16),
                   const XPlaneConnectionForm(),
+                  const SizedBox(height: 8),
+                  SwitchListTile(
+                    contentPadding: EdgeInsets.zero,
+                    title: Text(l10n.simLive),
+                    subtitle: Text(l10n.simLiveHint),
+                    value: settings.simLive,
+                    onChanged: settings.setSimLive,
+                  ),
+                  SwitchListTile(
+                    contentPadding: EdgeInsets.zero,
+                    title: Text(l10n.simAutomation),
+                    subtitle: Text(l10n.simAutomationHint),
+                    value: settings.simAutomation,
+                    onChanged: settings.setSimAutomation,
+                  ),
                 ],
               ),
               _Section(

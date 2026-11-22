@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:ui' as ui;
@@ -6,6 +7,8 @@ import 'package:drift/drift.dart';
 import 'package:flightsim_companion/data/charts/chart_document.dart';
 import 'package:flightsim_companion/data/db/database.dart';
 import 'package:flightsim_companion/data/repositories/flight_repository.dart';
+import 'package:flightsim_companion/data/sim/sim_snapshot.dart';
+import 'package:flightsim_companion/features/sim/sim_controller.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 
@@ -198,3 +201,64 @@ class _FakeChartDocument implements ChartDocument {
   @override
   Future<void> dispose() async {}
 }
+
+/// A simulator session driven by the test: [send] pushes snapshots,
+/// [tuned] records radio changes.
+class FakeSimSession implements SimSession {
+  final _snapshots = StreamController<SimSnapshot>.broadcast();
+  final _done = Completer<Object?>();
+  final tuned = <(SimRadio, int, bool)>[];
+  SimSnapshot? latest;
+
+  void send(SimSnapshot s) {
+    latest = s;
+    _snapshots.add(s);
+  }
+
+  void drop() {
+    if (!_done.isCompleted) _done.complete();
+  }
+
+  @override
+  String? get version => '12.1.4';
+  @override
+  Stream<SimSnapshot> get snapshots => _snapshots.stream;
+  @override
+  Future<Object?> get done => _done.future;
+  @override
+  bool tune(SimRadio radio, int khz, {required bool standby}) {
+    tuned.add((radio, khz, standby));
+    return true;
+  }
+
+  @override
+  bool swap(SimRadio radio) => tune(radio, 0, standby: false);
+  @override
+  Future<void> close() async => drop();
+}
+
+/// Snapshot with radios tuned like a C172 at Egelsbach.
+SimSnapshot simAt(
+  double lat,
+  double lon, {
+  bool onGround = true,
+  double gs = 0,
+  double vs = 0,
+  double g = 1,
+  bool parkingBrake = false,
+  bool engine = true,
+}) => SimSnapshot(
+  latitude: lat,
+  longitude: lon,
+  altitudeFt: onGround ? 400 : 3500,
+  groundSpeedKt: gs,
+  verticalSpeedFpm: vs,
+  gLoad: g,
+  onGround: onGround,
+  parkingBrake: parkingBrake,
+  engineRunning: engine,
+  radios: {
+    SimRadio.com1: RadioTuning(active: 119150, standby: 121730),
+    SimRadio.nav1: RadioTuning(active: 114200, standby: 115900),
+  },
+);

@@ -53,6 +53,12 @@ class SettingsController extends ChangeNotifier {
   /// Lets a finger draw on notes; otherwise only a stylus draws.
   bool get fingerDrawing => _prefs.getBool('fingerDrawing') ?? true;
 
+  /// Keep a live connection to X-Plane while a host is set.
+  bool get simLive => _prefs.getBool('simLive') ?? true;
+
+  /// Let the simulator record times and pass waypoints on the kneeboard.
+  bool get simAutomation => _prefs.getBool('simAutomation') ?? true;
+
   /// Most recently used E6B calculators, newest first.
   List<String> get e6bRecent => _prefs.getStringList('e6bRecent') ?? const [];
 
@@ -123,6 +129,16 @@ class SettingsController extends ChangeNotifier {
     } else {
       await _prefs.setInt('defaultAircraftId', id);
     }
+    notifyListeners();
+  }
+
+  Future<void> setSimLive(bool v) async {
+    await _prefs.setBool('simLive', v);
+    notifyListeners();
+  }
+
+  Future<void> setSimAutomation(bool v) async {
+    await _prefs.setBool('simAutomation', v);
     notifyListeners();
   }
 

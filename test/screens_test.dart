@@ -10,9 +10,11 @@ import 'package:flightsim_companion/data/db/database.dart';
 import 'package:flightsim_companion/data/repositories/aircraft_repository.dart';
 import 'package:flightsim_companion/data/repositories/charts_repository.dart';
 import 'package:flightsim_companion/data/repositories/flight_repository.dart';
+import 'package:flightsim_companion/data/sim/sim_snapshot.dart';
 import 'package:flightsim_companion/features/charts/chart_ink_layer.dart';
 import 'package:flightsim_companion/features/charts/charts_list.dart';
 import 'package:flightsim_companion/features/notes/stroke.dart';
+import 'package:flightsim_companion/features/sim/sim_widgets.dart';
 import 'package:flightsim_companion/features/kneeboard/kneeboard_controller.dart';
 import 'package:drift/drift.dart' show Value;
 import 'package:flutter/gestures.dart';
@@ -35,6 +37,7 @@ void main() {
   late int flightId;
   late Directory chartsDir;
   late FakeChartFiles chartFiles;
+  late FakeSimSession simSession;
 
   setUp(() async {
     SharedPreferences.setMockInitialValues({
@@ -44,6 +47,7 @@ void main() {
     db = AppDatabase(NativeDatabase.memory());
     chartsDir = Directory.systemTemp.createTempSync('fsc_charts');
     chartFiles = FakeChartFiles();
+    simSession = FakeSimSession();
   });
 
   tearDown(() async {
@@ -71,6 +75,7 @@ void main() {
         httpClient: fakeWeatherClient(),
         chartsDirectory: () async => chartsDir,
         chartFiles: chartFiles,
+        simConnector: (_, _) async => simSession,
         child: FlightsimCompanionApp(router: router),
       ),
     );
@@ -369,12 +374,9 @@ void main() {
         await settle(tester);
       }
       expect(find.text('2 of 2 charts imported'), findsOneWidget);
-      ScaffoldMessenger.of(
-        tester.element(find.byType(Scaffold).first),
-      ).removeCurrentSnackBar();
-      final charts = await tester.runAsync(
-        () => db.select(db.charts).get(),
-      );
+      ScaffoldMessenger.of(tester.element(find.byType(Scaffold).first))
+          .removeCurrentSnackBar();
+      final charts = await tester.runAsync(() => db.select(db.charts).get());
       expect(
         {for (final c in charts!) c.name: (c.airportIdent, c.category)},
         {
@@ -435,6 +437,114 @@ void main() {
       );
       expect(find.widgetWithText(ActionChip, 'EDFE VFR'), findsOneWidget);
       await settle(tester);
+      expect(tester.takeException(), isNull);
+      await unmount(tester);
+    });
+
+    testWidgets('kneeboard with X-Plane on $name', (tester) async {
+      SharedPreferences.setMockInitialValues({
+        'language': 'en',
+        'onboardingCompleted': true,
+        'simHost': '127.0.0.1',
+      });
+      final router = await pumpApp(tester, size);
+      final context = tester.element(find.byType(Scaffold).first);
+      await tester.runAsync(
+        () => context.read<KneeboardController>().open(flightId),
+      );
+      router.go('/fly');
+      await settle(tester);
+      simSession.send(simAt(49.96, 8.6458, parkingBrake: true));
+      await tester.pump(const Duration(milliseconds: 300));
+      expect(find.byTooltip('X-Plane: Connected'), findsOneWidget);
+
+      await tester.tap(find.widgetWithText(FilledButton, 'Off block'));
+      await settle(tester);
+      await tester.tap(find.widgetWithText(FilledButton, 'Takeoff'));
+      await settle(tester);
+      simSession.send(simAt(50.0, 8.62, onGround: false, gs: 98));
+      await tester.pump(const Duration(milliseconds: 300));
+      expect(find.text('DTG'), findsOneWidget);
+      expect(find.text('XTK'), findsOneWidget);
+      expect(find.text('X-Plane records this automatically'), findsOneWidget);
+
+      final list = find
+          .descendant(
+            of: find.byType(ListView).last,
+            matching: find.byType(Scrollable),
+          )
+          .first;
+      await tester.scrollUntilVisible(
+        find.text('119.150'),
+        200,
+        scrollable: list,
+      );
+      expect(find.text('COM1'), findsOneWidget);
+
+      // Tap the FFM frequency and tune NAV1 standby.
+      final ffm = find.descendant(
+        of: find.byType(TunableFrequency),
+        matching: find.text('114.20'),
+      );
+      // In landscape the frequencies are in the left column.
+      final landscape = size.width >= 960 && size.width > size.height;
+      await tester.scrollUntilVisible(
+        ffm,
+        200,
+        scrollable: find
+            .descendant(
+              of: landscape
+                  ? find.byType(ListView).first
+                  : find.byType(ListView).last,
+              matching: find.byType(Scrollable),
+            )
+            .first,
+      );
+      await tester.ensureVisible(ffm);
+      await tester.pumpAndSettle();
+      await tester.tap(ffm);
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('NAV1 standby'));
+      await tester.pumpAndSettle();
+      expect(simSession.tuned.last, (SimRadio.nav1, 114200, true));
+      expect(find.text('NAV1 standby set to 114.20'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+      await unmount(tester);
+    });
+
+    testWidgets('logbook on $name', (tester) async {
+      final router = await pumpApp(tester, size);
+      await tester.runAsync(() async {
+        final off = DateTime(2026, 11, 21, 14, 2);
+        await db
+            .into(db.logbookEntries)
+            .insert(
+              LogbookEntriesCompanion.insert(
+                rules: FlightRules.vfr,
+                departureIdent: 'EDFE',
+                destinationIdent: 'EDFZ',
+                aircraftName: const Value('Cessna 172 SP'),
+                blockOffAt: off,
+                takeoffAt: Value(off.add(const Duration(minutes: 8))),
+                landingAt: Value(off.add(const Duration(minutes: 31))),
+                blockOnAt: off.add(const Duration(minutes: 37)),
+                distanceNm: const Value(24.6),
+                touchdownFpm: const Value(-96),
+                touchdownG: const Value(1.12),
+              ),
+            );
+      });
+      router.go('/logbook');
+      await settle(tester);
+      expect(find.text('EDFE → EDFZ'), findsOneWidget);
+      expect(find.text('0:37'), findsOneWidget);
+      expect(find.text('0:23'), findsOneWidget);
+      expect(find.text('96 fpm'), findsOneWidget);
+
+      await tester.tap(find.text('EDFE → EDFZ'));
+      await tester.pumpAndSettle();
+      expect(find.text('Butter · 96 fpm'), findsOneWidget);
+      expect(find.text('25 NM'), findsOneWidget);
       expect(tester.takeException(), isNull);
       await unmount(tester);
     });

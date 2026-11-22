@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/navlog.dart';
 import '../../data/db/database.dart';
 import '../../data/repositories/flight_repository.dart';
+import '../../data/repositories/logbook_repository.dart';
 import '../../data/repositories/navdata_repository.dart';
 
 enum FlightPhase { preflight, taxiOut, enroute, arrived, landed, parked }
@@ -15,11 +16,15 @@ class FrequencyEntry {
   const FrequencyEntry({
     required this.label,
     required this.frequency,
+    required this.khz,
     this.morse,
   });
 
   final String label;
   final String frequency;
+
+  /// The frequency in kHz, for tuning the simulator's radios.
+  final int khz;
 
   /// Ident to show as morse code (navaids).
   final String? morse;
@@ -46,6 +51,7 @@ class KneeboardController extends ChangeNotifier {
     required this._prefs,
     required this._flights,
     required this._navdata,
+    required this._logbook,
   }) {
     final id = _prefs.getInt(_prefsKey);
     if (id != null) _subscribe(id);
@@ -56,6 +62,7 @@ class KneeboardController extends ChangeNotifier {
   final SharedPreferences _prefs;
   final FlightRepository _flights;
   final NavdataRepository _navdata;
+  final LogbookRepository _logbook;
   StreamSubscription<FlightWithRoute?>? _subscription;
 
   int? flightId;
@@ -146,6 +153,7 @@ class KneeboardController extends ChangeNotifier {
             FrequencyEntry(
               label: fr.type,
               frequency: fr.frequencyMhz.toStringAsFixed(3),
+              khz: (fr.frequencyMhz * 1000).round(),
             ),
         ],
       );
@@ -164,6 +172,7 @@ class KneeboardController extends ChangeNotifier {
                 frequency: n.frequencyKhz! >= 108000
                     ? (n.frequencyKhz! / 1000).toStringAsFixed(2)
                     : '${n.frequencyKhz}',
+                khz: n.frequencyKhz!,
                 morse: n.ident,
               ),
             ],
@@ -270,18 +279,38 @@ class KneeboardController extends ChangeNotifier {
     await _setFlight(FlightsCompanion(landingAt: Value(now)));
   }
 
-  Future<void> blockOn() => _setFlight(
-    FlightsCompanion(
-      blockOnAt: Value(DateTime.now()),
-      status: const Value(FlightStatus.completed),
-    ),
-  );
+  /// Ends the flight and writes its logbook entry.
+  Future<void> blockOn() async {
+    final id = flightId!;
+    await _setFlight(
+      FlightsCompanion(
+        blockOnAt: Value(DateTime.now()),
+        status: const Value(FlightStatus.completed),
+      ),
+    );
+    final d = await _flights.loadFlight(id);
+    if (d != null) await _logbook.recordFlight(d);
+  }
+
+  /// Touchdown measured by the simulator.
+  Future<void> recordTouchdown(double verticalSpeedFpm, double gLoad) =>
+      _setFlight(
+        FlightsCompanion(
+          touchdownFpm: Value(verticalSpeedFpm),
+          touchdownG: Value(gLoad),
+        ),
+      );
+
+  /// Track flown so far, JSON as in `Flights.track`.
+  Future<void> saveTrack(String track) =>
+      _setFlight(FlightsCompanion(track: Value(track)));
 
   /// Reverts the most recent recorded time.
   Future<void> undo() async {
     final f = flight;
     if (f == null) return;
     if (f.blockOnAt != null) {
+      await _logbook.removeFlight(f.id);
       return _setFlight(
         const FlightsCompanion(
           blockOnAt: Value(null),

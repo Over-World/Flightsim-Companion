@@ -319,6 +319,9 @@ class FlightRepository {
           takeoffAt: Value(null),
           landingAt: Value(null),
           blockOnAt: Value(null),
+          touchdownFpm: Value(null),
+          touchdownG: Value(null),
+          track: Value('[]'),
         ),
       );
     });

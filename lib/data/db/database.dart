@@ -22,6 +22,7 @@ part 'database.g.dart';
     WeatherCache,
     Charts,
     ChartAnnotations,
+    LogbookEntries,
   ],
 )
 class AppDatabase extends _$AppDatabase {
@@ -29,7 +30,7 @@ class AppDatabase extends _$AppDatabase {
     : super(executor ?? driftDatabase(name: 'flightsim_companion'));
 
   @override
-  int get schemaVersion => 6;
+  int get schemaVersion => 7;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -93,6 +94,12 @@ class AppDatabase extends _$AppDatabase {
       if (from < 6) {
         await m.createTable(charts);
         await m.createTable(chartAnnotations);
+      }
+      if (from < 7) {
+        await m.addColumn(flights, flights.touchdownFpm);
+        await m.addColumn(flights, flights.touchdownG);
+        await m.addColumn(flights, flights.track);
+        await m.createTable(logbookEntries);
       }
     },
     beforeOpen: (details) async {

@@ -1444,4 +1444,131 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chartNextPage => 'Next page';
+
+  @override
+  String get simStatusOff => 'Not connected';
+
+  @override
+  String get simStatusConnecting => 'Connecting…';
+
+  @override
+  String get simStatusWaitingForFlight => 'Waiting for a flight in X-Plane';
+
+  @override
+  String get simStatusConnected => 'Connected';
+
+  @override
+  String get simStatusUnreachable => 'Not reachable, retrying';
+
+  @override
+  String get simUnreachableHint =>
+      'Check that X-Plane is running, the IP address and port are right, and that the X-Plane web server accepts connections from the network.';
+
+  @override
+  String get simNoHostHint =>
+      'Enter the IP address of the X-Plane PC in the settings.';
+
+  @override
+  String get simLive => 'Live connection';
+
+  @override
+  String get simLiveHint =>
+      'Connect to X-Plane automatically and reconnect when it restarts.';
+
+  @override
+  String get simAutomation => 'Automatic times and waypoints';
+
+  @override
+  String get simAutomationHint =>
+      'X-Plane records block and flight times, passes waypoints and measures the touchdown.';
+
+  @override
+  String get simAutomationActive => 'X-Plane records this automatically';
+
+  @override
+  String get simRetry => 'Retry now';
+
+  @override
+  String get simOpenSettings => 'Settings';
+
+  @override
+  String get simRadios => 'Radios';
+
+  @override
+  String simSwap(String radio) {
+    return 'Swap $radio';
+  }
+
+  @override
+  String simStandby(String radio) {
+    return '$radio standby';
+  }
+
+  @override
+  String simActive(String radio) {
+    return '$radio active';
+  }
+
+  @override
+  String simTuneTooltip(String frequency) {
+    return 'Tune $frequency';
+  }
+
+  @override
+  String simTunedStandby(String radio, String frequency) {
+    return '$radio standby set to $frequency';
+  }
+
+  @override
+  String simTunedActive(String radio, String frequency) {
+    return '$radio set to $frequency';
+  }
+
+  @override
+  String get simLeft => 'L';
+
+  @override
+  String get simRight => 'R';
+
+  @override
+  String get logbookFlights => 'Flights';
+
+  @override
+  String get logbookLandings => 'Landings';
+
+  @override
+  String get logbookDistance => 'Distance';
+
+  @override
+  String get logbookTouchdownG => 'Touchdown load';
+
+  @override
+  String get logbookRemarks => 'Remarks';
+
+  @override
+  String logbookBlockShort(String time) {
+    return 'Block $time';
+  }
+
+  @override
+  String get logbookDeleteTitle => 'Delete logbook entry?';
+
+  @override
+  String get logbookDeleteMessage =>
+      'The flight plan stays; only this logbook line is removed.';
+
+  @override
+  String get touchdownButter => 'Butter';
+
+  @override
+  String get touchdownSmooth => 'Smooth';
+
+  @override
+  String get touchdownFirm => 'Firm';
+
+  @override
+  String get touchdownHard => 'Hard';
+
+  @override
+  String get touchdownInspect => 'Check the gear';
 }

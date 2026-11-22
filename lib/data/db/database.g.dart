@@ -4149,6 +4149,38 @@ class $FlightsTable extends Flights with TableInfo<$FlightsTable, Flight> {
     type: DriftSqlType.dateTime,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _touchdownFpmMeta = const VerificationMeta(
+    'touchdownFpm',
+  );
+  @override
+  late final GeneratedColumn<double> touchdownFpm = GeneratedColumn<double>(
+    'touchdown_fpm',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _touchdownGMeta = const VerificationMeta(
+    'touchdownG',
+  );
+  @override
+  late final GeneratedColumn<double> touchdownG = GeneratedColumn<double>(
+    'touchdown_g',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _trackMeta = const VerificationMeta('track');
+  @override
+  late final GeneratedColumn<String> track = GeneratedColumn<String>(
+    'track',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('[]'),
+  );
   static const VerificationMeta _createdAtMeta = const VerificationMeta(
     'createdAt',
   );
@@ -4201,6 +4233,9 @@ class $FlightsTable extends Flights with TableInfo<$FlightsTable, Flight> {
     takeoffAt,
     landingAt,
     blockOnAt,
+    touchdownFpm,
+    touchdownG,
+    track,
     createdAt,
     updatedAt,
   ];
@@ -4405,6 +4440,27 @@ class $FlightsTable extends Flights with TableInfo<$FlightsTable, Flight> {
         blockOnAt.isAcceptableOrUnknown(data['block_on_at']!, _blockOnAtMeta),
       );
     }
+    if (data.containsKey('touchdown_fpm')) {
+      context.handle(
+        _touchdownFpmMeta,
+        touchdownFpm.isAcceptableOrUnknown(
+          data['touchdown_fpm']!,
+          _touchdownFpmMeta,
+        ),
+      );
+    }
+    if (data.containsKey('touchdown_g')) {
+      context.handle(
+        _touchdownGMeta,
+        touchdownG.isAcceptableOrUnknown(data['touchdown_g']!, _touchdownGMeta),
+      );
+    }
+    if (data.containsKey('track')) {
+      context.handle(
+        _trackMeta,
+        track.isAcceptableOrUnknown(data['track']!, _trackMeta),
+      );
+    }
     if (data.containsKey('created_at')) {
       context.handle(
         _createdAtMeta,
@@ -4534,6 +4590,18 @@ class $FlightsTable extends Flights with TableInfo<$FlightsTable, Flight> {
         DriftSqlType.dateTime,
         data['${effectivePrefix}block_on_at'],
       ),
+      touchdownFpm: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}touchdown_fpm'],
+      ),
+      touchdownG: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}touchdown_g'],
+      ),
+      track: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}track'],
+      )!,
       createdAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}created_at'],
@@ -4589,6 +4657,11 @@ class Flight extends DataClass implements Insertable<Flight> {
   final DateTime? takeoffAt;
   final DateTime? landingAt;
   final DateTime? blockOnAt;
+  final double? touchdownFpm;
+  final double? touchdownG;
+
+  /// Flown track, JSON `[[lat, lon, altFt, epochSeconds], ...]`.
+  final String track;
   final DateTime createdAt;
   final DateTime updatedAt;
   const Flight({
@@ -4618,6 +4691,9 @@ class Flight extends DataClass implements Insertable<Flight> {
     this.takeoffAt,
     this.landingAt,
     this.blockOnAt,
+    this.touchdownFpm,
+    this.touchdownG,
+    required this.track,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -4692,6 +4768,13 @@ class Flight extends DataClass implements Insertable<Flight> {
     if (!nullToAbsent || blockOnAt != null) {
       map['block_on_at'] = Variable<DateTime>(blockOnAt);
     }
+    if (!nullToAbsent || touchdownFpm != null) {
+      map['touchdown_fpm'] = Variable<double>(touchdownFpm);
+    }
+    if (!nullToAbsent || touchdownG != null) {
+      map['touchdown_g'] = Variable<double>(touchdownG);
+    }
+    map['track'] = Variable<String>(track);
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
     return map;
@@ -4759,6 +4842,13 @@ class Flight extends DataClass implements Insertable<Flight> {
       blockOnAt: blockOnAt == null && nullToAbsent
           ? const Value.absent()
           : Value(blockOnAt),
+      touchdownFpm: touchdownFpm == null && nullToAbsent
+          ? const Value.absent()
+          : Value(touchdownFpm),
+      touchdownG: touchdownG == null && nullToAbsent
+          ? const Value.absent()
+          : Value(touchdownG),
+      track: Value(track),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
     );
@@ -4806,6 +4896,9 @@ class Flight extends DataClass implements Insertable<Flight> {
       takeoffAt: serializer.fromJson<DateTime?>(json['takeoffAt']),
       landingAt: serializer.fromJson<DateTime?>(json['landingAt']),
       blockOnAt: serializer.fromJson<DateTime?>(json['blockOnAt']),
+      touchdownFpm: serializer.fromJson<double?>(json['touchdownFpm']),
+      touchdownG: serializer.fromJson<double?>(json['touchdownG']),
+      track: serializer.fromJson<String>(json['track']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
     );
@@ -4844,6 +4937,9 @@ class Flight extends DataClass implements Insertable<Flight> {
       'takeoffAt': serializer.toJson<DateTime?>(takeoffAt),
       'landingAt': serializer.toJson<DateTime?>(landingAt),
       'blockOnAt': serializer.toJson<DateTime?>(blockOnAt),
+      'touchdownFpm': serializer.toJson<double?>(touchdownFpm),
+      'touchdownG': serializer.toJson<double?>(touchdownG),
+      'track': serializer.toJson<String>(track),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
     };
@@ -4876,6 +4972,9 @@ class Flight extends DataClass implements Insertable<Flight> {
     Value<DateTime?> takeoffAt = const Value.absent(),
     Value<DateTime?> landingAt = const Value.absent(),
     Value<DateTime?> blockOnAt = const Value.absent(),
+    Value<double?> touchdownFpm = const Value.absent(),
+    Value<double?> touchdownG = const Value.absent(),
+    String? track,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) => Flight(
@@ -4921,6 +5020,9 @@ class Flight extends DataClass implements Insertable<Flight> {
     takeoffAt: takeoffAt.present ? takeoffAt.value : this.takeoffAt,
     landingAt: landingAt.present ? landingAt.value : this.landingAt,
     blockOnAt: blockOnAt.present ? blockOnAt.value : this.blockOnAt,
+    touchdownFpm: touchdownFpm.present ? touchdownFpm.value : this.touchdownFpm,
+    touchdownG: touchdownG.present ? touchdownG.value : this.touchdownG,
+    track: track ?? this.track,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
   );
@@ -4982,6 +5084,13 @@ class Flight extends DataClass implements Insertable<Flight> {
       takeoffAt: data.takeoffAt.present ? data.takeoffAt.value : this.takeoffAt,
       landingAt: data.landingAt.present ? data.landingAt.value : this.landingAt,
       blockOnAt: data.blockOnAt.present ? data.blockOnAt.value : this.blockOnAt,
+      touchdownFpm: data.touchdownFpm.present
+          ? data.touchdownFpm.value
+          : this.touchdownFpm,
+      touchdownG: data.touchdownG.present
+          ? data.touchdownG.value
+          : this.touchdownG,
+      track: data.track.present ? data.track.value : this.track,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
     );
@@ -5016,6 +5125,9 @@ class Flight extends DataClass implements Insertable<Flight> {
           ..write('takeoffAt: $takeoffAt, ')
           ..write('landingAt: $landingAt, ')
           ..write('blockOnAt: $blockOnAt, ')
+          ..write('touchdownFpm: $touchdownFpm, ')
+          ..write('touchdownG: $touchdownG, ')
+          ..write('track: $track, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt')
           ..write(')'))
@@ -5050,6 +5162,9 @@ class Flight extends DataClass implements Insertable<Flight> {
     takeoffAt,
     landingAt,
     blockOnAt,
+    touchdownFpm,
+    touchdownG,
+    track,
     createdAt,
     updatedAt,
   ]);
@@ -5083,6 +5198,9 @@ class Flight extends DataClass implements Insertable<Flight> {
           other.takeoffAt == this.takeoffAt &&
           other.landingAt == this.landingAt &&
           other.blockOnAt == this.blockOnAt &&
+          other.touchdownFpm == this.touchdownFpm &&
+          other.touchdownG == this.touchdownG &&
+          other.track == this.track &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt);
 }
@@ -5114,6 +5232,9 @@ class FlightsCompanion extends UpdateCompanion<Flight> {
   final Value<DateTime?> takeoffAt;
   final Value<DateTime?> landingAt;
   final Value<DateTime?> blockOnAt;
+  final Value<double?> touchdownFpm;
+  final Value<double?> touchdownG;
+  final Value<String> track;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
   const FlightsCompanion({
@@ -5143,6 +5264,9 @@ class FlightsCompanion extends UpdateCompanion<Flight> {
     this.takeoffAt = const Value.absent(),
     this.landingAt = const Value.absent(),
     this.blockOnAt = const Value.absent(),
+    this.touchdownFpm = const Value.absent(),
+    this.touchdownG = const Value.absent(),
+    this.track = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
   });
@@ -5173,6 +5297,9 @@ class FlightsCompanion extends UpdateCompanion<Flight> {
     this.takeoffAt = const Value.absent(),
     this.landingAt = const Value.absent(),
     this.blockOnAt = const Value.absent(),
+    this.touchdownFpm = const Value.absent(),
+    this.touchdownG = const Value.absent(),
+    this.track = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
   }) : title = Value(title),
@@ -5206,6 +5333,9 @@ class FlightsCompanion extends UpdateCompanion<Flight> {
     Expression<DateTime>? takeoffAt,
     Expression<DateTime>? landingAt,
     Expression<DateTime>? blockOnAt,
+    Expression<double>? touchdownFpm,
+    Expression<double>? touchdownG,
+    Expression<String>? track,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
   }) {
@@ -5237,6 +5367,9 @@ class FlightsCompanion extends UpdateCompanion<Flight> {
       if (takeoffAt != null) 'takeoff_at': takeoffAt,
       if (landingAt != null) 'landing_at': landingAt,
       if (blockOnAt != null) 'block_on_at': blockOnAt,
+      if (touchdownFpm != null) 'touchdown_fpm': touchdownFpm,
+      if (touchdownG != null) 'touchdown_g': touchdownG,
+      if (track != null) 'track': track,
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
     });
@@ -5269,6 +5402,9 @@ class FlightsCompanion extends UpdateCompanion<Flight> {
     Value<DateTime?>? takeoffAt,
     Value<DateTime?>? landingAt,
     Value<DateTime?>? blockOnAt,
+    Value<double?>? touchdownFpm,
+    Value<double?>? touchdownG,
+    Value<String>? track,
     Value<DateTime>? createdAt,
     Value<DateTime>? updatedAt,
   }) {
@@ -5299,6 +5435,9 @@ class FlightsCompanion extends UpdateCompanion<Flight> {
       takeoffAt: takeoffAt ?? this.takeoffAt,
       landingAt: landingAt ?? this.landingAt,
       blockOnAt: blockOnAt ?? this.blockOnAt,
+      touchdownFpm: touchdownFpm ?? this.touchdownFpm,
+      touchdownG: touchdownG ?? this.touchdownG,
+      track: track ?? this.track,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
@@ -5389,6 +5528,15 @@ class FlightsCompanion extends UpdateCompanion<Flight> {
     if (blockOnAt.present) {
       map['block_on_at'] = Variable<DateTime>(blockOnAt.value);
     }
+    if (touchdownFpm.present) {
+      map['touchdown_fpm'] = Variable<double>(touchdownFpm.value);
+    }
+    if (touchdownG.present) {
+      map['touchdown_g'] = Variable<double>(touchdownG.value);
+    }
+    if (track.present) {
+      map['track'] = Variable<String>(track.value);
+    }
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
     }
@@ -5427,6 +5575,9 @@ class FlightsCompanion extends UpdateCompanion<Flight> {
           ..write('takeoffAt: $takeoffAt, ')
           ..write('landingAt: $landingAt, ')
           ..write('blockOnAt: $blockOnAt, ')
+          ..write('touchdownFpm: $touchdownFpm, ')
+          ..write('touchdownG: $touchdownG, ')
+          ..write('track: $track, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt')
           ..write(')'))
@@ -7797,6 +7948,982 @@ class ChartAnnotationsCompanion extends UpdateCompanion<ChartAnnotation> {
   }
 }
 
+class $LogbookEntriesTable extends LogbookEntries
+    with TableInfo<$LogbookEntriesTable, LogbookEntry> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $LogbookEntriesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _flightIdMeta = const VerificationMeta(
+    'flightId',
+  );
+  @override
+  late final GeneratedColumn<int> flightId = GeneratedColumn<int>(
+    'flight_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES flights (id) ON DELETE SET NULL',
+    ),
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<FlightRules, String> rules =
+      GeneratedColumn<String>(
+        'rules',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<FlightRules>($LogbookEntriesTable.$converterrules);
+  static const VerificationMeta _departureIdentMeta = const VerificationMeta(
+    'departureIdent',
+  );
+  @override
+  late final GeneratedColumn<String> departureIdent = GeneratedColumn<String>(
+    'departure_ident',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _destinationIdentMeta = const VerificationMeta(
+    'destinationIdent',
+  );
+  @override
+  late final GeneratedColumn<String> destinationIdent = GeneratedColumn<String>(
+    'destination_ident',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _aircraftNameMeta = const VerificationMeta(
+    'aircraftName',
+  );
+  @override
+  late final GeneratedColumn<String> aircraftName = GeneratedColumn<String>(
+    'aircraft_name',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _aircraftTypeMeta = const VerificationMeta(
+    'aircraftType',
+  );
+  @override
+  late final GeneratedColumn<String> aircraftType = GeneratedColumn<String>(
+    'aircraft_type',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _blockOffAtMeta = const VerificationMeta(
+    'blockOffAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> blockOffAt = GeneratedColumn<DateTime>(
+    'block_off_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _takeoffAtMeta = const VerificationMeta(
+    'takeoffAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> takeoffAt = GeneratedColumn<DateTime>(
+    'takeoff_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _landingAtMeta = const VerificationMeta(
+    'landingAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> landingAt = GeneratedColumn<DateTime>(
+    'landing_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _blockOnAtMeta = const VerificationMeta(
+    'blockOnAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> blockOnAt = GeneratedColumn<DateTime>(
+    'block_on_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _landingsMeta = const VerificationMeta(
+    'landings',
+  );
+  @override
+  late final GeneratedColumn<int> landings = GeneratedColumn<int>(
+    'landings',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(1),
+  );
+  static const VerificationMeta _distanceNmMeta = const VerificationMeta(
+    'distanceNm',
+  );
+  @override
+  late final GeneratedColumn<double> distanceNm = GeneratedColumn<double>(
+    'distance_nm',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _touchdownFpmMeta = const VerificationMeta(
+    'touchdownFpm',
+  );
+  @override
+  late final GeneratedColumn<double> touchdownFpm = GeneratedColumn<double>(
+    'touchdown_fpm',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _touchdownGMeta = const VerificationMeta(
+    'touchdownG',
+  );
+  @override
+  late final GeneratedColumn<double> touchdownG = GeneratedColumn<double>(
+    'touchdown_g',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _trackMeta = const VerificationMeta('track');
+  @override
+  late final GeneratedColumn<String> track = GeneratedColumn<String>(
+    'track',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('[]'),
+  );
+  static const VerificationMeta _remarksMeta = const VerificationMeta(
+    'remarks',
+  );
+  @override
+  late final GeneratedColumn<String> remarks = GeneratedColumn<String>(
+    'remarks',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    flightId,
+    rules,
+    departureIdent,
+    destinationIdent,
+    aircraftName,
+    aircraftType,
+    blockOffAt,
+    takeoffAt,
+    landingAt,
+    blockOnAt,
+    landings,
+    distanceNm,
+    touchdownFpm,
+    touchdownG,
+    track,
+    remarks,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'logbook_entries';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<LogbookEntry> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('flight_id')) {
+      context.handle(
+        _flightIdMeta,
+        flightId.isAcceptableOrUnknown(data['flight_id']!, _flightIdMeta),
+      );
+    }
+    if (data.containsKey('departure_ident')) {
+      context.handle(
+        _departureIdentMeta,
+        departureIdent.isAcceptableOrUnknown(
+          data['departure_ident']!,
+          _departureIdentMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_departureIdentMeta);
+    }
+    if (data.containsKey('destination_ident')) {
+      context.handle(
+        _destinationIdentMeta,
+        destinationIdent.isAcceptableOrUnknown(
+          data['destination_ident']!,
+          _destinationIdentMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_destinationIdentMeta);
+    }
+    if (data.containsKey('aircraft_name')) {
+      context.handle(
+        _aircraftNameMeta,
+        aircraftName.isAcceptableOrUnknown(
+          data['aircraft_name']!,
+          _aircraftNameMeta,
+        ),
+      );
+    }
+    if (data.containsKey('aircraft_type')) {
+      context.handle(
+        _aircraftTypeMeta,
+        aircraftType.isAcceptableOrUnknown(
+          data['aircraft_type']!,
+          _aircraftTypeMeta,
+        ),
+      );
+    }
+    if (data.containsKey('block_off_at')) {
+      context.handle(
+        _blockOffAtMeta,
+        blockOffAt.isAcceptableOrUnknown(
+          data['block_off_at']!,
+          _blockOffAtMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_blockOffAtMeta);
+    }
+    if (data.containsKey('takeoff_at')) {
+      context.handle(
+        _takeoffAtMeta,
+        takeoffAt.isAcceptableOrUnknown(data['takeoff_at']!, _takeoffAtMeta),
+      );
+    }
+    if (data.containsKey('landing_at')) {
+      context.handle(
+        _landingAtMeta,
+        landingAt.isAcceptableOrUnknown(data['landing_at']!, _landingAtMeta),
+      );
+    }
+    if (data.containsKey('block_on_at')) {
+      context.handle(
+        _blockOnAtMeta,
+        blockOnAt.isAcceptableOrUnknown(data['block_on_at']!, _blockOnAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_blockOnAtMeta);
+    }
+    if (data.containsKey('landings')) {
+      context.handle(
+        _landingsMeta,
+        landings.isAcceptableOrUnknown(data['landings']!, _landingsMeta),
+      );
+    }
+    if (data.containsKey('distance_nm')) {
+      context.handle(
+        _distanceNmMeta,
+        distanceNm.isAcceptableOrUnknown(data['distance_nm']!, _distanceNmMeta),
+      );
+    }
+    if (data.containsKey('touchdown_fpm')) {
+      context.handle(
+        _touchdownFpmMeta,
+        touchdownFpm.isAcceptableOrUnknown(
+          data['touchdown_fpm']!,
+          _touchdownFpmMeta,
+        ),
+      );
+    }
+    if (data.containsKey('touchdown_g')) {
+      context.handle(
+        _touchdownGMeta,
+        touchdownG.isAcceptableOrUnknown(data['touchdown_g']!, _touchdownGMeta),
+      );
+    }
+    if (data.containsKey('track')) {
+      context.handle(
+        _trackMeta,
+        track.isAcceptableOrUnknown(data['track']!, _trackMeta),
+      );
+    }
+    if (data.containsKey('remarks')) {
+      context.handle(
+        _remarksMeta,
+        remarks.isAcceptableOrUnknown(data['remarks']!, _remarksMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  LogbookEntry map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return LogbookEntry(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      flightId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}flight_id'],
+      ),
+      rules: $LogbookEntriesTable.$converterrules.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}rules'],
+        )!,
+      ),
+      departureIdent: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}departure_ident'],
+      )!,
+      destinationIdent: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}destination_ident'],
+      )!,
+      aircraftName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}aircraft_name'],
+      ),
+      aircraftType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}aircraft_type'],
+      ),
+      blockOffAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}block_off_at'],
+      )!,
+      takeoffAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}takeoff_at'],
+      ),
+      landingAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}landing_at'],
+      ),
+      blockOnAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}block_on_at'],
+      )!,
+      landings: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}landings'],
+      )!,
+      distanceNm: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}distance_nm'],
+      ),
+      touchdownFpm: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}touchdown_fpm'],
+      ),
+      touchdownG: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}touchdown_g'],
+      ),
+      track: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}track'],
+      )!,
+      remarks: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}remarks'],
+      )!,
+    );
+  }
+
+  @override
+  $LogbookEntriesTable createAlias(String alias) {
+    return $LogbookEntriesTable(attachedDatabase, alias);
+  }
+
+  static JsonTypeConverter2<FlightRules, String, String> $converterrules =
+      const EnumNameConverter<FlightRules>(FlightRules.values);
+}
+
+class LogbookEntry extends DataClass implements Insertable<LogbookEntry> {
+  final int id;
+  final int? flightId;
+  final FlightRules rules;
+  final String departureIdent;
+  final String destinationIdent;
+  final String? aircraftName;
+  final String? aircraftType;
+  final DateTime blockOffAt;
+  final DateTime? takeoffAt;
+  final DateTime? landingAt;
+  final DateTime blockOnAt;
+  final int landings;
+  final double? distanceNm;
+  final double? touchdownFpm;
+  final double? touchdownG;
+  final String track;
+  final String remarks;
+  const LogbookEntry({
+    required this.id,
+    this.flightId,
+    required this.rules,
+    required this.departureIdent,
+    required this.destinationIdent,
+    this.aircraftName,
+    this.aircraftType,
+    required this.blockOffAt,
+    this.takeoffAt,
+    this.landingAt,
+    required this.blockOnAt,
+    required this.landings,
+    this.distanceNm,
+    this.touchdownFpm,
+    this.touchdownG,
+    required this.track,
+    required this.remarks,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    if (!nullToAbsent || flightId != null) {
+      map['flight_id'] = Variable<int>(flightId);
+    }
+    {
+      map['rules'] = Variable<String>(
+        $LogbookEntriesTable.$converterrules.toSql(rules),
+      );
+    }
+    map['departure_ident'] = Variable<String>(departureIdent);
+    map['destination_ident'] = Variable<String>(destinationIdent);
+    if (!nullToAbsent || aircraftName != null) {
+      map['aircraft_name'] = Variable<String>(aircraftName);
+    }
+    if (!nullToAbsent || aircraftType != null) {
+      map['aircraft_type'] = Variable<String>(aircraftType);
+    }
+    map['block_off_at'] = Variable<DateTime>(blockOffAt);
+    if (!nullToAbsent || takeoffAt != null) {
+      map['takeoff_at'] = Variable<DateTime>(takeoffAt);
+    }
+    if (!nullToAbsent || landingAt != null) {
+      map['landing_at'] = Variable<DateTime>(landingAt);
+    }
+    map['block_on_at'] = Variable<DateTime>(blockOnAt);
+    map['landings'] = Variable<int>(landings);
+    if (!nullToAbsent || distanceNm != null) {
+      map['distance_nm'] = Variable<double>(distanceNm);
+    }
+    if (!nullToAbsent || touchdownFpm != null) {
+      map['touchdown_fpm'] = Variable<double>(touchdownFpm);
+    }
+    if (!nullToAbsent || touchdownG != null) {
+      map['touchdown_g'] = Variable<double>(touchdownG);
+    }
+    map['track'] = Variable<String>(track);
+    map['remarks'] = Variable<String>(remarks);
+    return map;
+  }
+
+  LogbookEntriesCompanion toCompanion(bool nullToAbsent) {
+    return LogbookEntriesCompanion(
+      id: Value(id),
+      flightId: flightId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(flightId),
+      rules: Value(rules),
+      departureIdent: Value(departureIdent),
+      destinationIdent: Value(destinationIdent),
+      aircraftName: aircraftName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(aircraftName),
+      aircraftType: aircraftType == null && nullToAbsent
+          ? const Value.absent()
+          : Value(aircraftType),
+      blockOffAt: Value(blockOffAt),
+      takeoffAt: takeoffAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(takeoffAt),
+      landingAt: landingAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(landingAt),
+      blockOnAt: Value(blockOnAt),
+      landings: Value(landings),
+      distanceNm: distanceNm == null && nullToAbsent
+          ? const Value.absent()
+          : Value(distanceNm),
+      touchdownFpm: touchdownFpm == null && nullToAbsent
+          ? const Value.absent()
+          : Value(touchdownFpm),
+      touchdownG: touchdownG == null && nullToAbsent
+          ? const Value.absent()
+          : Value(touchdownG),
+      track: Value(track),
+      remarks: Value(remarks),
+    );
+  }
+
+  factory LogbookEntry.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return LogbookEntry(
+      id: serializer.fromJson<int>(json['id']),
+      flightId: serializer.fromJson<int?>(json['flightId']),
+      rules: $LogbookEntriesTable.$converterrules.fromJson(
+        serializer.fromJson<String>(json['rules']),
+      ),
+      departureIdent: serializer.fromJson<String>(json['departureIdent']),
+      destinationIdent: serializer.fromJson<String>(json['destinationIdent']),
+      aircraftName: serializer.fromJson<String?>(json['aircraftName']),
+      aircraftType: serializer.fromJson<String?>(json['aircraftType']),
+      blockOffAt: serializer.fromJson<DateTime>(json['blockOffAt']),
+      takeoffAt: serializer.fromJson<DateTime?>(json['takeoffAt']),
+      landingAt: serializer.fromJson<DateTime?>(json['landingAt']),
+      blockOnAt: serializer.fromJson<DateTime>(json['blockOnAt']),
+      landings: serializer.fromJson<int>(json['landings']),
+      distanceNm: serializer.fromJson<double?>(json['distanceNm']),
+      touchdownFpm: serializer.fromJson<double?>(json['touchdownFpm']),
+      touchdownG: serializer.fromJson<double?>(json['touchdownG']),
+      track: serializer.fromJson<String>(json['track']),
+      remarks: serializer.fromJson<String>(json['remarks']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'flightId': serializer.toJson<int?>(flightId),
+      'rules': serializer.toJson<String>(
+        $LogbookEntriesTable.$converterrules.toJson(rules),
+      ),
+      'departureIdent': serializer.toJson<String>(departureIdent),
+      'destinationIdent': serializer.toJson<String>(destinationIdent),
+      'aircraftName': serializer.toJson<String?>(aircraftName),
+      'aircraftType': serializer.toJson<String?>(aircraftType),
+      'blockOffAt': serializer.toJson<DateTime>(blockOffAt),
+      'takeoffAt': serializer.toJson<DateTime?>(takeoffAt),
+      'landingAt': serializer.toJson<DateTime?>(landingAt),
+      'blockOnAt': serializer.toJson<DateTime>(blockOnAt),
+      'landings': serializer.toJson<int>(landings),
+      'distanceNm': serializer.toJson<double?>(distanceNm),
+      'touchdownFpm': serializer.toJson<double?>(touchdownFpm),
+      'touchdownG': serializer.toJson<double?>(touchdownG),
+      'track': serializer.toJson<String>(track),
+      'remarks': serializer.toJson<String>(remarks),
+    };
+  }
+
+  LogbookEntry copyWith({
+    int? id,
+    Value<int?> flightId = const Value.absent(),
+    FlightRules? rules,
+    String? departureIdent,
+    String? destinationIdent,
+    Value<String?> aircraftName = const Value.absent(),
+    Value<String?> aircraftType = const Value.absent(),
+    DateTime? blockOffAt,
+    Value<DateTime?> takeoffAt = const Value.absent(),
+    Value<DateTime?> landingAt = const Value.absent(),
+    DateTime? blockOnAt,
+    int? landings,
+    Value<double?> distanceNm = const Value.absent(),
+    Value<double?> touchdownFpm = const Value.absent(),
+    Value<double?> touchdownG = const Value.absent(),
+    String? track,
+    String? remarks,
+  }) => LogbookEntry(
+    id: id ?? this.id,
+    flightId: flightId.present ? flightId.value : this.flightId,
+    rules: rules ?? this.rules,
+    departureIdent: departureIdent ?? this.departureIdent,
+    destinationIdent: destinationIdent ?? this.destinationIdent,
+    aircraftName: aircraftName.present ? aircraftName.value : this.aircraftName,
+    aircraftType: aircraftType.present ? aircraftType.value : this.aircraftType,
+    blockOffAt: blockOffAt ?? this.blockOffAt,
+    takeoffAt: takeoffAt.present ? takeoffAt.value : this.takeoffAt,
+    landingAt: landingAt.present ? landingAt.value : this.landingAt,
+    blockOnAt: blockOnAt ?? this.blockOnAt,
+    landings: landings ?? this.landings,
+    distanceNm: distanceNm.present ? distanceNm.value : this.distanceNm,
+    touchdownFpm: touchdownFpm.present ? touchdownFpm.value : this.touchdownFpm,
+    touchdownG: touchdownG.present ? touchdownG.value : this.touchdownG,
+    track: track ?? this.track,
+    remarks: remarks ?? this.remarks,
+  );
+  LogbookEntry copyWithCompanion(LogbookEntriesCompanion data) {
+    return LogbookEntry(
+      id: data.id.present ? data.id.value : this.id,
+      flightId: data.flightId.present ? data.flightId.value : this.flightId,
+      rules: data.rules.present ? data.rules.value : this.rules,
+      departureIdent: data.departureIdent.present
+          ? data.departureIdent.value
+          : this.departureIdent,
+      destinationIdent: data.destinationIdent.present
+          ? data.destinationIdent.value
+          : this.destinationIdent,
+      aircraftName: data.aircraftName.present
+          ? data.aircraftName.value
+          : this.aircraftName,
+      aircraftType: data.aircraftType.present
+          ? data.aircraftType.value
+          : this.aircraftType,
+      blockOffAt: data.blockOffAt.present
+          ? data.blockOffAt.value
+          : this.blockOffAt,
+      takeoffAt: data.takeoffAt.present ? data.takeoffAt.value : this.takeoffAt,
+      landingAt: data.landingAt.present ? data.landingAt.value : this.landingAt,
+      blockOnAt: data.blockOnAt.present ? data.blockOnAt.value : this.blockOnAt,
+      landings: data.landings.present ? data.landings.value : this.landings,
+      distanceNm: data.distanceNm.present
+          ? data.distanceNm.value
+          : this.distanceNm,
+      touchdownFpm: data.touchdownFpm.present
+          ? data.touchdownFpm.value
+          : this.touchdownFpm,
+      touchdownG: data.touchdownG.present
+          ? data.touchdownG.value
+          : this.touchdownG,
+      track: data.track.present ? data.track.value : this.track,
+      remarks: data.remarks.present ? data.remarks.value : this.remarks,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LogbookEntry(')
+          ..write('id: $id, ')
+          ..write('flightId: $flightId, ')
+          ..write('rules: $rules, ')
+          ..write('departureIdent: $departureIdent, ')
+          ..write('destinationIdent: $destinationIdent, ')
+          ..write('aircraftName: $aircraftName, ')
+          ..write('aircraftType: $aircraftType, ')
+          ..write('blockOffAt: $blockOffAt, ')
+          ..write('takeoffAt: $takeoffAt, ')
+          ..write('landingAt: $landingAt, ')
+          ..write('blockOnAt: $blockOnAt, ')
+          ..write('landings: $landings, ')
+          ..write('distanceNm: $distanceNm, ')
+          ..write('touchdownFpm: $touchdownFpm, ')
+          ..write('touchdownG: $touchdownG, ')
+          ..write('track: $track, ')
+          ..write('remarks: $remarks')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    flightId,
+    rules,
+    departureIdent,
+    destinationIdent,
+    aircraftName,
+    aircraftType,
+    blockOffAt,
+    takeoffAt,
+    landingAt,
+    blockOnAt,
+    landings,
+    distanceNm,
+    touchdownFpm,
+    touchdownG,
+    track,
+    remarks,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is LogbookEntry &&
+          other.id == this.id &&
+          other.flightId == this.flightId &&
+          other.rules == this.rules &&
+          other.departureIdent == this.departureIdent &&
+          other.destinationIdent == this.destinationIdent &&
+          other.aircraftName == this.aircraftName &&
+          other.aircraftType == this.aircraftType &&
+          other.blockOffAt == this.blockOffAt &&
+          other.takeoffAt == this.takeoffAt &&
+          other.landingAt == this.landingAt &&
+          other.blockOnAt == this.blockOnAt &&
+          other.landings == this.landings &&
+          other.distanceNm == this.distanceNm &&
+          other.touchdownFpm == this.touchdownFpm &&
+          other.touchdownG == this.touchdownG &&
+          other.track == this.track &&
+          other.remarks == this.remarks);
+}
+
+class LogbookEntriesCompanion extends UpdateCompanion<LogbookEntry> {
+  final Value<int> id;
+  final Value<int?> flightId;
+  final Value<FlightRules> rules;
+  final Value<String> departureIdent;
+  final Value<String> destinationIdent;
+  final Value<String?> aircraftName;
+  final Value<String?> aircraftType;
+  final Value<DateTime> blockOffAt;
+  final Value<DateTime?> takeoffAt;
+  final Value<DateTime?> landingAt;
+  final Value<DateTime> blockOnAt;
+  final Value<int> landings;
+  final Value<double?> distanceNm;
+  final Value<double?> touchdownFpm;
+  final Value<double?> touchdownG;
+  final Value<String> track;
+  final Value<String> remarks;
+  const LogbookEntriesCompanion({
+    this.id = const Value.absent(),
+    this.flightId = const Value.absent(),
+    this.rules = const Value.absent(),
+    this.departureIdent = const Value.absent(),
+    this.destinationIdent = const Value.absent(),
+    this.aircraftName = const Value.absent(),
+    this.aircraftType = const Value.absent(),
+    this.blockOffAt = const Value.absent(),
+    this.takeoffAt = const Value.absent(),
+    this.landingAt = const Value.absent(),
+    this.blockOnAt = const Value.absent(),
+    this.landings = const Value.absent(),
+    this.distanceNm = const Value.absent(),
+    this.touchdownFpm = const Value.absent(),
+    this.touchdownG = const Value.absent(),
+    this.track = const Value.absent(),
+    this.remarks = const Value.absent(),
+  });
+  LogbookEntriesCompanion.insert({
+    this.id = const Value.absent(),
+    this.flightId = const Value.absent(),
+    required FlightRules rules,
+    required String departureIdent,
+    required String destinationIdent,
+    this.aircraftName = const Value.absent(),
+    this.aircraftType = const Value.absent(),
+    required DateTime blockOffAt,
+    this.takeoffAt = const Value.absent(),
+    this.landingAt = const Value.absent(),
+    required DateTime blockOnAt,
+    this.landings = const Value.absent(),
+    this.distanceNm = const Value.absent(),
+    this.touchdownFpm = const Value.absent(),
+    this.touchdownG = const Value.absent(),
+    this.track = const Value.absent(),
+    this.remarks = const Value.absent(),
+  }) : rules = Value(rules),
+       departureIdent = Value(departureIdent),
+       destinationIdent = Value(destinationIdent),
+       blockOffAt = Value(blockOffAt),
+       blockOnAt = Value(blockOnAt);
+  static Insertable<LogbookEntry> custom({
+    Expression<int>? id,
+    Expression<int>? flightId,
+    Expression<String>? rules,
+    Expression<String>? departureIdent,
+    Expression<String>? destinationIdent,
+    Expression<String>? aircraftName,
+    Expression<String>? aircraftType,
+    Expression<DateTime>? blockOffAt,
+    Expression<DateTime>? takeoffAt,
+    Expression<DateTime>? landingAt,
+    Expression<DateTime>? blockOnAt,
+    Expression<int>? landings,
+    Expression<double>? distanceNm,
+    Expression<double>? touchdownFpm,
+    Expression<double>? touchdownG,
+    Expression<String>? track,
+    Expression<String>? remarks,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (flightId != null) 'flight_id': flightId,
+      if (rules != null) 'rules': rules,
+      if (departureIdent != null) 'departure_ident': departureIdent,
+      if (destinationIdent != null) 'destination_ident': destinationIdent,
+      if (aircraftName != null) 'aircraft_name': aircraftName,
+      if (aircraftType != null) 'aircraft_type': aircraftType,
+      if (blockOffAt != null) 'block_off_at': blockOffAt,
+      if (takeoffAt != null) 'takeoff_at': takeoffAt,
+      if (landingAt != null) 'landing_at': landingAt,
+      if (blockOnAt != null) 'block_on_at': blockOnAt,
+      if (landings != null) 'landings': landings,
+      if (distanceNm != null) 'distance_nm': distanceNm,
+      if (touchdownFpm != null) 'touchdown_fpm': touchdownFpm,
+      if (touchdownG != null) 'touchdown_g': touchdownG,
+      if (track != null) 'track': track,
+      if (remarks != null) 'remarks': remarks,
+    });
+  }
+
+  LogbookEntriesCompanion copyWith({
+    Value<int>? id,
+    Value<int?>? flightId,
+    Value<FlightRules>? rules,
+    Value<String>? departureIdent,
+    Value<String>? destinationIdent,
+    Value<String?>? aircraftName,
+    Value<String?>? aircraftType,
+    Value<DateTime>? blockOffAt,
+    Value<DateTime?>? takeoffAt,
+    Value<DateTime?>? landingAt,
+    Value<DateTime>? blockOnAt,
+    Value<int>? landings,
+    Value<double?>? distanceNm,
+    Value<double?>? touchdownFpm,
+    Value<double?>? touchdownG,
+    Value<String>? track,
+    Value<String>? remarks,
+  }) {
+    return LogbookEntriesCompanion(
+      id: id ?? this.id,
+      flightId: flightId ?? this.flightId,
+      rules: rules ?? this.rules,
+      departureIdent: departureIdent ?? this.departureIdent,
+      destinationIdent: destinationIdent ?? this.destinationIdent,
+      aircraftName: aircraftName ?? this.aircraftName,
+      aircraftType: aircraftType ?? this.aircraftType,
+      blockOffAt: blockOffAt ?? this.blockOffAt,
+      takeoffAt: takeoffAt ?? this.takeoffAt,
+      landingAt: landingAt ?? this.landingAt,
+      blockOnAt: blockOnAt ?? this.blockOnAt,
+      landings: landings ?? this.landings,
+      distanceNm: distanceNm ?? this.distanceNm,
+      touchdownFpm: touchdownFpm ?? this.touchdownFpm,
+      touchdownG: touchdownG ?? this.touchdownG,
+      track: track ?? this.track,
+      remarks: remarks ?? this.remarks,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (flightId.present) {
+      map['flight_id'] = Variable<int>(flightId.value);
+    }
+    if (rules.present) {
+      map['rules'] = Variable<String>(
+        $LogbookEntriesTable.$converterrules.toSql(rules.value),
+      );
+    }
+    if (departureIdent.present) {
+      map['departure_ident'] = Variable<String>(departureIdent.value);
+    }
+    if (destinationIdent.present) {
+      map['destination_ident'] = Variable<String>(destinationIdent.value);
+    }
+    if (aircraftName.present) {
+      map['aircraft_name'] = Variable<String>(aircraftName.value);
+    }
+    if (aircraftType.present) {
+      map['aircraft_type'] = Variable<String>(aircraftType.value);
+    }
+    if (blockOffAt.present) {
+      map['block_off_at'] = Variable<DateTime>(blockOffAt.value);
+    }
+    if (takeoffAt.present) {
+      map['takeoff_at'] = Variable<DateTime>(takeoffAt.value);
+    }
+    if (landingAt.present) {
+      map['landing_at'] = Variable<DateTime>(landingAt.value);
+    }
+    if (blockOnAt.present) {
+      map['block_on_at'] = Variable<DateTime>(blockOnAt.value);
+    }
+    if (landings.present) {
+      map['landings'] = Variable<int>(landings.value);
+    }
+    if (distanceNm.present) {
+      map['distance_nm'] = Variable<double>(distanceNm.value);
+    }
+    if (touchdownFpm.present) {
+      map['touchdown_fpm'] = Variable<double>(touchdownFpm.value);
+    }
+    if (touchdownG.present) {
+      map['touchdown_g'] = Variable<double>(touchdownG.value);
+    }
+    if (track.present) {
+      map['track'] = Variable<String>(track.value);
+    }
+    if (remarks.present) {
+      map['remarks'] = Variable<String>(remarks.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LogbookEntriesCompanion(')
+          ..write('id: $id, ')
+          ..write('flightId: $flightId, ')
+          ..write('rules: $rules, ')
+          ..write('departureIdent: $departureIdent, ')
+          ..write('destinationIdent: $destinationIdent, ')
+          ..write('aircraftName: $aircraftName, ')
+          ..write('aircraftType: $aircraftType, ')
+          ..write('blockOffAt: $blockOffAt, ')
+          ..write('takeoffAt: $takeoffAt, ')
+          ..write('landingAt: $landingAt, ')
+          ..write('blockOnAt: $blockOnAt, ')
+          ..write('landings: $landings, ')
+          ..write('distanceNm: $distanceNm, ')
+          ..write('touchdownFpm: $touchdownFpm, ')
+          ..write('touchdownG: $touchdownG, ')
+          ..write('track: $track, ')
+          ..write('remarks: $remarks')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -7818,6 +8945,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $ChartAnnotationsTable chartAnnotations = $ChartAnnotationsTable(
     this,
   );
+  late final $LogbookEntriesTable logbookEntries = $LogbookEntriesTable(this);
   late final Index airportsIdent = Index(
     'airports_ident',
     'CREATE INDEX airports_ident ON airports (ident)',
@@ -7858,6 +8986,10 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     'chart_annotations_chart',
     'CREATE INDEX chart_annotations_chart ON chart_annotations (chart_id, flight_id)',
   );
+  late final Index logbookDate = Index(
+    'logbook_date',
+    'CREATE INDEX logbook_date ON logbook_entries (block_off_at)',
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -7874,6 +9006,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     weatherCache,
     charts,
     chartAnnotations,
+    logbookEntries,
     airportsIdent,
     airportsPosition,
     runwaysAirport,
@@ -7884,6 +9017,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     scratchPagesFlight,
     chartsAirport,
     chartAnnotationsChart,
+    logbookDate,
   ];
   @override
   StreamQueryUpdateRules get streamUpdateRules => const StreamQueryUpdateRules([
@@ -7914,6 +9048,13 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         limitUpdateKind: UpdateKind.delete,
       ),
       result: [TableUpdate('chart_annotations', kind: UpdateKind.delete)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'flights',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [TableUpdate('logbook_entries', kind: UpdateKind.update)],
     ),
   ]);
 }
@@ -9864,6 +11005,9 @@ typedef $$FlightsTableCreateCompanionBuilder = FlightsCompanion Function({
   Value<DateTime?> takeoffAt,
   Value<DateTime?> landingAt,
   Value<DateTime?> blockOnAt,
+  Value<double?> touchdownFpm,
+  Value<double?> touchdownG,
+  Value<String> track,
   Value<DateTime> createdAt,
   Value<DateTime> updatedAt,
 });
@@ -9894,6 +11038,9 @@ typedef $$FlightsTableUpdateCompanionBuilder = FlightsCompanion Function({
   Value<DateTime?> takeoffAt,
   Value<DateTime?> landingAt,
   Value<DateTime?> blockOnAt,
+  Value<double?> touchdownFpm,
+  Value<double?> touchdownG,
+  Value<String> track,
   Value<DateTime> createdAt,
   Value<DateTime> updatedAt,
 });
@@ -9973,6 +11120,24 @@ final class $$FlightsTableReferences
     final cache = $_typedResult.readTableOrNull(
       _chartAnnotationsRefsTable($_db),
     );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$LogbookEntriesTable, List<LogbookEntry>>
+  _logbookEntriesRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.logbookEntries,
+    aliasName: 'flights__id__logbook_entries__flight_id',
+  );
+
+  $$LogbookEntriesTableProcessedTableManager get logbookEntriesRefs {
+    final manager = $$LogbookEntriesTableTableManager(
+      $_db,
+      $_db.logbookEntries,
+    ).filter((f) => f.flightId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_logbookEntriesRefsTable($_db));
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: cache),
     );
@@ -10115,6 +11280,21 @@ class $$FlightsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<double> get touchdownFpm => $composableBuilder(
+    column: $table.touchdownFpm,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get touchdownG => $composableBuilder(
+    column: $table.touchdownG,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get track => $composableBuilder(
+    column: $table.track,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<DateTime> get createdAt => $composableBuilder(
     column: $table.createdAt,
     builder: (column) => ColumnFilters(column),
@@ -10214,6 +11394,31 @@ class $$FlightsTableFilterComposer
           }) => $$ChartAnnotationsTableFilterComposer(
             $db: $db,
             $table: $db.chartAnnotations,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> logbookEntriesRefs(
+    Expression<bool> Function($$LogbookEntriesTableFilterComposer f) f,
+  ) {
+    final $$LogbookEntriesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.logbookEntries,
+      getReferencedColumn: (t) => t.flightId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$LogbookEntriesTableFilterComposer(
+            $db: $db,
+            $table: $db.logbookEntries,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -10355,6 +11560,21 @@ class $$FlightsTableOrderingComposer
 
   ColumnOrderings<DateTime> get blockOnAt => $composableBuilder(
     column: $table.blockOnAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get touchdownFpm => $composableBuilder(
+    column: $table.touchdownFpm,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get touchdownG => $composableBuilder(
+    column: $table.touchdownG,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get track => $composableBuilder(
+    column: $table.track,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -10504,6 +11724,19 @@ class $$FlightsTableAnnotationComposer
   GeneratedColumn<DateTime> get blockOnAt =>
       $composableBuilder(column: $table.blockOnAt, builder: (column) => column);
 
+  GeneratedColumn<double> get touchdownFpm => $composableBuilder(
+    column: $table.touchdownFpm,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get touchdownG => $composableBuilder(
+    column: $table.touchdownG,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get track =>
+      $composableBuilder(column: $table.track, builder: (column) => column);
+
   GeneratedColumn<DateTime> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
 
@@ -10607,6 +11840,31 @@ class $$FlightsTableAnnotationComposer
     );
     return f(composer);
   }
+
+  Expression<T> logbookEntriesRefs<T extends Object>(
+    Expression<T> Function($$LogbookEntriesTableAnnotationComposer a) f,
+  ) {
+    final $$LogbookEntriesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.logbookEntries,
+      getReferencedColumn: (t) => t.flightId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$LogbookEntriesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.logbookEntries,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$FlightsTableTableManager
@@ -10627,6 +11885,7 @@ class $$FlightsTableTableManager
             bool flightWaypointsRefs,
             bool scratchPagesRefs,
             bool chartAnnotationsRefs,
+            bool logbookEntriesRefs,
           })
         > {
   $$FlightsTableTableManager(_$AppDatabase db, $FlightsTable table)
@@ -10668,6 +11927,9 @@ class $$FlightsTableTableManager
                 Value<DateTime?> takeoffAt = const Value.absent(),
                 Value<DateTime?> landingAt = const Value.absent(),
                 Value<DateTime?> blockOnAt = const Value.absent(),
+                Value<double?> touchdownFpm = const Value.absent(),
+                Value<double?> touchdownG = const Value.absent(),
+                Value<String> track = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
               }) => FlightsCompanion(
@@ -10697,6 +11959,9 @@ class $$FlightsTableTableManager
                 takeoffAt: takeoffAt,
                 landingAt: landingAt,
                 blockOnAt: blockOnAt,
+                touchdownFpm: touchdownFpm,
+                touchdownG: touchdownG,
+                track: track,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
               ),
@@ -10728,6 +11993,9 @@ class $$FlightsTableTableManager
                 Value<DateTime?> takeoffAt = const Value.absent(),
                 Value<DateTime?> landingAt = const Value.absent(),
                 Value<DateTime?> blockOnAt = const Value.absent(),
+                Value<double?> touchdownFpm = const Value.absent(),
+                Value<double?> touchdownG = const Value.absent(),
+                Value<String> track = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
               }) => FlightsCompanion.insert(
@@ -10757,6 +12025,9 @@ class $$FlightsTableTableManager
                 takeoffAt: takeoffAt,
                 landingAt: landingAt,
                 blockOnAt: blockOnAt,
+                touchdownFpm: touchdownFpm,
+                touchdownG: touchdownG,
+                track: track,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
               ),
@@ -10774,6 +12045,7 @@ class $$FlightsTableTableManager
                 flightWaypointsRefs = false,
                 scratchPagesRefs = false,
                 chartAnnotationsRefs = false,
+                logbookEntriesRefs = false,
               }) {
                 return PrefetchHooks(
                   db: db,
@@ -10781,6 +12053,7 @@ class $$FlightsTableTableManager
                     if (flightWaypointsRefs) db.flightWaypoints,
                     if (scratchPagesRefs) db.scratchPages,
                     if (chartAnnotationsRefs) db.chartAnnotations,
+                    if (logbookEntriesRefs) db.logbookEntries,
                   ],
                   addJoins:
                       <
@@ -10874,6 +12147,26 @@ class $$FlightsTableTableManager
                           referencedColumn: 'flight_id',
                           typedResults: items,
                         ),
+                      if (logbookEntriesRefs)
+                        await $_getPrefetchedDataByColumns<
+                          Flight,
+                          $FlightsTable,
+                          LogbookEntry,
+                          $LogbookEntriesTable
+                        >(
+                          currentTable: table,
+                          referencedTable: $$FlightsTableReferences
+                              ._logbookEntriesRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$FlightsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).logbookEntriesRefs,
+                          currentColumn: 'id',
+                          referencedColumn: 'flight_id',
+                          typedResults: items,
+                        ),
                     ];
                   },
                 );
@@ -10899,6 +12192,7 @@ typedef $$FlightsTableProcessedTableManager =
         bool flightWaypointsRefs,
         bool scratchPagesRefs,
         bool chartAnnotationsRefs,
+        bool logbookEntriesRefs,
       })
     >;
 typedef $$FlightWaypointsTableCreateCompanionBuilder =
@@ -12660,6 +13954,566 @@ typedef $$ChartAnnotationsTableProcessedTableManager =
       ChartAnnotation,
       PrefetchHooks Function({bool chartId, bool flightId})
     >;
+typedef $$LogbookEntriesTableCreateCompanionBuilder =
+    LogbookEntriesCompanion Function({
+      Value<int> id,
+      Value<int?> flightId,
+      required FlightRules rules,
+      required String departureIdent,
+      required String destinationIdent,
+      Value<String?> aircraftName,
+      Value<String?> aircraftType,
+      required DateTime blockOffAt,
+      Value<DateTime?> takeoffAt,
+      Value<DateTime?> landingAt,
+      required DateTime blockOnAt,
+      Value<int> landings,
+      Value<double?> distanceNm,
+      Value<double?> touchdownFpm,
+      Value<double?> touchdownG,
+      Value<String> track,
+      Value<String> remarks,
+    });
+typedef $$LogbookEntriesTableUpdateCompanionBuilder =
+    LogbookEntriesCompanion Function({
+      Value<int> id,
+      Value<int?> flightId,
+      Value<FlightRules> rules,
+      Value<String> departureIdent,
+      Value<String> destinationIdent,
+      Value<String?> aircraftName,
+      Value<String?> aircraftType,
+      Value<DateTime> blockOffAt,
+      Value<DateTime?> takeoffAt,
+      Value<DateTime?> landingAt,
+      Value<DateTime> blockOnAt,
+      Value<int> landings,
+      Value<double?> distanceNm,
+      Value<double?> touchdownFpm,
+      Value<double?> touchdownG,
+      Value<String> track,
+      Value<String> remarks,
+    });
+
+final class $$LogbookEntriesTableReferences
+    extends BaseReferences<_$AppDatabase, $LogbookEntriesTable, LogbookEntry> {
+  $$LogbookEntriesTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $FlightsTable _flightIdTable(_$AppDatabase db) =>
+      db.flights.createAlias('logbook_entries__flight_id__flights__id');
+
+  $$FlightsTableProcessedTableManager? get flightId {
+    final $_column = $_itemColumn<int>('flight_id');
+    if ($_column == null) return null;
+    final manager = $$FlightsTableTableManager(
+      $_db,
+      $_db.flights,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_flightIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$LogbookEntriesTableFilterComposer
+    extends Composer<_$AppDatabase, $LogbookEntriesTable> {
+  $$LogbookEntriesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<FlightRules, FlightRules, String> get rules =>
+      $composableBuilder(
+        column: $table.rules,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
+
+  ColumnFilters<String> get departureIdent => $composableBuilder(
+    column: $table.departureIdent,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get destinationIdent => $composableBuilder(
+    column: $table.destinationIdent,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get aircraftName => $composableBuilder(
+    column: $table.aircraftName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get aircraftType => $composableBuilder(
+    column: $table.aircraftType,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get blockOffAt => $composableBuilder(
+    column: $table.blockOffAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get takeoffAt => $composableBuilder(
+    column: $table.takeoffAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get landingAt => $composableBuilder(
+    column: $table.landingAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get blockOnAt => $composableBuilder(
+    column: $table.blockOnAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get landings => $composableBuilder(
+    column: $table.landings,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get distanceNm => $composableBuilder(
+    column: $table.distanceNm,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get touchdownFpm => $composableBuilder(
+    column: $table.touchdownFpm,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get touchdownG => $composableBuilder(
+    column: $table.touchdownG,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get track => $composableBuilder(
+    column: $table.track,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get remarks => $composableBuilder(
+    column: $table.remarks,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$FlightsTableFilterComposer get flightId {
+    final $$FlightsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.flightId,
+      referencedTable: $db.flights,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$FlightsTableFilterComposer(
+            $db: $db,
+            $table: $db.flights,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$LogbookEntriesTableOrderingComposer
+    extends Composer<_$AppDatabase, $LogbookEntriesTable> {
+  $$LogbookEntriesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get rules => $composableBuilder(
+    column: $table.rules,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get departureIdent => $composableBuilder(
+    column: $table.departureIdent,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get destinationIdent => $composableBuilder(
+    column: $table.destinationIdent,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get aircraftName => $composableBuilder(
+    column: $table.aircraftName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get aircraftType => $composableBuilder(
+    column: $table.aircraftType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get blockOffAt => $composableBuilder(
+    column: $table.blockOffAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get takeoffAt => $composableBuilder(
+    column: $table.takeoffAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get landingAt => $composableBuilder(
+    column: $table.landingAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get blockOnAt => $composableBuilder(
+    column: $table.blockOnAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get landings => $composableBuilder(
+    column: $table.landings,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get distanceNm => $composableBuilder(
+    column: $table.distanceNm,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get touchdownFpm => $composableBuilder(
+    column: $table.touchdownFpm,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get touchdownG => $composableBuilder(
+    column: $table.touchdownG,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get track => $composableBuilder(
+    column: $table.track,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get remarks => $composableBuilder(
+    column: $table.remarks,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$FlightsTableOrderingComposer get flightId {
+    final $$FlightsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.flightId,
+      referencedTable: $db.flights,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$FlightsTableOrderingComposer(
+            $db: $db,
+            $table: $db.flights,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$LogbookEntriesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $LogbookEntriesTable> {
+  $$LogbookEntriesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<FlightRules, String> get rules =>
+      $composableBuilder(column: $table.rules, builder: (column) => column);
+
+  GeneratedColumn<String> get departureIdent => $composableBuilder(
+    column: $table.departureIdent,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get destinationIdent => $composableBuilder(
+    column: $table.destinationIdent,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get aircraftName => $composableBuilder(
+    column: $table.aircraftName,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get aircraftType => $composableBuilder(
+    column: $table.aircraftType,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get blockOffAt => $composableBuilder(
+    column: $table.blockOffAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get takeoffAt =>
+      $composableBuilder(column: $table.takeoffAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get landingAt =>
+      $composableBuilder(column: $table.landingAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get blockOnAt =>
+      $composableBuilder(column: $table.blockOnAt, builder: (column) => column);
+
+  GeneratedColumn<int> get landings =>
+      $composableBuilder(column: $table.landings, builder: (column) => column);
+
+  GeneratedColumn<double> get distanceNm => $composableBuilder(
+    column: $table.distanceNm,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get touchdownFpm => $composableBuilder(
+    column: $table.touchdownFpm,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get touchdownG => $composableBuilder(
+    column: $table.touchdownG,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get track =>
+      $composableBuilder(column: $table.track, builder: (column) => column);
+
+  GeneratedColumn<String> get remarks =>
+      $composableBuilder(column: $table.remarks, builder: (column) => column);
+
+  $$FlightsTableAnnotationComposer get flightId {
+    final $$FlightsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.flightId,
+      referencedTable: $db.flights,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$FlightsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.flights,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$LogbookEntriesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $LogbookEntriesTable,
+          LogbookEntry,
+          $$LogbookEntriesTableFilterComposer,
+          $$LogbookEntriesTableOrderingComposer,
+          $$LogbookEntriesTableAnnotationComposer,
+          $$LogbookEntriesTableCreateCompanionBuilder,
+          $$LogbookEntriesTableUpdateCompanionBuilder,
+          (LogbookEntry, $$LogbookEntriesTableReferences),
+          LogbookEntry,
+          PrefetchHooks Function({bool flightId})
+        > {
+  $$LogbookEntriesTableTableManager(
+    _$AppDatabase db,
+    $LogbookEntriesTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$LogbookEntriesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$LogbookEntriesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$LogbookEntriesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<int?> flightId = const Value.absent(),
+                Value<FlightRules> rules = const Value.absent(),
+                Value<String> departureIdent = const Value.absent(),
+                Value<String> destinationIdent = const Value.absent(),
+                Value<String?> aircraftName = const Value.absent(),
+                Value<String?> aircraftType = const Value.absent(),
+                Value<DateTime> blockOffAt = const Value.absent(),
+                Value<DateTime?> takeoffAt = const Value.absent(),
+                Value<DateTime?> landingAt = const Value.absent(),
+                Value<DateTime> blockOnAt = const Value.absent(),
+                Value<int> landings = const Value.absent(),
+                Value<double?> distanceNm = const Value.absent(),
+                Value<double?> touchdownFpm = const Value.absent(),
+                Value<double?> touchdownG = const Value.absent(),
+                Value<String> track = const Value.absent(),
+                Value<String> remarks = const Value.absent(),
+              }) => LogbookEntriesCompanion(
+                id: id,
+                flightId: flightId,
+                rules: rules,
+                departureIdent: departureIdent,
+                destinationIdent: destinationIdent,
+                aircraftName: aircraftName,
+                aircraftType: aircraftType,
+                blockOffAt: blockOffAt,
+                takeoffAt: takeoffAt,
+                landingAt: landingAt,
+                blockOnAt: blockOnAt,
+                landings: landings,
+                distanceNm: distanceNm,
+                touchdownFpm: touchdownFpm,
+                touchdownG: touchdownG,
+                track: track,
+                remarks: remarks,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<int?> flightId = const Value.absent(),
+                required FlightRules rules,
+                required String departureIdent,
+                required String destinationIdent,
+                Value<String?> aircraftName = const Value.absent(),
+                Value<String?> aircraftType = const Value.absent(),
+                required DateTime blockOffAt,
+                Value<DateTime?> takeoffAt = const Value.absent(),
+                Value<DateTime?> landingAt = const Value.absent(),
+                required DateTime blockOnAt,
+                Value<int> landings = const Value.absent(),
+                Value<double?> distanceNm = const Value.absent(),
+                Value<double?> touchdownFpm = const Value.absent(),
+                Value<double?> touchdownG = const Value.absent(),
+                Value<String> track = const Value.absent(),
+                Value<String> remarks = const Value.absent(),
+              }) => LogbookEntriesCompanion.insert(
+                id: id,
+                flightId: flightId,
+                rules: rules,
+                departureIdent: departureIdent,
+                destinationIdent: destinationIdent,
+                aircraftName: aircraftName,
+                aircraftType: aircraftType,
+                blockOffAt: blockOffAt,
+                takeoffAt: takeoffAt,
+                landingAt: landingAt,
+                blockOnAt: blockOnAt,
+                landings: landings,
+                distanceNm: distanceNm,
+                touchdownFpm: touchdownFpm,
+                touchdownG: touchdownG,
+                track: track,
+                remarks: remarks,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$LogbookEntriesTable, LogbookEntry>(table),
+                  $$LogbookEntriesTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({flightId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (flightId) {
+                      state = state.withJoin(
+                        currentTable: table,
+                        currentColumn: table.flightId,
+                        referencedTable: $$LogbookEntriesTableReferences
+                            ._flightIdTable(db),
+                        referencedColumn: $$LogbookEntriesTableReferences
+                            ._flightIdTable(db)
+                            .id,
+                      ) as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$LogbookEntriesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $LogbookEntriesTable,
+      LogbookEntry,
+      $$LogbookEntriesTableFilterComposer,
+      $$LogbookEntriesTableOrderingComposer,
+      $$LogbookEntriesTableAnnotationComposer,
+      $$LogbookEntriesTableCreateCompanionBuilder,
+      $$LogbookEntriesTableUpdateCompanionBuilder,
+      (LogbookEntry, $$LogbookEntriesTableReferences),
+      LogbookEntry,
+      PrefetchHooks Function({bool flightId})
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -12686,4 +14540,6 @@ class $AppDatabaseManager {
       $$ChartsTableTableManager(_db, _db.charts);
   $$ChartAnnotationsTableTableManager get chartAnnotations =>
       $$ChartAnnotationsTableTableManager(_db, _db.chartAnnotations);
+  $$LogbookEntriesTableTableManager get logbookEntries =>
+      $$LogbookEntriesTableTableManager(_db, _db.logbookEntries);
 }

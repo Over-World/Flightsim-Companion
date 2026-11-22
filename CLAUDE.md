@@ -28,12 +28,12 @@ The full roadmap (milestones M1–M7) lives in OpenChamber's project knowledge (
 - `lib/core/` – nav math (great circle, wind triangle), units, morse, theme, settings, router
 - `lib/data/db/` – drift tables and database (`database.g.dart` is generated)
 - `lib/data/navdata/` – OurAirports CSV parser and importer
-- `lib/core/navlog.dart` – navlog computation; `core/e6b.dart` – flight computer formulas; `core/runways.dart` – runway ends, wind components, suggestion; `core/quantities.dart` – unit conversions; `core/fuel_plan.dart` – fuel plan (VFR/IFR reserves); `core/weight_balance.dart` – loading, CG and envelope check; `core/wmm/` – magnetic variation (all pure and tested)
+- `lib/core/navlog.dart` – navlog computation; `core/e6b.dart` – flight computer formulas; `core/runways.dart` – runway ends, wind components, suggestion; `core/quantities.dart` – unit conversions; `core/fuel_plan.dart` – fuel plan (VFR/IFR reserves); `core/weight_balance.dart` – loading, CG and envelope check; `core/flight_tracking.dart` – flight events from sim snapshots, waypoint passage, leg progress; `core/wmm/` – magnetic variation (all pure and tested)
 - `lib/data/repositories/` – queries used by the UI
-- `lib/data/sim/` – X-Plane web API client
+- `lib/data/sim/` – X-Plane web API: `XPlaneClient` (REST: capabilities, dataref ids by name), `XPlaneLiveSession` (WebSocket subscribe at 10 Hz, radio writes), `XPlaneDatarefs` (names, units, decoding into `SimSnapshot`). Dataref ids change per X-Plane session; resolve by name on every connect
 - `lib/data/charts/` – `ChartFileAccess` (file picker + PDF/image rendering via pdfrx), category/name guessing from file names; files live in `<app support>/charts`, rows in `Charts`, ink in `ChartAnnotations` (per page, per flight or general)
 - `lib/data/weather/` – METAR/TAF models and `WeatherRepository` (aviationweather.gov, offline cache table)
-- `lib/features/<feature>/` – screens and controllers: `plan` (flights, route editor, navlog table, runway selector, fuel and W&B panels), `e6b` (calculators), `kneeboard` (`KneeboardController`: active flight, times, stopwatch), `fly` (kneeboard UI), `notes` (stylus notepad), `weather` (`WeatherController` shares reports app-wide, `WeatherCard`), `charts` (`ChartsList`, import dialog, `ChartViewerScreen` at `/charts/:id?flight=`), `onboarding`, `settings`, `airports`, `aircraft`, `navdata`
+- `lib/features/<feature>/` – screens and controllers: `plan` (flights, route editor, navlog table, runway selector, fuel and W&B panels), `e6b` (calculators), `kneeboard` (`KneeboardController`: active flight, times, stopwatch), `fly` (kneeboard UI), `notes` (stylus notepad), `weather` (`WeatherController` shares reports app-wide, `WeatherCard`), `charts` (`ChartsList`, import dialog, `ChartViewerScreen` at `/charts/:id?flight=`), `sim` (`SimController`: connection with auto-reconnect; `SimFlightTracker`: drives the kneeboard from `core/flight_tracking.dart` events, records touchdown and track), `logbook` (entries written on block on by `KneeboardController`), `onboarding`, `settings`, `airports`, `aircraft`, `navdata`
 - `lib/widgets/` – shared widgets
 - `lib/app_scope.dart` – all providers; used by `main.dart` and widget tests
 
@@ -44,7 +44,7 @@ The full roadmap (milestones M1–M7) lives in OpenChamber's project knowledge (
 - Navigation destinations: Plan, Fly, E6B, Logbook, Settings (max. 5 for the phone NavigationBar). Aircraft profiles live under Plan (`/plan/aircraft`).
 - Layout breakpoint: `width >= 600` → NavigationRail, else NavigationBar. Every screen must work at 360 px wide and in both tablet orientations.
 - Stylus input: a stylus always draws (inverted end / button erases); a finger draws only with the "draw with finger" setting, otherwise it scrolls/zooms. Only one pointer is tracked so a palm can't scribble. On charts a finger always pans/zooms; the stylus claims its pointer via an `EagerGestureRecognizer`. Notepad pages and chart ink use 1000-unit-wide page coordinates and palette indices (not ARGB) so ink adapts to dark mode.
-- Widget tests never hit the network: pass `httpClient: fakeWeatherClient()` (test/fixtures.dart) to `AppScope`. Charts: pass `chartFiles: FakeChartFiles()` (no platform picker, no PDFium) and a temp `chartsDirectory`.
+- Widget tests never hit the network: pass `httpClient: fakeWeatherClient()` (test/fixtures.dart) to `AppScope`. Charts: pass `chartFiles: FakeChartFiles()` (no platform picker, no PDFium) and a temp `chartsDirectory`. Simulator: pass `simConnector` returning a `FakeSimSession`; protocol tests use `FakeXPlane` (test/sim/), a real HTTP+WebSocket server on localhost.
 - Widget tests with drift: call `unmount` (pump an empty widget + short pumps) at the end, and run DB work inside `tester.runAsync`; see `test/screens_test.dart`.
 
 ## Commands
@@ -59,6 +59,7 @@ flutter analyze && flutter test
 ## Pitfalls
 
 - drift_dev skips `database.g.dart` *silently* when `database.dart` contains something it can't handle (e.g. a top-level record-list constant). If the file is missing after `build_runner`, simplify `database.dart`, `rm -rf .dart_tool/build` and rebuild.
+- `Radio` is taken by Material; the sim radio type is `SimRadio`.
 - `flutter_test` disables shadows and draws them as hard black outlines – not a real styling issue in screenshots.
 
 ## Data sources

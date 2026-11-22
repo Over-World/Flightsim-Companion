@@ -764,5 +764,96 @@
     }
   },
   "chartPreviousPage": "Previous page",
-  "chartNextPage": "Next page"
+  "chartNextPage": "Next page",
+  "simStatusOff": "Not connected",
+  "simStatusConnecting": "Connecting…",
+  "simStatusWaitingForFlight": "Waiting for a flight in X-Plane",
+  "simStatusConnected": "Connected",
+  "simStatusUnreachable": "Not reachable, retrying",
+  "simUnreachableHint": "Check that X-Plane is running, the IP address and port are right, and that the X-Plane web server accepts connections from the network.",
+  "simNoHostHint": "Enter the IP address of the X-Plane PC in the settings.",
+  "simLive": "Live connection",
+  "simLiveHint": "Connect to X-Plane automatically and reconnect when it restarts.",
+  "simAutomation": "Automatic times and waypoints",
+  "simAutomationHint": "X-Plane records block and flight times, passes waypoints and measures the touchdown.",
+  "simAutomationActive": "X-Plane records this automatically",
+  "simRetry": "Retry now",
+  "simOpenSettings": "Settings",
+  "simRadios": "Radios",
+  "simSwap": "Swap {radio}",
+  "@simSwap": {
+    "placeholders": {
+      "radio": {
+        "type": "String"
+      }
+    }
+  },
+  "simStandby": "{radio} standby",
+  "@simStandby": {
+    "placeholders": {
+      "radio": {
+        "type": "String"
+      }
+    }
+  },
+  "simActive": "{radio} active",
+  "@simActive": {
+    "placeholders": {
+      "radio": {
+        "type": "String"
+      }
+    }
+  },
+  "simTuneTooltip": "Tune {frequency}",
+  "@simTuneTooltip": {
+    "placeholders": {
+      "frequency": {
+        "type": "String"
+      }
+    }
+  },
+  "simTunedStandby": "{radio} standby set to {frequency}",
+  "@simTunedStandby": {
+    "placeholders": {
+      "radio": {
+        "type": "String"
+      },
+      "frequency": {
+        "type": "String"
+      }
+    }
+  },
+  "simTunedActive": "{radio} set to {frequency}",
+  "@simTunedActive": {
+    "placeholders": {
+      "radio": {
+        "type": "String"
+      },
+      "frequency": {
+        "type": "String"
+      }
+    }
+  },
+  "simLeft": "L",
+  "simRight": "R",
+  "logbookFlights": "Flights",
+  "logbookLandings": "Landings",
+  "logbookDistance": "Distance",
+  "logbookTouchdownG": "Touchdown load",
+  "logbookRemarks": "Remarks",
+  "logbookBlockShort": "Block {time}",
+  "@logbookBlockShort": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "logbookDeleteTitle": "Delete logbook entry?",
+  "logbookDeleteMessage": "The flight plan stays; only this logbook line is removed.",
+  "touchdownButter": "Butter",
+  "touchdownSmooth": "Smooth",
+  "touchdownFirm": "Firm",
+  "touchdownHard": "Hard",
+  "touchdownInspect": "Check the gear"
 }

@@ -2724,6 +2724,222 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Next page'**
   String get chartNextPage;
+
+  /// No description provided for @simStatusOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Not connected'**
+  String get simStatusOff;
+
+  /// No description provided for @simStatusConnecting.
+  ///
+  /// In en, this message translates to:
+  /// **'Connecting…'**
+  String get simStatusConnecting;
+
+  /// No description provided for @simStatusWaitingForFlight.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for a flight in X-Plane'**
+  String get simStatusWaitingForFlight;
+
+  /// No description provided for @simStatusConnected.
+  ///
+  /// In en, this message translates to:
+  /// **'Connected'**
+  String get simStatusConnected;
+
+  /// No description provided for @simStatusUnreachable.
+  ///
+  /// In en, this message translates to:
+  /// **'Not reachable, retrying'**
+  String get simStatusUnreachable;
+
+  /// No description provided for @simUnreachableHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Check that X-Plane is running, the IP address and port are right, and that the X-Plane web server accepts connections from the network.'**
+  String get simUnreachableHint;
+
+  /// No description provided for @simNoHostHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the IP address of the X-Plane PC in the settings.'**
+  String get simNoHostHint;
+
+  /// No description provided for @simLive.
+  ///
+  /// In en, this message translates to:
+  /// **'Live connection'**
+  String get simLive;
+
+  /// No description provided for @simLiveHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect to X-Plane automatically and reconnect when it restarts.'**
+  String get simLiveHint;
+
+  /// No description provided for @simAutomation.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic times and waypoints'**
+  String get simAutomation;
+
+  /// No description provided for @simAutomationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'X-Plane records block and flight times, passes waypoints and measures the touchdown.'**
+  String get simAutomationHint;
+
+  /// No description provided for @simAutomationActive.
+  ///
+  /// In en, this message translates to:
+  /// **'X-Plane records this automatically'**
+  String get simAutomationActive;
+
+  /// No description provided for @simRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry now'**
+  String get simRetry;
+
+  /// No description provided for @simOpenSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get simOpenSettings;
+
+  /// No description provided for @simRadios.
+  ///
+  /// In en, this message translates to:
+  /// **'Radios'**
+  String get simRadios;
+
+  /// No description provided for @simSwap.
+  ///
+  /// In en, this message translates to:
+  /// **'Swap {radio}'**
+  String simSwap(String radio);
+
+  /// No description provided for @simStandby.
+  ///
+  /// In en, this message translates to:
+  /// **'{radio} standby'**
+  String simStandby(String radio);
+
+  /// No description provided for @simActive.
+  ///
+  /// In en, this message translates to:
+  /// **'{radio} active'**
+  String simActive(String radio);
+
+  /// No description provided for @simTuneTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Tune {frequency}'**
+  String simTuneTooltip(String frequency);
+
+  /// No description provided for @simTunedStandby.
+  ///
+  /// In en, this message translates to:
+  /// **'{radio} standby set to {frequency}'**
+  String simTunedStandby(String radio, String frequency);
+
+  /// No description provided for @simTunedActive.
+  ///
+  /// In en, this message translates to:
+  /// **'{radio} set to {frequency}'**
+  String simTunedActive(String radio, String frequency);
+
+  /// No description provided for @simLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'L'**
+  String get simLeft;
+
+  /// No description provided for @simRight.
+  ///
+  /// In en, this message translates to:
+  /// **'R'**
+  String get simRight;
+
+  /// No description provided for @logbookFlights.
+  ///
+  /// In en, this message translates to:
+  /// **'Flights'**
+  String get logbookFlights;
+
+  /// No description provided for @logbookLandings.
+  ///
+  /// In en, this message translates to:
+  /// **'Landings'**
+  String get logbookLandings;
+
+  /// No description provided for @logbookDistance.
+  ///
+  /// In en, this message translates to:
+  /// **'Distance'**
+  String get logbookDistance;
+
+  /// No description provided for @logbookTouchdownG.
+  ///
+  /// In en, this message translates to:
+  /// **'Touchdown load'**
+  String get logbookTouchdownG;
+
+  /// No description provided for @logbookRemarks.
+  ///
+  /// In en, this message translates to:
+  /// **'Remarks'**
+  String get logbookRemarks;
+
+  /// No description provided for @logbookBlockShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Block {time}'**
+  String logbookBlockShort(String time);
+
+  /// No description provided for @logbookDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete logbook entry?'**
+  String get logbookDeleteTitle;
+
+  /// No description provided for @logbookDeleteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The flight plan stays; only this logbook line is removed.'**
+  String get logbookDeleteMessage;
+
+  /// No description provided for @touchdownButter.
+  ///
+  /// In en, this message translates to:
+  /// **'Butter'**
+  String get touchdownButter;
+
+  /// No description provided for @touchdownSmooth.
+  ///
+  /// In en, this message translates to:
+  /// **'Smooth'**
+  String get touchdownSmooth;
+
+  /// No description provided for @touchdownFirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Firm'**
+  String get touchdownFirm;
+
+  /// No description provided for @touchdownHard.
+  ///
+  /// In en, this message translates to:
+  /// **'Hard'**
+  String get touchdownHard;
+
+  /// No description provided for @touchdownInspect.
+  ///
+  /// In en, this message translates to:
+  /// **'Check the gear'**
+  String get touchdownInspect;
 }
 
 class _AppLocalizationsDelegate

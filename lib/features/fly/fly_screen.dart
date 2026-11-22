@@ -13,6 +13,8 @@ import '../../widgets/ticking.dart';
 import '../charts/charts_list.dart';
 import '../kneeboard/kneeboard_controller.dart';
 import '../plan/navlog_table.dart';
+import '../sim/sim_controller.dart';
+import '../sim/sim_widgets.dart';
 import '../plan/runway_selector.dart';
 import '../weather/weather_card.dart';
 
@@ -43,6 +45,7 @@ class FlyScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(flight.title),
         actions: [
+          const SimStatusButton(),
           IconButton(
             tooltip: l10n.kneeboardEditPlan,
             icon: const Icon(Icons.edit_note),
@@ -69,6 +72,13 @@ class FlyScreen extends StatelessWidget {
           const times = _TimesCard();
           const navlog = _NavlogCard();
           const frequencies = _FrequenciesCard();
+          final simConnected = context.select<SimController, bool>(
+            (s) => s.isConnected,
+          );
+          final radios = [
+            if (simConnected)
+              _Section(title: l10n.simRadios, child: const RadioPanel()),
+          ];
           final charts = _Section(
             title: l10n.chartsTitle,
             child: ChartsList(
@@ -115,7 +125,7 @@ class FlyScreen extends StatelessWidget {
                   flex: 4,
                   child: ListView(
                     padding: const EdgeInsets.fromLTRB(8, 8, 16, 16),
-                    children: [leg, times, charts],
+                    children: [leg, ...radios, times, charts],
                   ),
                 ),
               ],
@@ -129,6 +139,7 @@ class FlyScreen extends StatelessWidget {
               runways,
               charts,
               ...weather,
+              ...radios,
               frequencies,
               times,
             ],
@@ -245,6 +256,9 @@ class _CurrentLegCard extends StatelessWidget {
     final legIndex = kb.currentLeg;
     final leg = kb.currentNavlogLeg;
     final hm = DateFormat.Hm();
+    final automatic =
+        context.select<SimController, bool>((s) => s.isConnected) &&
+        context.select<SettingsController, bool>((s) => s.simAutomation);
 
     final (String label, Future<void> Function()? action) = switch (phase) {
       FlightPhase.preflight => (l10n.actionBlockOff, kb.blockOff),
@@ -333,6 +347,7 @@ class _CurrentLegCard extends StatelessWidget {
               );
             },
           ),
+          LiveLegValues(from: kb.waypoints[legIndex], to: to),
           if (to.notes.isNotEmpty) ...[
             const SizedBox(height: 12),
             Text(to.notes, style: theme.textTheme.bodyMedium),
@@ -375,6 +390,14 @@ class _CurrentLegCard extends StatelessWidget {
               ),
             ),
           ),
+          if (action != null && automatic) ...[
+            const SizedBox(height: 8),
+            Text(
+              l10n.simAutomationActive,
+              textAlign: TextAlign.center,
+              style: theme.textTheme.bodySmall,
+            ),
+          ],
         ],
       ),
     );
@@ -452,7 +475,11 @@ class _FrequenciesCard extends StatelessWidget {
                                     style: theme.textTheme.bodySmall,
                                   ),
                                 ),
-                                Text(e.frequency, style: monoStyle(context)),
+                                TunableFrequency(
+                                  khz: e.khz,
+                                  text: e.frequency,
+                                  style: monoStyle(context),
+                                ),
                                 if (e.morse != null) ...[
                                   const SizedBox(width: 12),
                                   Flexible(

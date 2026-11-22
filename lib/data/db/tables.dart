@@ -168,6 +168,13 @@ class Flights extends Table {
   DateTimeColumn get landingAt => dateTime().nullable()();
   DateTimeColumn get blockOnAt => dateTime().nullable()();
 
+  // Recorded from the simulator.
+  RealColumn get touchdownFpm => real().nullable()();
+  RealColumn get touchdownG => real().nullable()();
+
+  /// Flown track, JSON `[[lat, lon, altFt, epochSeconds], ...]`.
+  TextColumn get track => text().withDefault(const Constant('[]'))();
+
   DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
   DateTimeColumn get updatedAt => dateTime().withDefault(currentDateAndTime)();
 }
@@ -263,4 +270,31 @@ class ChartAnnotations extends Table {
   )();
   IntColumn get page => integer()();
   TextColumn get strokes => text().withDefault(const Constant('[]'))();
+}
+
+/// A logbook line, written when a flight is blocked on. It is a copy, so
+/// it stays when the flight is edited or deleted.
+@TableIndex(name: 'logbook_date', columns: {#blockOffAt})
+class LogbookEntries extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get flightId => integer().nullable().references(
+    Flights,
+    #id,
+    onDelete: KeyAction.setNull,
+  )();
+  TextColumn get rules => textEnum<FlightRules>()();
+  TextColumn get departureIdent => text()();
+  TextColumn get destinationIdent => text()();
+  TextColumn get aircraftName => text().nullable()();
+  TextColumn get aircraftType => text().nullable()();
+  DateTimeColumn get blockOffAt => dateTime()();
+  DateTimeColumn get takeoffAt => dateTime().nullable()();
+  DateTimeColumn get landingAt => dateTime().nullable()();
+  DateTimeColumn get blockOnAt => dateTime()();
+  IntColumn get landings => integer().withDefault(const Constant(1))();
+  RealColumn get distanceNm => real().nullable()();
+  RealColumn get touchdownFpm => real().nullable()();
+  RealColumn get touchdownG => real().nullable()();
+  TextColumn get track => text().withDefault(const Constant('[]'))();
+  TextColumn get remarks => text().withDefault(const Constant(''))();
 }
