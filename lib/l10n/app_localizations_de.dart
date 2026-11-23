@@ -1460,7 +1460,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get simUnreachableHint =>
-      'Prüfe, ob X-Plane läuft, IP-Adresse und Port stimmen und der X-Plane-Webserver Verbindungen aus dem Netzwerk annimmt.';
+      'X-Plane nimmt Verbindungen bisher nur vom eigenen PC an. Damit das Tablet es erreicht, muss auf dem PC eine Weiterleitung laufen (z. B. socat von Port 8087 auf 127.0.0.1:8086) und die Firewall diesen Port im Heimnetz freigeben. Prüfe außerdem, ob X-Plane läuft und IP-Adresse und Port stimmen.';
 
   @override
   String get simNoHostHint =>
@@ -1572,5 +1572,5 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get wbArmHint =>
-      'Der Hebelarm ist der Abstand vom Bezugspunkt des Handbuchs (Datum, z. B. der Brandschott) zum Schwerpunkt einer Last. Gewicht × Hebelarm = Moment; alle Momente geteilt durch das Gesamtgewicht ergeben den Schwerpunkt. Die Werte stehen im Abschnitt Weight & Balance des Flughandbuchs, in dessen Einheit: US-Handbücher (Cessna, Piper, Cirrus) nutzen Zoll, europäische Meter oder Millimeter.';
+      'Der Hebelarm ist der Abstand von der Bezugsebene des Flughandbuchs (englisch „Datum“, meist am Brandschott oder an der Propellernabe) bis zum Schwerpunkt einer Last. Gewicht × Hebelarm = Moment; alle Momente geteilt durch das Gesamtgewicht ergeben den Schwerpunkt. Die Werte stehen im Abschnitt Masse und Schwerpunkt (Weight & Balance) des Handbuchs, in dessen Einheit: US-Handbücher (Cessna, Piper, Cirrus) nutzen Zoll, europäische Meter oder Millimeter.';
 }

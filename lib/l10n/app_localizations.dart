@@ -2758,7 +2758,7 @@ abstract class AppLocalizations {
   /// No description provided for @simUnreachableHint.
   ///
   /// In en, this message translates to:
-  /// **'Check that X-Plane is running, the IP address and port are right, and that the X-Plane web server accepts connections from the network.'**
+  /// **'So far X-Plane only accepts connections from its own PC. For the tablet to reach it, a forwarder must run on the PC (e.g. socat from port 8087 to 127.0.0.1:8086) and the firewall must allow that port on the home network. Also check that X-Plane is running and the IP address and port are right.'**
   String get simUnreachableHint;
 
   /// No description provided for @simNoHostHint.
@@ -2944,7 +2944,7 @@ abstract class AppLocalizations {
   /// No description provided for @wbArmHint.
   ///
   /// In en, this message translates to:
-  /// **'The arm is the distance from the manual\'s reference point (datum, e.g. the firewall) to the centre of gravity of a load. Weight × arm = moment; all moments divided by the total weight give the centre of gravity. Take the values from the weight & balance section of the aircraft\'s manual, in the unit it uses: US manuals (Cessna, Piper, Cirrus) use inches, European ones metres or millimetres.'**
+  /// **'The arm is the distance from the manual\'s reference datum (usually at the firewall or the propeller hub) to the centre of gravity of a load. Weight × arm = moment; all moments divided by the total weight give the centre of gravity. Take the values from the weight & balance section of the aircraft\'s manual, in the unit it uses: US manuals (Cessna, Piper, Cirrus) use inches, European ones metres or millimetres.'**
   String get wbArmHint;
 }
 

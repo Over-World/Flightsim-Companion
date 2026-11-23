@@ -770,7 +770,7 @@
   "simStatusWaitingForFlight": "Waiting for a flight in X-Plane",
   "simStatusConnected": "Connected",
   "simStatusUnreachable": "Not reachable, retrying",
-  "simUnreachableHint": "Check that X-Plane is running, the IP address and port are right, and that the X-Plane web server accepts connections from the network.",
+  "simUnreachableHint": "So far X-Plane only accepts connections from its own PC. For the tablet to reach it, a forwarder must run on the PC (e.g. socat from port 8087 to 127.0.0.1:8086) and the firewall must allow that port on the home network. Also check that X-Plane is running and the IP address and port are right.",
   "simNoHostHint": "Enter the IP address of the X-Plane PC in the settings.",
   "simLive": "Live connection",
   "simLiveHint": "Connect to X-Plane automatically and reconnect when it restarts.",
@@ -856,5 +856,5 @@
   "touchdownFirm": "Firm",
   "touchdownHard": "Hard",
   "touchdownInspect": "Check the gear",
-  "wbArmHint": "The arm is the distance from the manual's reference point (datum, e.g. the firewall) to the centre of gravity of a load. Weight × arm = moment; all moments divided by the total weight give the centre of gravity. Take the values from the weight & balance section of the aircraft's manual, in the unit it uses: US manuals (Cessna, Piper, Cirrus) use inches, European ones metres or millimetres."
+  "wbArmHint": "The arm is the distance from the manual's reference datum (usually at the firewall or the propeller hub) to the centre of gravity of a load. Weight × arm = moment; all moments divided by the total weight give the centre of gravity. Take the values from the weight & balance section of the aircraft's manual, in the unit it uses: US manuals (Cessna, Piper, Cirrus) use inches, European ones metres or millimetres."
 }
