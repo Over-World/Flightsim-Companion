@@ -7,6 +7,7 @@ import '../../l10n/app_localizations.dart';
 import '../navdata/navdata_card.dart';
 import 'preference_controls.dart';
 import 'xplane_connection_form.dart';
+import '../notes/notes_button.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -16,7 +17,10 @@ class SettingsScreen extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     final settings = context.watch<SettingsController>();
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.navSettings)),
+      appBar: AppBar(
+        title: Text(l10n.navSettings),
+        actions: const [NotesButton()],
+      ),
       body: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 720),

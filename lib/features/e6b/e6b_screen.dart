@@ -5,6 +5,7 @@ import '../../core/settings.dart';
 import '../../l10n/app_localizations.dart';
 import '../kneeboard/kneeboard_controller.dart';
 import 'e6b_cards.dart';
+import '../notes/notes_button.dart';
 
 enum E6bGroup { navigation, fuel, atmosphere, climbDescent, conversion }
 
@@ -169,6 +170,7 @@ class _E6bScreenState extends State<E6bScreen> {
         final entry = e6bEntries.where((e) => e.id == selected).firstOrNull;
 
         final actions = [
+          const NotesButton(),
           if (flightValues != null)
             TextButton.icon(
               onPressed: () => setState(() {

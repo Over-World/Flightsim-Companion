@@ -17,6 +17,7 @@ import '../sim/sim_controller.dart';
 import '../sim/sim_widgets.dart';
 import '../plan/runway_selector.dart';
 import '../weather/weather_card.dart';
+import '../notes/notes_button.dart';
 
 class FlyScreen extends StatelessWidget {
   const FlyScreen({super.key});
@@ -28,7 +29,10 @@ class FlyScreen extends StatelessWidget {
     final flight = kb.flight;
     if (!kb.isOpen || flight == null) {
       return Scaffold(
-        appBar: AppBar(title: Text(l10n.navFly)),
+        appBar: AppBar(
+          title: Text(l10n.navFly),
+          actions: const [NotesButton()],
+        ),
         body: EmptyState(
           icon: Icons.flight_takeoff_outlined,
           title: l10n.flyNoActiveFlightTitle,
@@ -45,6 +49,7 @@ class FlyScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(flight.title),
         actions: [
+          const NotesButton(),
           const SimStatusButton(),
           IconButton(
             tooltip: l10n.kneeboardEditPlan,

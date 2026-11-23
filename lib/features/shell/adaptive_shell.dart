@@ -31,22 +31,8 @@ class AdaptiveShell extends StatelessWidget {
     void openNotes() => context.push('/notes');
     if (!useRail) {
       return Scaffold(
-        body: Stack(
-          children: [
-            navigationShell,
-            // Bottom-left, clear of the screens' own FABs on the right.
-            Positioned(
-              left: 16,
-              bottom: 16,
-              child: FloatingActionButton.small(
-                heroTag: 'notes',
-                tooltip: l10n.notesOpen,
-                onPressed: openNotes,
-                child: const Icon(Icons.draw_outlined),
-              ),
-            ),
-          ],
-        ),
+        // The notepad is in each screen's app bar (`NotesButton`).
+        body: navigationShell,
         bottomNavigationBar: NavigationBar(
           selectedIndex: navigationShell.currentIndex,
           onDestinationSelected: _select,

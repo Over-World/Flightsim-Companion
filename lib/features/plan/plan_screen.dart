@@ -9,6 +9,7 @@ import '../../l10n/app_localizations.dart';
 import '../../widgets/empty_state.dart';
 import '../navdata/navdata_missing_card.dart';
 import 'new_flight_dialog.dart';
+import '../notes/notes_button.dart';
 
 class PlanScreen extends StatelessWidget {
   const PlanScreen({super.key});
@@ -35,6 +36,7 @@ class PlanScreen extends StatelessWidget {
             icon: const Icon(Icons.search),
             onPressed: () => context.go('/plan/airports'),
           ),
+          const NotesButton(),
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(

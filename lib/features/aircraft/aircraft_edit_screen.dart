@@ -349,6 +349,13 @@ class _AircraftEditScreenState extends State<AircraftEditScreen> {
               _number(_mtow, l10n.aircraftMtow, weight),
             ]),
             _Section(l10n.wbTitle),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(4, 0, 4, 16),
+              child: Text(
+                l10n.wbArmHint,
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ),
             _Fields([
               DropdownButtonFormField<String>(
                 initialValue: _armUnit,

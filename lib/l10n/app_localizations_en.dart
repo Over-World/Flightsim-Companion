@@ -1571,4 +1571,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get touchdownInspect => 'Check the gear';
+
+  @override
+  String get wbArmHint =>
+      'The arm is the distance from the manual\'s reference point (datum, e.g. the firewall) to the centre of gravity of a load. Weight × arm = moment; all moments divided by the total weight give the centre of gravity. Take the values from the weight & balance section of the aircraft\'s manual, in the unit it uses: US manuals (Cessna, Piper, Cirrus) use inches, European ones metres or millimetres.';
 }

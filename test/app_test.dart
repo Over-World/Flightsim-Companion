@@ -59,6 +59,18 @@ void main() {
     expect(find.byType(NavigationBar), findsOneWidget);
     expect(find.byType(NavigationRail), findsNothing);
     expect(find.text('Plan'), findsWidgets);
+    // The notepad sits in the app bar, not floating over the content.
+    expect(find.byType(FloatingActionButton), findsOneWidget);
+    expect(
+      find.descendant(
+        of: find.byType(AppBar),
+        matching: find.byTooltip('Notepad'),
+      ),
+      findsOneWidget,
+    );
+    await tester.tap(find.byTooltip('Notepad'));
+    await tester.pumpAndSettle();
+    expect(find.byType(NavigationBar), findsNothing);
     await unmount(tester);
   });
 

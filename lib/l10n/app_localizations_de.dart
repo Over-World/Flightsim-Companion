@@ -1569,4 +1569,8 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get touchdownInspect => 'Fahrwerk prüfen';
+
+  @override
+  String get wbArmHint =>
+      'Der Hebelarm ist der Abstand vom Bezugspunkt des Handbuchs (Datum, z. B. der Brandschott) zum Schwerpunkt einer Last. Gewicht × Hebelarm = Moment; alle Momente geteilt durch das Gesamtgewicht ergeben den Schwerpunkt. Die Werte stehen im Abschnitt Weight & Balance des Flughandbuchs, in dessen Einheit: US-Handbücher (Cessna, Piper, Cirrus) nutzen Zoll, europäische Meter oder Millimeter.';
 }

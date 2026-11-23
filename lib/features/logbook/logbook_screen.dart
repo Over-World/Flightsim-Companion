@@ -8,6 +8,7 @@ import '../../data/db/database.dart';
 import '../../data/repositories/logbook_repository.dart';
 import '../../l10n/app_localizations.dart';
 import '../../widgets/empty_state.dart';
+import '../notes/notes_button.dart';
 
 enum TouchdownRating { butter, smooth, firm, hard, inspect }
 
@@ -35,7 +36,10 @@ class LogbookScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.navLogbook)),
+      appBar: AppBar(
+        title: Text(l10n.navLogbook),
+        actions: const [NotesButton()],
+      ),
       body: StreamBuilder(
         stream: context.read<LogbookRepository>().watchAll(),
         builder: (context, snapshot) {

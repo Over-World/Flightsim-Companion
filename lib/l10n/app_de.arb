@@ -472,5 +472,6 @@
   "touchdownSmooth": "Sanft",
   "touchdownFirm": "Fest",
   "touchdownHard": "Hart",
-  "touchdownInspect": "Fahrwerk prüfen"
+  "touchdownInspect": "Fahrwerk prüfen",
+  "wbArmHint": "Der Hebelarm ist der Abstand vom Bezugspunkt des Handbuchs (Datum, z. B. der Brandschott) zum Schwerpunkt einer Last. Gewicht × Hebelarm = Moment; alle Momente geteilt durch das Gesamtgewicht ergeben den Schwerpunkt. Die Werte stehen im Abschnitt Weight & Balance des Flughandbuchs, in dessen Einheit: US-Handbücher (Cessna, Piper, Cirrus) nutzen Zoll, europäische Meter oder Millimeter."
 }

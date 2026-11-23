@@ -19,6 +19,7 @@ import '../weather/weather_card.dart';
 import 'navlog_table.dart';
 import 'runway_selector.dart';
 import 'wb_panel.dart';
+import '../notes/notes_button.dart';
 
 class FlightEditorScreen extends StatefulWidget {
   const FlightEditorScreen({super.key, required this.flightId});
@@ -86,6 +87,7 @@ class _FlightEditorScreenState extends State<FlightEditorScreen> {
           appBar: AppBar(
             title: Text(flight.title),
             actions: [
+              const NotesButton(),
               IconButton(
                 tooltip: l10n.flightEdit,
                 icon: const Icon(Icons.tune),
