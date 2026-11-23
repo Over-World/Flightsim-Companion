@@ -87,7 +87,8 @@ class XPlaneLiveSession {
   }
 
   void _onMessage(dynamic message) {
-    if (message is! String) return;
+    // Messages still buffered in the socket after close() are dropped.
+    if (message is! String || _done.isCompleted) return;
     final Object? json;
     try {
       json = jsonDecode(message);
