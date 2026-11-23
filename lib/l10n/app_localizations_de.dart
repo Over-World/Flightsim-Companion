@@ -1573,4 +1573,20 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get wbArmHint =>
       'Der Hebelarm ist der Abstand von der Bezugsebene des Flughandbuchs (englisch „Datum“, meist am Brandschott oder an der Propellernabe) bis zum Schwerpunkt einer Last. Gewicht × Hebelarm = Moment; alle Momente geteilt durch das Gesamtgewicht ergeben den Schwerpunkt. Die Werte stehen im Abschnitt Masse und Schwerpunkt (Weight & Balance) des Handbuchs, in dessen Einheit: US-Handbücher (Cessna, Piper, Cirrus) nutzen Zoll, europäische Meter oder Millimeter.';
+
+  @override
+  String get settingsScreenAwake => 'Bildschirm anlassen';
+
+  @override
+  String get screenAwakeNever => 'Nie';
+
+  @override
+  String get screenAwakeFlight => 'Im Flug';
+
+  @override
+  String get screenAwakeAlways => 'Immer';
+
+  @override
+  String get settingsScreenAwakeHint =>
+      'Im Flug: solange ein Flug im Kneeboard geöffnet ist, bis On-Block. Braucht mehr Akku.';
 }

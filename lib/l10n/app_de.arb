@@ -473,5 +473,10 @@
   "touchdownFirm": "Fest",
   "touchdownHard": "Hart",
   "touchdownInspect": "Fahrwerk prüfen",
-  "wbArmHint": "Der Hebelarm ist der Abstand von der Bezugsebene des Flughandbuchs (englisch „Datum“, meist am Brandschott oder an der Propellernabe) bis zum Schwerpunkt einer Last. Gewicht × Hebelarm = Moment; alle Momente geteilt durch das Gesamtgewicht ergeben den Schwerpunkt. Die Werte stehen im Abschnitt Masse und Schwerpunkt (Weight & Balance) des Handbuchs, in dessen Einheit: US-Handbücher (Cessna, Piper, Cirrus) nutzen Zoll, europäische Meter oder Millimeter."
+  "wbArmHint": "Der Hebelarm ist der Abstand von der Bezugsebene des Flughandbuchs (englisch „Datum“, meist am Brandschott oder an der Propellernabe) bis zum Schwerpunkt einer Last. Gewicht × Hebelarm = Moment; alle Momente geteilt durch das Gesamtgewicht ergeben den Schwerpunkt. Die Werte stehen im Abschnitt Masse und Schwerpunkt (Weight & Balance) des Handbuchs, in dessen Einheit: US-Handbücher (Cessna, Piper, Cirrus) nutzen Zoll, europäische Meter oder Millimeter.",
+  "settingsScreenAwake": "Bildschirm anlassen",
+  "screenAwakeNever": "Nie",
+  "screenAwakeFlight": "Im Flug",
+  "screenAwakeAlways": "Immer",
+  "settingsScreenAwakeHint": "Im Flug: solange ein Flug im Kneeboard geöffnet ist, bis On-Block. Braucht mehr Akku."
 }

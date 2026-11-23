@@ -17,6 +17,7 @@ import 'data/repositories/logbook_repository.dart';
 import 'data/repositories/navdata_repository.dart';
 import 'data/repositories/notes_repository.dart';
 import 'features/kneeboard/kneeboard_controller.dart';
+import 'features/kneeboard/screen_awake_keeper.dart';
 import 'data/weather/weather_repository.dart';
 import 'features/navdata/navdata_controller.dart';
 import 'features/sim/sim_controller.dart';
@@ -42,6 +43,9 @@ class AppScope extends StatelessWidget {
 
     /// Opens simulator sessions; tests pass a fake.
     this.simConnector = connectXPlane,
+
+    /// Turns "keep the screen on" on or off; tests pass a fake.
+    this.setScreenAwake,
   }) : aircraft = AircraftRepository(db),
        navdata = NavdataRepository(db),
        flights = FlightRepository(db),
@@ -60,6 +64,7 @@ class AppScope extends StatelessWidget {
   final NotesRepository notes;
   final LogbookRepository logbook;
   final SimConnector simConnector;
+  final Future<void> Function(bool on)? setScreenAwake;
   final ChartsRepository charts;
   final ChartFileAccess chartFiles;
   final WeatherRepository weather;
@@ -110,6 +115,24 @@ class AppScope extends StatelessWidget {
             settings: settings,
           ),
           dispose: (_, tracker) => tracker.dispose(),
+        ),
+        Provider(
+          lazy: false,
+          create: (context) {
+            final kneeboard = context.read<KneeboardController>();
+            return switch (setScreenAwake) {
+              final set? => ScreenAwakeKeeper(
+                settings: settings,
+                kneeboard: kneeboard,
+                setAwake: set,
+              ),
+              null => ScreenAwakeKeeper(
+                settings: settings,
+                kneeboard: kneeboard,
+              ),
+            };
+          },
+          dispose: (_, keeper) => keeper.dispose(),
         ),
       ],
       child: child,

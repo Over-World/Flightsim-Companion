@@ -191,6 +191,37 @@ class _AppearanceSection extends StatelessWidget {
             ],
           ),
         ),
+        LabeledControl(
+          label: l10n.settingsScreenAwake,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SegmentedButton<ScreenAwake>(
+                segments: [
+                  ButtonSegment(
+                    value: ScreenAwake.never,
+                    label: Text(l10n.screenAwakeNever),
+                  ),
+                  ButtonSegment(
+                    value: ScreenAwake.flight,
+                    label: Text(l10n.screenAwakeFlight),
+                  ),
+                  ButtonSegment(
+                    value: ScreenAwake.always,
+                    label: Text(l10n.screenAwakeAlways),
+                  ),
+                ],
+                selected: {settings.screenAwake},
+                onSelectionChanged: (s) => settings.setScreenAwake(s.single),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                l10n.settingsScreenAwakeHint,
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }

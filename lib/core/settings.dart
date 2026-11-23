@@ -21,6 +21,9 @@ enum FuelUnit { liters, usGallons }
 
 enum WeightUnit { kilograms, pounds }
 
+/// When the display stays on instead of timing out.
+enum ScreenAwake { never, flight, always }
+
 class SettingsController extends ChangeNotifier {
   SettingsController(this._prefs);
 
@@ -73,6 +76,8 @@ class SettingsController extends ChangeNotifier {
   AccentColor get accent =>
       _enum('accent', AccentColor.values, AccentColor.blue);
   FuelUnit get fuelUnit => _enum('fuelUnit', FuelUnit.values, FuelUnit.liters);
+  ScreenAwake get screenAwake =>
+      _enum('screenAwake', ScreenAwake.values, ScreenAwake.flight);
   WeightUnit get weightUnit =>
       _enum('weightUnit', WeightUnit.values, WeightUnit.kilograms);
 
@@ -95,6 +100,7 @@ class SettingsController extends ChangeNotifier {
   Future<void> setAccent(AccentColor v) => _setEnum('accent', v);
   Future<void> setFuelUnit(FuelUnit v) => _setEnum('fuelUnit', v);
   Future<void> setWeightUnit(WeightUnit v) => _setEnum('weightUnit', v);
+  Future<void> setScreenAwake(ScreenAwake v) => _setEnum('screenAwake', v);
 
   Future<void> setSimConnection(String host, int port) async {
     await _prefs.setString('simHost', host.trim());

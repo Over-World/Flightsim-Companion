@@ -2946,6 +2946,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The arm is the distance from the manual\'s reference datum (usually at the firewall or the propeller hub) to the centre of gravity of a load. Weight × arm = moment; all moments divided by the total weight give the centre of gravity. Take the values from the weight & balance section of the aircraft\'s manual, in the unit it uses: US manuals (Cessna, Piper, Cirrus) use inches, European ones metres or millimetres.'**
   String get wbArmHint;
+
+  /// No description provided for @settingsScreenAwake.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep screen on'**
+  String get settingsScreenAwake;
+
+  /// No description provided for @screenAwakeNever.
+  ///
+  /// In en, this message translates to:
+  /// **'Never'**
+  String get screenAwakeNever;
+
+  /// No description provided for @screenAwakeFlight.
+  ///
+  /// In en, this message translates to:
+  /// **'In flight'**
+  String get screenAwakeFlight;
+
+  /// No description provided for @screenAwakeAlways.
+  ///
+  /// In en, this message translates to:
+  /// **'Always'**
+  String get screenAwakeAlways;
+
+  /// No description provided for @settingsScreenAwakeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'In flight: while a flight is open on the kneeboard, until block on. Uses more battery.'**
+  String get settingsScreenAwakeHint;
 }
 
 class _AppLocalizationsDelegate
