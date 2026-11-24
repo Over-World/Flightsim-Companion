@@ -175,11 +175,15 @@ class Flights extends Table {
   /// Flown track, JSON `[[lat, lon, altFt, epochSeconds], ...]`.
   TextColumn get track => text().withDefault(const Constant('[]'))();
 
+  /// Imported operational flight plan, `OfpSummary.encode`.
+  TextColumn get ofp => text().nullable()();
+
   DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
   DateTimeColumn get updatedAt => dateTime().withDefault(currentDateAndTime)();
 }
 
-enum WaypointKind { airport, navaid, reportingPoint, user }
+/// [fix]: an IFR waypoint from an OFP (no navdata row), incl. TOC/TOD.
+enum WaypointKind { airport, navaid, reportingPoint, user, fix }
 
 @TableIndex(name: 'waypoints_flight', columns: {#flightId, #sequence})
 class FlightWaypoints extends Table {
@@ -201,6 +205,14 @@ class FlightWaypoints extends Table {
   IntColumn get windDirection => integer().nullable()();
   IntColumn get windSpeedKt => integer().nullable()();
   TextColumn get notes => text().withDefault(const Constant(''))();
+
+  /// Airway, SID/STAR or `DCT` on the leg to this waypoint (IFR).
+  TextColumn get via => text().nullable()();
+
+  /// Own TAS and fuel flow for the leg to this waypoint, e.g. climb and
+  /// descent from an OFP; `null` = the aircraft's cruise values.
+  IntColumn get tasKt => integer().nullable()();
+  RealColumn get fuelFlowLph => real().nullable()();
 
   /// Actual time over, filled in during the flight.
   DateTimeColumn get actualTimeOver => dateTime().nullable()();

@@ -13,6 +13,9 @@ class NavlogPoint {
     this.windDirection,
     this.windSpeedKt,
     this.actualTimeOver,
+    this.via,
+    this.tasKt,
+    this.fuelFlowLph,
   });
 
   final String ident;
@@ -23,6 +26,13 @@ class NavlogPoint {
   final int? windDirection;
   final int? windSpeedKt;
   final DateTime? actualTimeOver;
+
+  /// Airway or procedure on the leg to this point.
+  final String? via;
+
+  /// Leg TAS and fuel flow; `null` = the navlog's cruise values.
+  final int? tasKt;
+  final double? fuelFlowLph;
 
   bool get hasOwnWind => windDirection != null && windSpeedKt != null;
 }
@@ -83,8 +93,8 @@ class Navlog {
       legs.isEmpty ? Duration.zero : legs.last.cumulativeTime;
   double? get totalFuelL => legs.isEmpty ? 0 : legs.last.cumulativeFuelL;
 
-  /// Computes the navlog with a constant [trueAirspeed] (cruise; climb and
-  /// descent are not modelled yet).
+  /// Computes the navlog with [trueAirspeed] and [fuelBurnLph] for every leg
+  /// whose end point has no own TAS / fuel flow (e.g. from an OFP).
   static Navlog compute({
     required List<NavlogPoint> points,
     required double trueAirspeed,
@@ -131,16 +141,18 @@ class Navlog {
       final windSpeed = to.hasOwnWind
           ? to.windSpeedKt!
           : (defaultWindSpeedKt ?? 0);
+      final tas = to.tasKt?.toDouble() ?? trueAirspeed;
+      final burn = to.fuelFlowLph ?? fuelBurnLph;
       final solution = solveWind(
         trueCourse: tc,
-        trueAirspeed: trueAirspeed,
+        trueAirspeed: tas,
         windFrom: windDir.toDouble(),
         windSpeed: windSpeed.toDouble(),
       );
       final ete = solution == null
           ? null
           : Duration(seconds: (dist / solution.groundSpeed * 3600).round());
-      final fuel = ete == null ? null : ete.inSeconds / 3600 * fuelBurnLph;
+      final fuel = ete == null ? null : ete.inSeconds / 3600 * burn;
       cumDist += dist;
       cumTime = (cumTime == null || ete == null) ? null : cumTime + ete;
       cumFuel = (cumFuel == null || fuel == null) ? null : cumFuel + fuel;

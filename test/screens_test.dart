@@ -135,6 +135,70 @@ void main() {
       await unmount(tester);
     });
 
+    testWidgets('SimBrief import on $name', (tester) async {
+      final router = await pumpApp(tester, size);
+      await settle(tester);
+      final settings = tester
+          .element(find.byType(Scaffold).first)
+          .read<SettingsController>();
+
+      // Without a username the dialog points to the settings.
+      await tester.tap(find.byTooltip('Import from SimBrief'));
+      await tester.pumpAndSettle();
+      expect(find.textContaining('SimBrief username'), findsOneWidget);
+      await tester.tap(find.text('Cancel'));
+      await tester.pumpAndSettle();
+
+      await settings.setSimbriefUsername('nobody');
+      await tester.tap(find.byTooltip('Import from SimBrief'));
+      await settle(tester);
+      expect(find.text('SimBrief reports: Error: Unknown UserID'), findsOne);
+      await tester.tap(find.text('Cancel'));
+      await tester.pumpAndSettle();
+
+      await settings.setSimbriefUsername('pilot');
+      await tester.tap(find.byTooltip('Import from SimBrief'));
+      await settle(tester);
+      expect(find.text('DLH100'), findsOneWidget);
+      expect(find.text('EDDF (25C) → EDDM (26R)'), findsOneWidget);
+      expect(find.text('FL260'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+      await tester.tap(find.text('Import'));
+      await settle(tester);
+      await settle(tester);
+      expect(
+        router.routerDelegate.currentConfiguration.uri.path,
+        startsWith('/plan/flights/'),
+      );
+      await tester.scrollUntilVisible(
+        find.textContaining('T163 · DINKELSBUHL'),
+        200,
+        scrollable: find
+            .descendant(
+              of: find.byType(ReorderableListView),
+              matching: find.byType(Scrollable),
+            )
+            .first,
+      );
+      expect(find.textContaining('T163 · DINKELSBUHL'), findsOneWidget);
+      if (size.width < 1000) {
+        await tester.tap(find.text('Navlog'));
+        await settle(tester);
+      }
+      expect(find.text('VIA'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+
+      // A second import of the same OFP offers the existing flight.
+      router.go('/plan');
+      await settle(tester);
+      await tester.tap(find.byTooltip('Import from SimBrief'));
+      await settle(tester);
+      expect(find.text('Open flight'), findsOneWidget);
+      await tester.tap(find.text('Cancel'));
+      await tester.pumpAndSettle();
+      await unmount(tester);
+    });
+
     testWidgets('kneeboard on $name', (tester) async {
       final router = await pumpApp(tester, size);
       final context = tester.element(find.byType(Scaffold).first);

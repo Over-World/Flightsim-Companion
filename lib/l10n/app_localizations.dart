@@ -2976,6 +2976,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'In flight: while a flight is open on the kneeboard, until block on. Uses more battery.'**
   String get settingsScreenAwakeHint;
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get retry;
+
+  /// No description provided for @simbriefImport.
+  ///
+  /// In en, this message translates to:
+  /// **'Import from SimBrief'**
+  String get simbriefImport;
+
+  /// No description provided for @simbriefImportAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Import'**
+  String get simbriefImportAction;
+
+  /// No description provided for @simbriefImportAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Import again'**
+  String get simbriefImportAgain;
+
+  /// No description provided for @simbriefOpenExisting.
+  ///
+  /// In en, this message translates to:
+  /// **'Open flight'**
+  String get simbriefOpenExisting;
+
+  /// No description provided for @simbriefAlreadyImported.
+  ///
+  /// In en, this message translates to:
+  /// **'This OFP has already been imported. Importing it again creates a second flight.'**
+  String get simbriefAlreadyImported;
+
+  /// No description provided for @simbriefNoUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your SimBrief username or pilot ID in the settings first. The app then imports the flight plan you last generated on simbrief.com.'**
+  String get simbriefNoUser;
+
+  /// No description provided for @simbriefError.
+  ///
+  /// In en, this message translates to:
+  /// **'SimBrief reports: {message}'**
+  String simbriefError(String message);
+
+  /// No description provided for @simbriefOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'SimBrief can\'t be reached. Check the internet connection.'**
+  String get simbriefOffline;
+
+  /// No description provided for @simbriefAircraft.
+  ///
+  /// In en, this message translates to:
+  /// **'Aircraft'**
+  String get simbriefAircraft;
+
+  /// No description provided for @simbriefEnrouteTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Flight time'**
+  String get simbriefEnrouteTime;
+
+  /// No description provided for @simbriefBlockFuel.
+  ///
+  /// In en, this message translates to:
+  /// **'Block fuel'**
+  String get simbriefBlockFuel;
+
+  /// No description provided for @simbriefGenerated.
+  ///
+  /// In en, this message translates to:
+  /// **'Generated'**
+  String get simbriefGenerated;
+
+  /// No description provided for @simbriefRoute.
+  ///
+  /// In en, this message translates to:
+  /// **'Route'**
+  String get simbriefRoute;
+
+  /// No description provided for @simbriefImportHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Creates an IFR flight with {count} waypoints, altitudes, winds and fuel from the OFP. Without an aircraft profile of this type, one is created.'**
+  String simbriefImportHint(int count);
 }
 
 class _AppLocalizationsDelegate

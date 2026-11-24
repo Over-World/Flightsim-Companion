@@ -19,6 +19,7 @@ import 'data/repositories/notes_repository.dart';
 import 'features/kneeboard/kneeboard_controller.dart';
 import 'features/kneeboard/screen_awake_keeper.dart';
 import 'data/weather/weather_repository.dart';
+import 'data/simbrief/simbrief_client.dart';
 import 'features/navdata/navdata_controller.dart';
 import 'features/sim/sim_controller.dart';
 import 'features/sim/sim_flight_tracker.dart';
@@ -52,7 +53,8 @@ class AppScope extends StatelessWidget {
        notes = NotesRepository(db),
        logbook = LogbookRepository(db),
        charts = ChartsRepository(db, directory: chartsDirectory),
-       weather = WeatherRepository(db, client: httpClient);
+       weather = WeatherRepository(db, client: httpClient),
+       simbrief = SimbriefClient(client: httpClient);
 
   final AppDatabase db;
   final SharedPreferences prefs;
@@ -68,6 +70,7 @@ class AppScope extends StatelessWidget {
   final ChartsRepository charts;
   final ChartFileAccess chartFiles;
   final WeatherRepository weather;
+  final SimbriefClient simbrief;
   final Widget child;
 
   @override
@@ -83,6 +86,7 @@ class AppScope extends StatelessWidget {
         Provider.value(value: logbook),
         Provider.value(value: charts),
         Provider.value(value: chartFiles),
+        Provider.value(value: simbrief),
         ChangeNotifierProvider.value(value: settings),
         ChangeNotifierProvider(
           create: (_) => NavdataController(

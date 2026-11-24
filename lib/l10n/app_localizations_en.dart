@@ -1591,4 +1591,56 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get settingsScreenAwakeHint =>
       'In flight: while a flight is open on the kneeboard, until block on. Uses more battery.';
+
+  @override
+  String get retry => 'Try again';
+
+  @override
+  String get simbriefImport => 'Import from SimBrief';
+
+  @override
+  String get simbriefImportAction => 'Import';
+
+  @override
+  String get simbriefImportAgain => 'Import again';
+
+  @override
+  String get simbriefOpenExisting => 'Open flight';
+
+  @override
+  String get simbriefAlreadyImported =>
+      'This OFP has already been imported. Importing it again creates a second flight.';
+
+  @override
+  String get simbriefNoUser =>
+      'Enter your SimBrief username or pilot ID in the settings first. The app then imports the flight plan you last generated on simbrief.com.';
+
+  @override
+  String simbriefError(String message) {
+    return 'SimBrief reports: $message';
+  }
+
+  @override
+  String get simbriefOffline =>
+      'SimBrief can\'t be reached. Check the internet connection.';
+
+  @override
+  String get simbriefAircraft => 'Aircraft';
+
+  @override
+  String get simbriefEnrouteTime => 'Flight time';
+
+  @override
+  String get simbriefBlockFuel => 'Block fuel';
+
+  @override
+  String get simbriefGenerated => 'Generated';
+
+  @override
+  String get simbriefRoute => 'Route';
+
+  @override
+  String simbriefImportHint(int count) {
+    return 'Creates an IFR flight with $count waypoints, altitudes, winds and fuel from the OFP. Without an aircraft profile of this type, one is created.';
+  }
 }

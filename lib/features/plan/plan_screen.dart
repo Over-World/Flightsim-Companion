@@ -10,6 +10,7 @@ import '../../widgets/empty_state.dart';
 import '../navdata/navdata_missing_card.dart';
 import 'new_flight_dialog.dart';
 import '../notes/notes_button.dart';
+import 'simbrief_import_dialog.dart';
 
 class PlanScreen extends StatelessWidget {
   const PlanScreen({super.key});
@@ -30,6 +31,11 @@ class PlanScreen extends StatelessWidget {
             tooltip: l10n.navAircraft,
             icon: const Icon(Icons.airplanemode_active),
             onPressed: () => context.go('/plan/aircraft'),
+          ),
+          IconButton(
+            tooltip: l10n.simbriefImport,
+            icon: const Icon(Icons.cloud_download_outlined),
+            onPressed: () => importFromSimbrief(context),
           ),
           IconButton(
             tooltip: l10n.airportSearchTitle,

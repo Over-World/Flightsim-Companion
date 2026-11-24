@@ -1589,4 +1589,56 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get settingsScreenAwakeHint =>
       'Im Flug: solange ein Flug im Kneeboard geöffnet ist, bis On-Block. Braucht mehr Akku.';
+
+  @override
+  String get retry => 'Erneut versuchen';
+
+  @override
+  String get simbriefImport => 'Aus SimBrief importieren';
+
+  @override
+  String get simbriefImportAction => 'Importieren';
+
+  @override
+  String get simbriefImportAgain => 'Erneut importieren';
+
+  @override
+  String get simbriefOpenExisting => 'Flug öffnen';
+
+  @override
+  String get simbriefAlreadyImported =>
+      'Dieser OFP wurde schon importiert. Erneutes Importieren legt einen zweiten Flug an.';
+
+  @override
+  String get simbriefNoUser =>
+      'Trage zuerst in den Einstellungen deinen SimBrief-Benutzernamen oder deine Pilot-ID ein. Die App importiert dann den Flugplan, den du zuletzt auf simbrief.com erstellt hast.';
+
+  @override
+  String simbriefError(String message) {
+    return 'SimBrief meldet: $message';
+  }
+
+  @override
+  String get simbriefOffline =>
+      'SimBrief ist nicht erreichbar. Prüfe die Internetverbindung.';
+
+  @override
+  String get simbriefAircraft => 'Flugzeug';
+
+  @override
+  String get simbriefEnrouteTime => 'Flugzeit';
+
+  @override
+  String get simbriefBlockFuel => 'Blocktreibstoff';
+
+  @override
+  String get simbriefGenerated => 'Erstellt';
+
+  @override
+  String get simbriefRoute => 'Route';
+
+  @override
+  String simbriefImportHint(int count) {
+    return 'Legt einen IFR-Flug mit $count Wegpunkten, Höhen, Winden und Kraftstoff aus dem OFP an. Gibt es noch kein Flugzeugprofil dieses Typs, wird eines angelegt.';
+  }
 }

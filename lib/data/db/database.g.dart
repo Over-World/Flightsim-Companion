@@ -4181,6 +4181,15 @@ class $FlightsTable extends Flights with TableInfo<$FlightsTable, Flight> {
     requiredDuringInsert: false,
     defaultValue: const Constant('[]'),
   );
+  static const VerificationMeta _ofpMeta = const VerificationMeta('ofp');
+  @override
+  late final GeneratedColumn<String> ofp = GeneratedColumn<String>(
+    'ofp',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _createdAtMeta = const VerificationMeta(
     'createdAt',
   );
@@ -4236,6 +4245,7 @@ class $FlightsTable extends Flights with TableInfo<$FlightsTable, Flight> {
     touchdownFpm,
     touchdownG,
     track,
+    ofp,
     createdAt,
     updatedAt,
   ];
@@ -4461,6 +4471,12 @@ class $FlightsTable extends Flights with TableInfo<$FlightsTable, Flight> {
         track.isAcceptableOrUnknown(data['track']!, _trackMeta),
       );
     }
+    if (data.containsKey('ofp')) {
+      context.handle(
+        _ofpMeta,
+        ofp.isAcceptableOrUnknown(data['ofp']!, _ofpMeta),
+      );
+    }
     if (data.containsKey('created_at')) {
       context.handle(
         _createdAtMeta,
@@ -4602,6 +4618,10 @@ class $FlightsTable extends Flights with TableInfo<$FlightsTable, Flight> {
         DriftSqlType.string,
         data['${effectivePrefix}track'],
       )!,
+      ofp: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}ofp'],
+      ),
       createdAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}created_at'],
@@ -4662,6 +4682,9 @@ class Flight extends DataClass implements Insertable<Flight> {
 
   /// Flown track, JSON `[[lat, lon, altFt, epochSeconds], ...]`.
   final String track;
+
+  /// Imported operational flight plan, `OfpSummary.encode`.
+  final String? ofp;
   final DateTime createdAt;
   final DateTime updatedAt;
   const Flight({
@@ -4694,6 +4717,7 @@ class Flight extends DataClass implements Insertable<Flight> {
     this.touchdownFpm,
     this.touchdownG,
     required this.track,
+    this.ofp,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -4775,6 +4799,9 @@ class Flight extends DataClass implements Insertable<Flight> {
       map['touchdown_g'] = Variable<double>(touchdownG);
     }
     map['track'] = Variable<String>(track);
+    if (!nullToAbsent || ofp != null) {
+      map['ofp'] = Variable<String>(ofp);
+    }
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
     return map;
@@ -4849,6 +4876,7 @@ class Flight extends DataClass implements Insertable<Flight> {
           ? const Value.absent()
           : Value(touchdownG),
       track: Value(track),
+      ofp: ofp == null && nullToAbsent ? const Value.absent() : Value(ofp),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
     );
@@ -4899,6 +4927,7 @@ class Flight extends DataClass implements Insertable<Flight> {
       touchdownFpm: serializer.fromJson<double?>(json['touchdownFpm']),
       touchdownG: serializer.fromJson<double?>(json['touchdownG']),
       track: serializer.fromJson<String>(json['track']),
+      ofp: serializer.fromJson<String?>(json['ofp']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
     );
@@ -4940,6 +4969,7 @@ class Flight extends DataClass implements Insertable<Flight> {
       'touchdownFpm': serializer.toJson<double?>(touchdownFpm),
       'touchdownG': serializer.toJson<double?>(touchdownG),
       'track': serializer.toJson<String>(track),
+      'ofp': serializer.toJson<String?>(ofp),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
     };
@@ -4975,6 +5005,7 @@ class Flight extends DataClass implements Insertable<Flight> {
     Value<double?> touchdownFpm = const Value.absent(),
     Value<double?> touchdownG = const Value.absent(),
     String? track,
+    Value<String?> ofp = const Value.absent(),
     DateTime? createdAt,
     DateTime? updatedAt,
   }) => Flight(
@@ -5023,6 +5054,7 @@ class Flight extends DataClass implements Insertable<Flight> {
     touchdownFpm: touchdownFpm.present ? touchdownFpm.value : this.touchdownFpm,
     touchdownG: touchdownG.present ? touchdownG.value : this.touchdownG,
     track: track ?? this.track,
+    ofp: ofp.present ? ofp.value : this.ofp,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
   );
@@ -5091,6 +5123,7 @@ class Flight extends DataClass implements Insertable<Flight> {
           ? data.touchdownG.value
           : this.touchdownG,
       track: data.track.present ? data.track.value : this.track,
+      ofp: data.ofp.present ? data.ofp.value : this.ofp,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
     );
@@ -5128,6 +5161,7 @@ class Flight extends DataClass implements Insertable<Flight> {
           ..write('touchdownFpm: $touchdownFpm, ')
           ..write('touchdownG: $touchdownG, ')
           ..write('track: $track, ')
+          ..write('ofp: $ofp, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt')
           ..write(')'))
@@ -5165,6 +5199,7 @@ class Flight extends DataClass implements Insertable<Flight> {
     touchdownFpm,
     touchdownG,
     track,
+    ofp,
     createdAt,
     updatedAt,
   ]);
@@ -5201,6 +5236,7 @@ class Flight extends DataClass implements Insertable<Flight> {
           other.touchdownFpm == this.touchdownFpm &&
           other.touchdownG == this.touchdownG &&
           other.track == this.track &&
+          other.ofp == this.ofp &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt);
 }
@@ -5235,6 +5271,7 @@ class FlightsCompanion extends UpdateCompanion<Flight> {
   final Value<double?> touchdownFpm;
   final Value<double?> touchdownG;
   final Value<String> track;
+  final Value<String?> ofp;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
   const FlightsCompanion({
@@ -5267,6 +5304,7 @@ class FlightsCompanion extends UpdateCompanion<Flight> {
     this.touchdownFpm = const Value.absent(),
     this.touchdownG = const Value.absent(),
     this.track = const Value.absent(),
+    this.ofp = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
   });
@@ -5300,6 +5338,7 @@ class FlightsCompanion extends UpdateCompanion<Flight> {
     this.touchdownFpm = const Value.absent(),
     this.touchdownG = const Value.absent(),
     this.track = const Value.absent(),
+    this.ofp = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
   }) : title = Value(title),
@@ -5336,6 +5375,7 @@ class FlightsCompanion extends UpdateCompanion<Flight> {
     Expression<double>? touchdownFpm,
     Expression<double>? touchdownG,
     Expression<String>? track,
+    Expression<String>? ofp,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
   }) {
@@ -5370,6 +5410,7 @@ class FlightsCompanion extends UpdateCompanion<Flight> {
       if (touchdownFpm != null) 'touchdown_fpm': touchdownFpm,
       if (touchdownG != null) 'touchdown_g': touchdownG,
       if (track != null) 'track': track,
+      if (ofp != null) 'ofp': ofp,
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
     });
@@ -5405,6 +5446,7 @@ class FlightsCompanion extends UpdateCompanion<Flight> {
     Value<double?>? touchdownFpm,
     Value<double?>? touchdownG,
     Value<String>? track,
+    Value<String?>? ofp,
     Value<DateTime>? createdAt,
     Value<DateTime>? updatedAt,
   }) {
@@ -5438,6 +5480,7 @@ class FlightsCompanion extends UpdateCompanion<Flight> {
       touchdownFpm: touchdownFpm ?? this.touchdownFpm,
       touchdownG: touchdownG ?? this.touchdownG,
       track: track ?? this.track,
+      ofp: ofp ?? this.ofp,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
@@ -5537,6 +5580,9 @@ class FlightsCompanion extends UpdateCompanion<Flight> {
     if (track.present) {
       map['track'] = Variable<String>(track.value);
     }
+    if (ofp.present) {
+      map['ofp'] = Variable<String>(ofp.value);
+    }
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
     }
@@ -5578,6 +5624,7 @@ class FlightsCompanion extends UpdateCompanion<Flight> {
           ..write('touchdownFpm: $touchdownFpm, ')
           ..write('touchdownG: $touchdownG, ')
           ..write('track: $track, ')
+          ..write('ofp: $ofp, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt')
           ..write(')'))
@@ -5731,6 +5778,35 @@ class $FlightWaypointsTable extends FlightWaypoints
     requiredDuringInsert: false,
     defaultValue: const Constant(''),
   );
+  static const VerificationMeta _viaMeta = const VerificationMeta('via');
+  @override
+  late final GeneratedColumn<String> via = GeneratedColumn<String>(
+    'via',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _tasKtMeta = const VerificationMeta('tasKt');
+  @override
+  late final GeneratedColumn<int> tasKt = GeneratedColumn<int>(
+    'tas_kt',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _fuelFlowLphMeta = const VerificationMeta(
+    'fuelFlowLph',
+  );
+  @override
+  late final GeneratedColumn<double> fuelFlowLph = GeneratedColumn<double>(
+    'fuel_flow_lph',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _actualTimeOverMeta = const VerificationMeta(
     'actualTimeOver',
   );
@@ -5758,6 +5834,9 @@ class $FlightWaypointsTable extends FlightWaypoints
     windDirection,
     windSpeedKt,
     notes,
+    via,
+    tasKt,
+    fuelFlowLph,
     actualTimeOver,
   ];
   @override
@@ -5857,6 +5936,27 @@ class $FlightWaypointsTable extends FlightWaypoints
         notes.isAcceptableOrUnknown(data['notes']!, _notesMeta),
       );
     }
+    if (data.containsKey('via')) {
+      context.handle(
+        _viaMeta,
+        via.isAcceptableOrUnknown(data['via']!, _viaMeta),
+      );
+    }
+    if (data.containsKey('tas_kt')) {
+      context.handle(
+        _tasKtMeta,
+        tasKt.isAcceptableOrUnknown(data['tas_kt']!, _tasKtMeta),
+      );
+    }
+    if (data.containsKey('fuel_flow_lph')) {
+      context.handle(
+        _fuelFlowLphMeta,
+        fuelFlowLph.isAcceptableOrUnknown(
+          data['fuel_flow_lph']!,
+          _fuelFlowLphMeta,
+        ),
+      );
+    }
     if (data.containsKey('actual_time_over')) {
       context.handle(
         _actualTimeOverMeta,
@@ -5929,6 +6029,18 @@ class $FlightWaypointsTable extends FlightWaypoints
         DriftSqlType.string,
         data['${effectivePrefix}notes'],
       )!,
+      via: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}via'],
+      ),
+      tasKt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}tas_kt'],
+      ),
+      fuelFlowLph: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}fuel_flow_lph'],
+      ),
       actualTimeOver: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}actual_time_over'],
@@ -5964,6 +6076,14 @@ class FlightWaypoint extends DataClass implements Insertable<FlightWaypoint> {
   final int? windSpeedKt;
   final String notes;
 
+  /// Airway, SID/STAR or `DCT` on the leg to this waypoint (IFR).
+  final String? via;
+
+  /// Own TAS and fuel flow for the leg to this waypoint, e.g. climb and
+  /// descent from an OFP; `null` = the aircraft's cruise values.
+  final int? tasKt;
+  final double? fuelFlowLph;
+
   /// Actual time over, filled in during the flight.
   final DateTime? actualTimeOver;
   const FlightWaypoint({
@@ -5980,6 +6100,9 @@ class FlightWaypoint extends DataClass implements Insertable<FlightWaypoint> {
     this.windDirection,
     this.windSpeedKt,
     required this.notes,
+    this.via,
+    this.tasKt,
+    this.fuelFlowLph,
     this.actualTimeOver,
   });
   @override
@@ -6010,6 +6133,15 @@ class FlightWaypoint extends DataClass implements Insertable<FlightWaypoint> {
       map['wind_speed_kt'] = Variable<int>(windSpeedKt);
     }
     map['notes'] = Variable<String>(notes);
+    if (!nullToAbsent || via != null) {
+      map['via'] = Variable<String>(via);
+    }
+    if (!nullToAbsent || tasKt != null) {
+      map['tas_kt'] = Variable<int>(tasKt);
+    }
+    if (!nullToAbsent || fuelFlowLph != null) {
+      map['fuel_flow_lph'] = Variable<double>(fuelFlowLph);
+    }
     if (!nullToAbsent || actualTimeOver != null) {
       map['actual_time_over'] = Variable<DateTime>(actualTimeOver);
     }
@@ -6039,6 +6171,13 @@ class FlightWaypoint extends DataClass implements Insertable<FlightWaypoint> {
           ? const Value.absent()
           : Value(windSpeedKt),
       notes: Value(notes),
+      via: via == null && nullToAbsent ? const Value.absent() : Value(via),
+      tasKt: tasKt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(tasKt),
+      fuelFlowLph: fuelFlowLph == null && nullToAbsent
+          ? const Value.absent()
+          : Value(fuelFlowLph),
       actualTimeOver: actualTimeOver == null && nullToAbsent
           ? const Value.absent()
           : Value(actualTimeOver),
@@ -6066,6 +6205,9 @@ class FlightWaypoint extends DataClass implements Insertable<FlightWaypoint> {
       windDirection: serializer.fromJson<int?>(json['windDirection']),
       windSpeedKt: serializer.fromJson<int?>(json['windSpeedKt']),
       notes: serializer.fromJson<String>(json['notes']),
+      via: serializer.fromJson<String?>(json['via']),
+      tasKt: serializer.fromJson<int?>(json['tasKt']),
+      fuelFlowLph: serializer.fromJson<double?>(json['fuelFlowLph']),
       actualTimeOver: serializer.fromJson<DateTime?>(json['actualTimeOver']),
     );
   }
@@ -6088,6 +6230,9 @@ class FlightWaypoint extends DataClass implements Insertable<FlightWaypoint> {
       'windDirection': serializer.toJson<int?>(windDirection),
       'windSpeedKt': serializer.toJson<int?>(windSpeedKt),
       'notes': serializer.toJson<String>(notes),
+      'via': serializer.toJson<String?>(via),
+      'tasKt': serializer.toJson<int?>(tasKt),
+      'fuelFlowLph': serializer.toJson<double?>(fuelFlowLph),
       'actualTimeOver': serializer.toJson<DateTime?>(actualTimeOver),
     };
   }
@@ -6106,6 +6251,9 @@ class FlightWaypoint extends DataClass implements Insertable<FlightWaypoint> {
     Value<int?> windDirection = const Value.absent(),
     Value<int?> windSpeedKt = const Value.absent(),
     String? notes,
+    Value<String?> via = const Value.absent(),
+    Value<int?> tasKt = const Value.absent(),
+    Value<double?> fuelFlowLph = const Value.absent(),
     Value<DateTime?> actualTimeOver = const Value.absent(),
   }) => FlightWaypoint(
     id: id ?? this.id,
@@ -6123,6 +6271,9 @@ class FlightWaypoint extends DataClass implements Insertable<FlightWaypoint> {
         : this.windDirection,
     windSpeedKt: windSpeedKt.present ? windSpeedKt.value : this.windSpeedKt,
     notes: notes ?? this.notes,
+    via: via.present ? via.value : this.via,
+    tasKt: tasKt.present ? tasKt.value : this.tasKt,
+    fuelFlowLph: fuelFlowLph.present ? fuelFlowLph.value : this.fuelFlowLph,
     actualTimeOver: actualTimeOver.present
         ? actualTimeOver.value
         : this.actualTimeOver,
@@ -6148,6 +6299,11 @@ class FlightWaypoint extends DataClass implements Insertable<FlightWaypoint> {
           ? data.windSpeedKt.value
           : this.windSpeedKt,
       notes: data.notes.present ? data.notes.value : this.notes,
+      via: data.via.present ? data.via.value : this.via,
+      tasKt: data.tasKt.present ? data.tasKt.value : this.tasKt,
+      fuelFlowLph: data.fuelFlowLph.present
+          ? data.fuelFlowLph.value
+          : this.fuelFlowLph,
       actualTimeOver: data.actualTimeOver.present
           ? data.actualTimeOver.value
           : this.actualTimeOver,
@@ -6170,6 +6326,9 @@ class FlightWaypoint extends DataClass implements Insertable<FlightWaypoint> {
           ..write('windDirection: $windDirection, ')
           ..write('windSpeedKt: $windSpeedKt, ')
           ..write('notes: $notes, ')
+          ..write('via: $via, ')
+          ..write('tasKt: $tasKt, ')
+          ..write('fuelFlowLph: $fuelFlowLph, ')
           ..write('actualTimeOver: $actualTimeOver')
           ..write(')'))
         .toString();
@@ -6190,6 +6349,9 @@ class FlightWaypoint extends DataClass implements Insertable<FlightWaypoint> {
     windDirection,
     windSpeedKt,
     notes,
+    via,
+    tasKt,
+    fuelFlowLph,
     actualTimeOver,
   );
   @override
@@ -6209,6 +6371,9 @@ class FlightWaypoint extends DataClass implements Insertable<FlightWaypoint> {
           other.windDirection == this.windDirection &&
           other.windSpeedKt == this.windSpeedKt &&
           other.notes == this.notes &&
+          other.via == this.via &&
+          other.tasKt == this.tasKt &&
+          other.fuelFlowLph == this.fuelFlowLph &&
           other.actualTimeOver == this.actualTimeOver);
 }
 
@@ -6226,6 +6391,9 @@ class FlightWaypointsCompanion extends UpdateCompanion<FlightWaypoint> {
   final Value<int?> windDirection;
   final Value<int?> windSpeedKt;
   final Value<String> notes;
+  final Value<String?> via;
+  final Value<int?> tasKt;
+  final Value<double?> fuelFlowLph;
   final Value<DateTime?> actualTimeOver;
   const FlightWaypointsCompanion({
     this.id = const Value.absent(),
@@ -6241,6 +6409,9 @@ class FlightWaypointsCompanion extends UpdateCompanion<FlightWaypoint> {
     this.windDirection = const Value.absent(),
     this.windSpeedKt = const Value.absent(),
     this.notes = const Value.absent(),
+    this.via = const Value.absent(),
+    this.tasKt = const Value.absent(),
+    this.fuelFlowLph = const Value.absent(),
     this.actualTimeOver = const Value.absent(),
   });
   FlightWaypointsCompanion.insert({
@@ -6257,6 +6428,9 @@ class FlightWaypointsCompanion extends UpdateCompanion<FlightWaypoint> {
     this.windDirection = const Value.absent(),
     this.windSpeedKt = const Value.absent(),
     this.notes = const Value.absent(),
+    this.via = const Value.absent(),
+    this.tasKt = const Value.absent(),
+    this.fuelFlowLph = const Value.absent(),
     this.actualTimeOver = const Value.absent(),
   }) : flightId = Value(flightId),
        sequence = Value(sequence),
@@ -6278,6 +6452,9 @@ class FlightWaypointsCompanion extends UpdateCompanion<FlightWaypoint> {
     Expression<int>? windDirection,
     Expression<int>? windSpeedKt,
     Expression<String>? notes,
+    Expression<String>? via,
+    Expression<int>? tasKt,
+    Expression<double>? fuelFlowLph,
     Expression<DateTime>? actualTimeOver,
   }) {
     return RawValuesInsertable({
@@ -6294,6 +6471,9 @@ class FlightWaypointsCompanion extends UpdateCompanion<FlightWaypoint> {
       if (windDirection != null) 'wind_direction': windDirection,
       if (windSpeedKt != null) 'wind_speed_kt': windSpeedKt,
       if (notes != null) 'notes': notes,
+      if (via != null) 'via': via,
+      if (tasKt != null) 'tas_kt': tasKt,
+      if (fuelFlowLph != null) 'fuel_flow_lph': fuelFlowLph,
       if (actualTimeOver != null) 'actual_time_over': actualTimeOver,
     });
   }
@@ -6312,6 +6492,9 @@ class FlightWaypointsCompanion extends UpdateCompanion<FlightWaypoint> {
     Value<int?>? windDirection,
     Value<int?>? windSpeedKt,
     Value<String>? notes,
+    Value<String?>? via,
+    Value<int?>? tasKt,
+    Value<double?>? fuelFlowLph,
     Value<DateTime?>? actualTimeOver,
   }) {
     return FlightWaypointsCompanion(
@@ -6328,6 +6511,9 @@ class FlightWaypointsCompanion extends UpdateCompanion<FlightWaypoint> {
       windDirection: windDirection ?? this.windDirection,
       windSpeedKt: windSpeedKt ?? this.windSpeedKt,
       notes: notes ?? this.notes,
+      via: via ?? this.via,
+      tasKt: tasKt ?? this.tasKt,
+      fuelFlowLph: fuelFlowLph ?? this.fuelFlowLph,
       actualTimeOver: actualTimeOver ?? this.actualTimeOver,
     );
   }
@@ -6376,6 +6562,15 @@ class FlightWaypointsCompanion extends UpdateCompanion<FlightWaypoint> {
     if (notes.present) {
       map['notes'] = Variable<String>(notes.value);
     }
+    if (via.present) {
+      map['via'] = Variable<String>(via.value);
+    }
+    if (tasKt.present) {
+      map['tas_kt'] = Variable<int>(tasKt.value);
+    }
+    if (fuelFlowLph.present) {
+      map['fuel_flow_lph'] = Variable<double>(fuelFlowLph.value);
+    }
     if (actualTimeOver.present) {
       map['actual_time_over'] = Variable<DateTime>(actualTimeOver.value);
     }
@@ -6398,6 +6593,9 @@ class FlightWaypointsCompanion extends UpdateCompanion<FlightWaypoint> {
           ..write('windDirection: $windDirection, ')
           ..write('windSpeedKt: $windSpeedKt, ')
           ..write('notes: $notes, ')
+          ..write('via: $via, ')
+          ..write('tasKt: $tasKt, ')
+          ..write('fuelFlowLph: $fuelFlowLph, ')
           ..write('actualTimeOver: $actualTimeOver')
           ..write(')'))
         .toString();
@@ -11008,6 +11206,7 @@ typedef $$FlightsTableCreateCompanionBuilder = FlightsCompanion Function({
   Value<double?> touchdownFpm,
   Value<double?> touchdownG,
   Value<String> track,
+  Value<String?> ofp,
   Value<DateTime> createdAt,
   Value<DateTime> updatedAt,
 });
@@ -11041,6 +11240,7 @@ typedef $$FlightsTableUpdateCompanionBuilder = FlightsCompanion Function({
   Value<double?> touchdownFpm,
   Value<double?> touchdownG,
   Value<String> track,
+  Value<String?> ofp,
   Value<DateTime> createdAt,
   Value<DateTime> updatedAt,
 });
@@ -11292,6 +11492,11 @@ class $$FlightsTableFilterComposer
 
   ColumnFilters<String> get track => $composableBuilder(
     column: $table.track,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get ofp => $composableBuilder(
+    column: $table.ofp,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -11578,6 +11783,11 @@ class $$FlightsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get ofp => $composableBuilder(
+    column: $table.ofp,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<DateTime> get createdAt => $composableBuilder(
     column: $table.createdAt,
     builder: (column) => ColumnOrderings(column),
@@ -11736,6 +11946,9 @@ class $$FlightsTableAnnotationComposer
 
   GeneratedColumn<String> get track =>
       $composableBuilder(column: $table.track, builder: (column) => column);
+
+  GeneratedColumn<String> get ofp =>
+      $composableBuilder(column: $table.ofp, builder: (column) => column);
 
   GeneratedColumn<DateTime> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
@@ -11930,6 +12143,7 @@ class $$FlightsTableTableManager
                 Value<double?> touchdownFpm = const Value.absent(),
                 Value<double?> touchdownG = const Value.absent(),
                 Value<String> track = const Value.absent(),
+                Value<String?> ofp = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
               }) => FlightsCompanion(
@@ -11962,6 +12176,7 @@ class $$FlightsTableTableManager
                 touchdownFpm: touchdownFpm,
                 touchdownG: touchdownG,
                 track: track,
+                ofp: ofp,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
               ),
@@ -11996,6 +12211,7 @@ class $$FlightsTableTableManager
                 Value<double?> touchdownFpm = const Value.absent(),
                 Value<double?> touchdownG = const Value.absent(),
                 Value<String> track = const Value.absent(),
+                Value<String?> ofp = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
               }) => FlightsCompanion.insert(
@@ -12028,6 +12244,7 @@ class $$FlightsTableTableManager
                 touchdownFpm: touchdownFpm,
                 touchdownG: touchdownG,
                 track: track,
+                ofp: ofp,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
               ),
@@ -12210,6 +12427,9 @@ typedef $$FlightWaypointsTableCreateCompanionBuilder =
       Value<int?> windDirection,
       Value<int?> windSpeedKt,
       Value<String> notes,
+      Value<String?> via,
+      Value<int?> tasKt,
+      Value<double?> fuelFlowLph,
       Value<DateTime?> actualTimeOver,
     });
 typedef $$FlightWaypointsTableUpdateCompanionBuilder =
@@ -12227,6 +12447,9 @@ typedef $$FlightWaypointsTableUpdateCompanionBuilder =
       Value<int?> windDirection,
       Value<int?> windSpeedKt,
       Value<String> notes,
+      Value<String?> via,
+      Value<int?> tasKt,
+      Value<double?> fuelFlowLph,
       Value<DateTime?> actualTimeOver,
     });
 
@@ -12324,6 +12547,21 @@ class $$FlightWaypointsTableFilterComposer
 
   ColumnFilters<String> get notes => $composableBuilder(
     column: $table.notes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get via => $composableBuilder(
+    column: $table.via,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get tasKt => $composableBuilder(
+    column: $table.tasKt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get fuelFlowLph => $composableBuilder(
+    column: $table.fuelFlowLph,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -12425,6 +12663,21 @@ class $$FlightWaypointsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get via => $composableBuilder(
+    column: $table.via,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get tasKt => $composableBuilder(
+    column: $table.tasKt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get fuelFlowLph => $composableBuilder(
+    column: $table.fuelFlowLph,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<DateTime> get actualTimeOver => $composableBuilder(
     column: $table.actualTimeOver,
     builder: (column) => ColumnOrderings(column),
@@ -12505,6 +12758,17 @@ class $$FlightWaypointsTableAnnotationComposer
   GeneratedColumn<String> get notes =>
       $composableBuilder(column: $table.notes, builder: (column) => column);
 
+  GeneratedColumn<String> get via =>
+      $composableBuilder(column: $table.via, builder: (column) => column);
+
+  GeneratedColumn<int> get tasKt =>
+      $composableBuilder(column: $table.tasKt, builder: (column) => column);
+
+  GeneratedColumn<double> get fuelFlowLph => $composableBuilder(
+    column: $table.fuelFlowLph,
+    builder: (column) => column,
+  );
+
   GeneratedColumn<DateTime> get actualTimeOver => $composableBuilder(
     column: $table.actualTimeOver,
     builder: (column) => column,
@@ -12577,6 +12841,9 @@ class $$FlightWaypointsTableTableManager
                 Value<int?> windDirection = const Value.absent(),
                 Value<int?> windSpeedKt = const Value.absent(),
                 Value<String> notes = const Value.absent(),
+                Value<String?> via = const Value.absent(),
+                Value<int?> tasKt = const Value.absent(),
+                Value<double?> fuelFlowLph = const Value.absent(),
                 Value<DateTime?> actualTimeOver = const Value.absent(),
               }) => FlightWaypointsCompanion(
                 id: id,
@@ -12592,6 +12859,9 @@ class $$FlightWaypointsTableTableManager
                 windDirection: windDirection,
                 windSpeedKt: windSpeedKt,
                 notes: notes,
+                via: via,
+                tasKt: tasKt,
+                fuelFlowLph: fuelFlowLph,
                 actualTimeOver: actualTimeOver,
               ),
           createCompanionCallback:
@@ -12609,6 +12879,9 @@ class $$FlightWaypointsTableTableManager
                 Value<int?> windDirection = const Value.absent(),
                 Value<int?> windSpeedKt = const Value.absent(),
                 Value<String> notes = const Value.absent(),
+                Value<String?> via = const Value.absent(),
+                Value<int?> tasKt = const Value.absent(),
+                Value<double?> fuelFlowLph = const Value.absent(),
                 Value<DateTime?> actualTimeOver = const Value.absent(),
               }) => FlightWaypointsCompanion.insert(
                 id: id,
@@ -12624,6 +12897,9 @@ class $$FlightWaypointsTableTableManager
                 windDirection: windDirection,
                 windSpeedKt: windSpeedKt,
                 notes: notes,
+                via: via,
+                tasKt: tasKt,
+                fuelFlowLph: fuelFlowLph,
                 actualTimeOver: actualTimeOver,
               ),
           withReferenceMapper: (p0) => p0

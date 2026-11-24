@@ -8,6 +8,9 @@ import '../../l10n/app_localizations.dart';
 
 enum NavlogColumn {
   waypoint,
+
+  /// Airway or procedure; shown automatically when the route has any.
+  via,
   altitude,
   tc,
   wind,
@@ -84,6 +87,15 @@ class NavlogTable extends StatelessWidget {
       fontFamily: 'monospace',
       fontFeatures: const [FontFeature.tabularFigures()],
     );
+    final columns = [
+      for (final c in this.columns) ...[
+        c,
+        if (c == NavlogColumn.waypoint &&
+            !this.columns.contains(NavlogColumn.via) &&
+            navlog.legs.any((l) => l.to.via != null))
+          NavlogColumn.via,
+      ],
+    ];
     final header = theme.textTheme.labelSmall!.copyWith(
       color: scheme.onSurfaceVariant,
       fontWeight: FontWeight.bold,
@@ -92,6 +104,7 @@ class NavlogTable extends StatelessWidget {
 
     String label(NavlogColumn c) => switch (c) {
       NavlogColumn.waypoint => l10n.navlogWaypoint,
+      NavlogColumn.via => 'VIA',
       NavlogColumn.altitude => 'ALT',
       NavlogColumn.tc => 'TC',
       NavlogColumn.wind => l10n.navlogWind,
@@ -110,6 +123,7 @@ class NavlogTable extends StatelessWidget {
       final leg = navlog.legs[i];
       return switch (c) {
         NavlogColumn.waypoint => leg.to.ident,
+        NavlogColumn.via => leg.to.via ?? '',
         NavlogColumn.altitude => leg.to.altitudeFt?.toString() ?? '–',
         NavlogColumn.tc => formatCourse(leg.trueCourse),
         NavlogColumn.wind =>

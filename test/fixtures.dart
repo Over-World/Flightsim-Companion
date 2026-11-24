@@ -12,6 +12,8 @@ import 'package:flightsim_companion/features/sim/sim_controller.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 
+import 'simbrief/ofp_fixture.dart';
+
 /// Egelsbach, Mainz-Finthen and the Frankfurt VOR with a few frequencies.
 Future<void> insertNavdataFixtures(AppDatabase db) async {
   await db.batch((b) {
@@ -139,7 +141,13 @@ Future<int> createFixtureFlight(FlightRepository flights) async {
 
 /// Fake aviationweather.gov: a METAR for EDDF (also found by area search,
 /// so EDFE gets it as nearest station), nothing else.
+/// aviationweather.gov and SimBrief (user `pilot`) without the network.
 http.Client fakeWeatherClient() => MockClient((request) async {
+  if (request.url.host == 'www.simbrief.com') {
+    return request.url.queryParameters['username'] == 'pilot'
+        ? http.Response(ofpBody(), 200)
+        : http.Response('{"fetch":{"status":"Error: Unknown UserID"}}', 400);
+  }
   final q = request.url.queryParameters;
   final kind = request.url.pathSegments.last;
   if (kind == 'metar' && (q['ids'] == 'EDDF' || q['bbox'] != null)) {

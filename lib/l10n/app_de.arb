@@ -478,5 +478,20 @@
   "screenAwakeNever": "Nie",
   "screenAwakeFlight": "Im Flug",
   "screenAwakeAlways": "Immer",
-  "settingsScreenAwakeHint": "Im Flug: solange ein Flug im Kneeboard geöffnet ist, bis On-Block. Braucht mehr Akku."
+  "settingsScreenAwakeHint": "Im Flug: solange ein Flug im Kneeboard geöffnet ist, bis On-Block. Braucht mehr Akku.",
+  "retry": "Erneut versuchen",
+  "simbriefImport": "Aus SimBrief importieren",
+  "simbriefImportAction": "Importieren",
+  "simbriefImportAgain": "Erneut importieren",
+  "simbriefOpenExisting": "Flug öffnen",
+  "simbriefAlreadyImported": "Dieser OFP wurde schon importiert. Erneutes Importieren legt einen zweiten Flug an.",
+  "simbriefNoUser": "Trage zuerst in den Einstellungen deinen SimBrief-Benutzernamen oder deine Pilot-ID ein. Die App importiert dann den Flugplan, den du zuletzt auf simbrief.com erstellt hast.",
+  "simbriefError": "SimBrief meldet: {message}",
+  "simbriefOffline": "SimBrief ist nicht erreichbar. Prüfe die Internetverbindung.",
+  "simbriefAircraft": "Flugzeug",
+  "simbriefEnrouteTime": "Flugzeit",
+  "simbriefBlockFuel": "Blocktreibstoff",
+  "simbriefGenerated": "Erstellt",
+  "simbriefRoute": "Route",
+  "simbriefImportHint": "Legt einen IFR-Flug mit {count} Wegpunkten, Höhen, Winden und Kraftstoff aus dem OFP an. Gibt es noch kein Flugzeugprofil dieses Typs, wird eines angelegt."
 }

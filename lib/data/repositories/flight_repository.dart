@@ -8,9 +8,10 @@ import '../../core/nav_math.dart';
 import '../../core/navlog.dart';
 import '../../core/weight_balance.dart';
 import '../db/database.dart';
+import '../simbrief/simbrief_ofp.dart';
 
 class FlightWithRoute {
-  const FlightWithRoute(
+  FlightWithRoute(
     this.flight,
     this.waypoints,
     this.aircraft, {
@@ -24,8 +25,13 @@ class FlightWithRoute {
 
   FuelKind get fuelKind => fuelKindOf(aircraft?.fuelType ?? 'avgas');
 
-  /// Fuel from destination to alternate at cruise TAS with the flight wind.
+  /// Imported OFP, `null` for flights planned in the app.
+  late final OfpSummary? ofp = OfpSummary.decode(flight.ofp);
+
+  /// Fuel from destination to alternate: from the OFP if there is one, else
+  /// at cruise TAS with the flight wind.
   double? get alternateFuelL {
+    if (ofp?.alternateKg case final kg?) return kg / fuelKind.density;
     final a = aircraft;
     final altn = alternateAirport;
     if (a == null || altn == null || waypoints.isEmpty) return null;
@@ -114,6 +120,9 @@ class FlightWithRoute {
         windDirection: w.windDirection,
         windSpeedKt: w.windSpeedKt,
         actualTimeOver: w.actualTimeOver,
+        via: w.via,
+        tasKt: w.tasKt,
+        fuelFlowLph: w.fuelFlowLph,
       ),
   ];
 
@@ -237,6 +246,190 @@ class FlightRepository {
     longitude: a.longitude,
     altitudeFt: Value(altitudeFt),
   );
+
+  /// The flight imported from the OFP with [requestId], if any.
+  Future<int?> flightForOfp(String requestId) async {
+    if (requestId.isEmpty) return null;
+    final rows = await (_db.select(
+      _db.flights,
+    )..where((f) => f.ofp.isNotNull())).get();
+    for (final f in rows) {
+      if (OfpSummary.decode(f.ofp)?.requestId == requestId) return f.id;
+    }
+    return null;
+  }
+
+  /// Creates an IFR flight from a SimBrief OFP: route with airways, altitudes,
+  /// winds, TAS and fuel flow per leg, runways and the fuel plan. Uses the
+  /// aircraft profile of the same type (or registration) or creates one.
+  Future<int> importOfp(SimbriefOfp ofp) {
+    return _db.transaction(() async {
+      final profile = await _profileForOfp(ofp);
+      final density = fuelKindOf(profile.fuelType).density;
+      double? litres(double? kg) => kg == null ? null : kg / density;
+      final fuel = ofp.fuel;
+      final trip = fuel.trip;
+      final flow = fuel.averageFlowKgph;
+      final o = ofp.origin.icao;
+      final d = ofp.destination.icao;
+      final id = await _db
+          .into(_db.flights)
+          .insert(
+            FlightsCompanion.insert(
+              title: ofp.callsign.isEmpty
+                  ? '$o – $d'
+                  : '${ofp.callsign} · $o – $d',
+              rules: FlightRules.ifr,
+              departureIdent: o,
+              destinationIdent: d,
+              alternateIdent: Value(ofp.alternate),
+              departureRunway: Value(ofp.origin.runway),
+              arrivalRunway: Value(ofp.destination.runway),
+              aircraftId: Value(profile.id),
+              cruiseAltitudeFt: Value(ofp.cruiseAltitudeFt),
+              plannedDeparture: Value(ofp.scheduledOut),
+              taxiFuelL: Value(litres(fuel.taxi)),
+              contingencyPercent: Value(
+                trip != null && trip > 0 && fuel.contingency != null
+                    ? (fuel.contingency! / trip * 1000).round() / 10
+                    : null,
+              ),
+              finalReserveMinutes: Value(
+                flow != null && flow > 0 && fuel.finalReserve != null
+                    ? (fuel.finalReserve! / flow * 60).round()
+                    : null,
+              ),
+              extraFuelL: Value(litres(fuel.extra)),
+              fuelOnBoardL: Value(litres(fuel.ramp)),
+              ofp: Value(OfpSummary.of(ofp).encode()),
+            ),
+          );
+
+      final waypoints = <FlightWaypointsCompanion>[
+        await _ofpAirport(id, 0, ofp.origin),
+      ];
+      for (final f in ofp.fixes) {
+        if (waypoints.length == 1 && f.isAirport && f.ident == o) continue;
+        final seq = waypoints.length;
+        final leg = (
+          altitudeFt: Value(f.altitudeFt),
+          windDirection: Value(f.windDirection),
+          windSpeedKt: Value(f.windSpeedKt),
+          via: Value(f.via.isEmpty ? null : f.via),
+          tasKt: Value(f.trueAirspeedKt),
+          fuelFlowLph: Value(litres(f.fuelFlowKgph)),
+        );
+        final FlightWaypointsCompanion base;
+        if (f.isAirport && f.ident == d) {
+          base = await _ofpAirport(id, seq, ofp.destination);
+        } else {
+          final navaid = f.isNavaid ? await _navaidNear(f) : null;
+          base = FlightWaypointsCompanion.insert(
+            flightId: id,
+            sequence: seq,
+            kind: navaid != null ? WaypointKind.navaid : WaypointKind.fix,
+            refId: Value(navaid?.id),
+            ident: f.ident,
+            name: Value(navaid?.name ?? f.name),
+            latitude: f.latitude,
+            longitude: f.longitude,
+          );
+        }
+        waypoints.add(
+          base.copyWith(
+            altitudeFt: leg.altitudeFt,
+            windDirection: leg.windDirection,
+            windSpeedKt: leg.windSpeedKt,
+            via: leg.via,
+            tasKt: leg.tasKt,
+            fuelFlowLph: leg.fuelFlowLph,
+          ),
+        );
+      }
+      if (waypoints.last.ident.value != d) {
+        waypoints.add(await _ofpAirport(id, waypoints.length, ofp.destination));
+      }
+      await _db.batch((b) => b.insertAll(_db.flightWaypoints, waypoints));
+      return id;
+    });
+  }
+
+  Future<FlightWaypointsCompanion> _ofpAirport(
+    int flightId,
+    int sequence,
+    OfpAirport a,
+  ) async {
+    final row =
+        await (_db.select(_db.airports)
+              ..where((x) => x.ident.equals(a.icao))
+              ..limit(1))
+            .getSingleOrNull();
+    if (row != null) return _airportWaypoint(flightId, sequence, row);
+    // Without navdata the OFP's own position is good enough.
+    return FlightWaypointsCompanion.insert(
+      flightId: flightId,
+      sequence: sequence,
+      kind: WaypointKind.airport,
+      ident: a.icao,
+      name: Value(a.name),
+      latitude: a.latitude,
+      longitude: a.longitude,
+    );
+  }
+
+  /// The navaid with the fix's ident within 5 NM (idents repeat worldwide).
+  Future<Navaid?> _navaidNear(OfpFix f) async {
+    final candidates = await (_db.select(
+      _db.navaids,
+    )..where((n) => n.ident.equals(f.ident))).get();
+    Navaid? best;
+    var bestDist = 5.0;
+    for (final n in candidates) {
+      final dist = distanceNm(f.latitude, f.longitude, n.latitude, n.longitude);
+      if (dist <= bestDist) {
+        best = n;
+        bestDist = dist;
+      }
+    }
+    return best;
+  }
+
+  Future<AircraftProfile> _profileForOfp(SimbriefOfp ofp) async {
+    final sameType = await (_db.select(
+      _db.aircraftProfiles,
+    )..where((a) => a.icaoType.upper().equals(ofp.aircraftIcao))).get();
+    final reg = ofp.registration.toUpperCase();
+    for (final a in sameType) {
+      if (reg.isNotEmpty && a.registration.toUpperCase() == reg) return a;
+    }
+    if (sameType.isNotEmpty) return sameType.first;
+
+    // SimBrief mostly plans turbine aircraft; the user can change it.
+    const density = 0.8;
+    double? litres(double? kg) => kg == null ? null : kg / density;
+    final fuel = ofp.fuel;
+    final id = await _db
+        .into(_db.aircraftProfiles)
+        .insert(
+          AircraftProfilesCompanion.insert(
+            name: ofp.aircraftName.isEmpty
+                ? ofp.aircraftIcao
+                : ofp.aircraftName,
+            icaoType: ofp.aircraftIcao,
+            registration: Value(ofp.registration),
+            cruiseTas: ofp.cruiseTasKt ?? 450,
+            fuelBurnLph: litres(fuel.averageFlowKgph) ?? 0,
+            usableFuelL: litres(fuel.maxTanks) ?? litres(fuel.ramp) ?? 0,
+            fuelType: const Value('jeta'),
+            emptyWeightKg: Value(ofp.emptyWeightKg),
+            maxTakeoffWeightKg: Value(ofp.maxTakeoffWeightKg),
+            taxiFuelL: Value(litres(fuel.taxi)),
+          ),
+        );
+    return (_db.select(
+      _db.aircraftProfiles,
+    )..where((a) => a.id.equals(id))).getSingle();
+  }
 
   Future<void> updateFlight(int id, FlightsCompanion changes) =>
       (_db.update(_db.flights)..where((f) => f.id.equals(id))).write(

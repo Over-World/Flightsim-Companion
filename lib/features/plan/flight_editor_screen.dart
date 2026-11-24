@@ -300,10 +300,10 @@ class _RoutePanel extends StatelessWidget {
                   child: Icon(_kindIcon(w.kind)),
                 ),
                 title: Text(w.ident, style: monoStyle(context)),
-                subtitle: w.name.isEmpty
+                subtitle: w.name.isEmpty && w.via == null
                     ? null
                     : Text(
-                        w.name,
+                        [?w.via, if (w.name.isNotEmpty) w.name].join(' · '),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -357,6 +357,7 @@ class _RoutePanel extends StatelessWidget {
     WaypointKind.navaid => Icons.settings_input_antenna,
     WaypointKind.reportingPoint => Icons.flag_outlined,
     WaypointKind.user => Icons.place_outlined,
+    WaypointKind.fix => Icons.change_history,
   };
 }
 

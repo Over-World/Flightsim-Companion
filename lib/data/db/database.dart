@@ -30,7 +30,7 @@ class AppDatabase extends _$AppDatabase {
     : super(executor ?? driftDatabase(name: 'flightsim_companion'));
 
   @override
-  int get schemaVersion => 7;
+  int get schemaVersion => 8;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -100,6 +100,12 @@ class AppDatabase extends _$AppDatabase {
         await m.addColumn(flights, flights.touchdownG);
         await m.addColumn(flights, flights.track);
         await m.createTable(logbookEntries);
+      }
+      if (from < 8) {
+        await m.addColumn(flights, flights.ofp);
+        await m.addColumn(flightWaypoints, flightWaypoints.via);
+        await m.addColumn(flightWaypoints, flightWaypoints.tasKt);
+        await m.addColumn(flightWaypoints, flightWaypoints.fuelFlowLph);
       }
     },
     beforeOpen: (details) async {

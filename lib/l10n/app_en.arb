@@ -861,5 +861,34 @@
   "screenAwakeNever": "Never",
   "screenAwakeFlight": "In flight",
   "screenAwakeAlways": "Always",
-  "settingsScreenAwakeHint": "In flight: while a flight is open on the kneeboard, until block on. Uses more battery."
+  "settingsScreenAwakeHint": "In flight: while a flight is open on the kneeboard, until block on. Uses more battery.",
+  "retry": "Try again",
+  "simbriefImport": "Import from SimBrief",
+  "simbriefImportAction": "Import",
+  "simbriefImportAgain": "Import again",
+  "simbriefOpenExisting": "Open flight",
+  "simbriefAlreadyImported": "This OFP has already been imported. Importing it again creates a second flight.",
+  "simbriefNoUser": "Enter your SimBrief username or pilot ID in the settings first. The app then imports the flight plan you last generated on simbrief.com.",
+  "simbriefError": "SimBrief reports: {message}",
+  "@simbriefError": {
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "simbriefOffline": "SimBrief can't be reached. Check the internet connection.",
+  "simbriefAircraft": "Aircraft",
+  "simbriefEnrouteTime": "Flight time",
+  "simbriefBlockFuel": "Block fuel",
+  "simbriefGenerated": "Generated",
+  "simbriefRoute": "Route",
+  "simbriefImportHint": "Creates an IFR flight with {count} waypoints, altitudes, winds and fuel from the OFP. Without an aircraft profile of this type, one is created.",
+  "@simbriefImportHint": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }
